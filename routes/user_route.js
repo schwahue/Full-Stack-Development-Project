@@ -4,7 +4,7 @@ const alertMessage = require('../helpers/messenger.js');
 
 router.get('/login', (req, res) => {
 
-    res.render('user/login'); 
+    res.render('user/login', {title:"login", style:"login_form"}); 
 
 });
 

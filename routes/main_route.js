@@ -3,7 +3,7 @@ const router = express.Router();
 const alertMessage = require('../helpers/messenger.js');
 
 router.get('/', (req, res) => {
-	res.render('index'); // renders views/index.handlebars
+	res.render('index', {title: 'Home'}); // renders views/index.handlebars
 });
 
 

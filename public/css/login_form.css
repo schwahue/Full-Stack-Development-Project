@@ -1,0 +1,91 @@
+
+body, html {
+    height:100%;
+    overflow: hidden;
+    background: #cccccc;
+}
+
+.txt {
+    font-size:20px;
+    color:#555;
+    line-height:1.5
+}
+
+.test {
+    color:orange;
+    font-size: 50px;
+}
+
+.vertical-center {
+    width: 100%;
+    margin: 10% auto 10% auto;
+}
+
+.login-container {
+    background: #FFFFFF;
+    padding: 50px;
+    border-radius: 25px
+}
+
+input[type=submit] {
+    width: 100%;
+    display: inline-block;
+    padding-top:12px;
+    padding-right:20px;
+    padding-bottom: 12px;
+    padding-left: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+hr {
+   border-width: 4px;
+}
+
+.login-elements {
+    margin-top: 40px;
+}
+
+.sign-up {
+    text-align: center;
+    color: #6a6b6a;
+}
+
+@media (min-width: 992px) {
+    .container-1 {
+        max-width: 600px;
+    }
+    .vertical-center {
+        margin: 5% auto 10% auto;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container-1{
+        max-width: 700px;
+    }
+
+    .vertical-center {
+    margin: 10% auto 10% auto;
+    }
+
+}
+
+@media(max-width: 991px){
+
+    .container-1 {
+        max-width: 500px;
+    }
+    .vertical-center {
+    margin: 10% auto 10% auto;
+    }
+
+
+}
+
+@media(max-height: 800px){
+
+    .vertical-center {
+    margin: 2% auto 2% auto;
+    }
+}
