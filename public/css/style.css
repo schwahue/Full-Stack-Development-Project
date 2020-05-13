@@ -2,3 +2,56 @@
   width:130px;
   margin:auto;
 }
+
+/* JH CSS START*/
+.navbar.navbar-dark.navbar-expand-md.fixed-top.bg-dark {
+  background-color: #000!important;
+  opacity: 0.8;
+}
+
+body {
+  height: 1000px;
+}
+
+.totalprice {
+  padding-top: 100px;
+  text-align: center;
+}
+
+.baginfo {
+  padding-top: 40px;
+}
+
+.quantity {
+  font-size: 24px;
+  line-height: 1.16667;
+  font-weight: 600;
+  letter-spacing: .009em;
+  color: #1d1d1f;
+  height: 1.41176rem;
+  margin-bottom: 0;
+  padding: 0 0 0 5px;
+  border: 0;
+  display: inline-block;
+  background-color: transparent;
+  height: 100%;
+}
+
+.remove {
+  font-size: 17px;
+  line-height: 1.47059;
+  font-weight: 400;
+  letter-spacing: -.022em;
+  font-family: SF Pro Text,SF Pro Icons,AOS Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
+  background: transparent;
+  border: 0;
+  color: #06c;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  padding: 0;
+  vertical-align: inherit;
+  cursor: pointer;
+}
+/* JH CSS END */
