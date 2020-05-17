@@ -1,1 +1,106 @@
-<p> Welcome to sign up page</p>
+
+<div class="container vertical-center ">
+    <div class="login-container">
+            <h1 class="title">Create New Account</h1>
+
+            <form novalidate method="POST" action="">
+
+                <div class="form-section"> <!-- form section -->
+                    <h4>Personal Information</h4>
+                    <!-- First group of Form Elements - Personal Information -->
+                    <div class="border border-secondary">
+                        <div class="p-info"> <!-- Personal Information Elements -->
+                            <div class="row"> <!-- Name -->
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="first_name">First Name</label>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{first_name}}">
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="last_name">Last Name</label>
+                                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{last_name}}">
+                                    </div>
+                                </div>
+                            </div> <!-- End of Name -->
+
+                            <div class="form-group"> <!-- Username -->
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" value="{{username}}">
+                            </div> <!-- End of Username -->
+
+                            <div class="row"> <!-- Password -->
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password" value="{{password}}">
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="c_password">Confirm Password</label>
+                                        <input type="password" class="form-control" id="c_password" name="c_password" value="{{cpassword}}">
+                                    </div>
+                                </div>
+                            </div> <!-- End of Password -->
+                        </div> <!-- End of Personal Information Elements -->
+                    </div> <!-- End of First group of Form Elements - Personal Information -->
+                </div> <!-- End of form section -->
+
+                <div class="form-section"> <!-- form section -->
+                    <h4>Shipping Address</h4>
+                    <!-- Second group of Form Elements - Shipping Address -->
+                    <div class="border border-secondary">
+                        <div class="s-info"> <!-- Personal Information Elements -->
+                            <div class="row"> <!-- Country -->
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="temp">NEED CHANGE TO COUNTRY LIST</label>
+                                        <input type="text" class="form-control" id="temp" name="temp" value="{{temp}}">
+                                    </div>
+                                </div>
+                                
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="city">City</label>
+                                        <input type="text" class="form-control" id="city" name="city" value="{{city}}">
+                                    </div>
+                                </div>
+                            </div> <!-- End of Country -->
+
+                            <div class="form-group"> <!-- Street Address -->
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" name="address" value="{{address}}">
+                            </div> <!-- End of Street Address -->
+
+                            <div class="row"> <!-- Detailed -->
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="unit_number">Unit Number</label>
+                                        <input type="text" class="form-control" id="unit_number" name="unit_number" value="{{unit_number}}">
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="postal_code">Postal Code</label>
+                                        <input type="text" class="form-control" id="postal_code" name="postal_code" value="{{postal_code}}">
+                                    </div>
+                                </div>
+
+                            </div> <!-- End of Detailed -->
+                        </div> <!-- End of Shipping Address Elements -->
+                    </div> <!-- End of Second group of Form Elements - Shipping Address -->
+                </div> <!-- End of form section-->
+
+                <div class="container su-btn">
+                    <input type="Submit" name="submit" value="Sign Up" class="btn btn-secondary"/>
+                </div>
+
+            </form>
+        </div>
+</div>
+

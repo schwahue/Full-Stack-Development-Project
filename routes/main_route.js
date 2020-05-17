@@ -25,10 +25,4 @@ router.get('/', (req, res) => {
 // });
 
 
-// Logout User
-router.get('/logout', (req, res) => {
-	req.logout();
-	res.redirect('/');
-});
-
 module.exports = router;
