@@ -40,4 +40,13 @@ router.get('/product', (req,res)=>{ //render product page
 	);
 })
 
+// JH: Test codes
+router.get('/cart', (req, res) => {
+	res.render('payment/cart');
+});
+
+router.get('/processing', (req, res) => {
+	res.render('payment/processing');
+});
+
 module.exports = router;
