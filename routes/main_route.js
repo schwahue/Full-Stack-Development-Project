@@ -31,4 +31,13 @@ router.get('/logout', (req, res) => {
 	res.redirect('/');
 });
 
+router.get('/product', (req,res)=>{ //render product page
+	let products = [{'name':'tristan'},{'name':'is'},{'name':'gay'}]
+	res.render(
+		'product/product',{
+			products : products
+		}
+	);
+})
+
 module.exports = router;
