@@ -21,8 +21,23 @@ router.get('/', (req, res) => {
 
 
 // 	//res.render('about', {author: author, success_msg: success_msg, error_msg: error_msg, errors: errors});
-// 	res.render('about', {author: author});  
+// 	res.render('about', {author: author});
 // });
 
+
+// Logout User
+router.get('/logout', (req, res) => {
+	req.logout();
+	res.redirect('/');
+});
+
+router.get('/product', (req,res)=>{ //render product page
+	let products = [{'name':'tristan'},{'name':'is'},{'name':'gay'}]
+	res.render(
+		'product/product',{
+			products : products
+		}
+	);
+})
 
 module.exports = router;
