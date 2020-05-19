@@ -49,4 +49,12 @@ router.get('/processing', (req, res) => {
 	res.render('payment/processing');
 });
 
+router.get('/creditcard', (req, res) => {
+	res.render('payment/creditcard');
+});
+
+router.get('/creditcard_s', (req, res) => {
+	res.render('payment/creditcard_success');
+});
+
 module.exports = router;
