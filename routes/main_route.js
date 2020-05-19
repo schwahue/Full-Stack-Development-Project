@@ -49,6 +49,17 @@ router.get('/processing', (req, res) => {
 	res.render('payment/processing');
 });
 
+
+router.get('/creditcard_s', (req, res) => {
+	res.render('payment/creditcard_success');
+});
+
+router.get('/creditcard', (req, res) => {
+	res.render('payment/creditcard');
+});
+
+// Matt
+
 router.get('/aboutus', (req, res) => {
 	res.render('feedback_and_others/aboutus');
 });
@@ -59,6 +70,7 @@ router.get('/faq', (req, res) => {
 
 router.get('/feedback', (req, res) => {
 	res.render('feedback_and_others/feedback');
-});
+})
+
 
 module.exports = router;
