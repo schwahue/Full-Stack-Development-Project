@@ -49,4 +49,16 @@ router.get('/processing', (req, res) => {
 	res.render('payment/processing');
 });
 
+router.get('/aboutus', (req, res) => {
+	res.render('feedback_and_others/aboutus');
+});
+
+router.get('/faq', (req, res) => {
+	res.render('feedback_and_others/faq');
+});
+
+router.get('/feedback', (req, res) => {
+	res.render('feedback_and_others/feedback');
+});
+
 module.exports = router;
