@@ -38,10 +38,12 @@ authenticate.localStrategy(passport);*/
 */
 const mainRoute = require('./routes/main_route');
 const userRoute = require('./routes/user_route');
+const adminRoute = require('./routes/admin_route');
 
 // Bring in Handlebars Helpers here
 // Copy and paste this statement only!!
 const {formatDate} = require('./helpers/hbs');
+const {if_Equal} = require('./helpers/hbs_conditional_operator');
 
 
 /*
@@ -62,7 +64,8 @@ const app = express();
 * */
 app.engine('handlebars', exphbs({
 	helpers: {
-		formatDate: formatDate
+		formatDate: formatDate,
+		if_Equal: if_Equal
 	},
 	handlebars: allowInsecurePrototypeAccess(Handlebars),
 	defaultLayout: 'main' // Specify default template views/layout/main.handlebar 
@@ -142,6 +145,7 @@ app.use(function (req, res, next) {
 app.use('/', mainRoute); // mainRoute is declared to point to routes/main.js
 // This route maps the root URL to any path defined in main.js
 app.use('/user', userRoute);
+app.use('/admin', adminRoute);
 
 /*
 * Creates a unknown port 5000 for express server since we don't want our app to clash with well known

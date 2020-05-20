@@ -40,7 +40,15 @@
 	<title>{{title}}</title>
 </head>
 <body>
-	{{> _navbar }} <!--Add this to include views/partials/_navbar.handlebars -->
+
+	{{#if (if_Equal navbar 'admin')}}
+		<h4>Temp Admin NAv</h4>
+
+	{{else}}
+
+		{{> _navbar }} <!--Add this to include views/partials/_navbar.handlebars -->
+
+	{{/if}}
 
 	<div class="container">
 
