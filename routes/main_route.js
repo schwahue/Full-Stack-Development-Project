@@ -25,12 +25,6 @@ router.get('/', (req, res) => {
 // });
 
 
-// Logout User
-router.get('/logout', (req, res) => {
-	req.logout();
-	res.redirect('/');
-});
-
 router.get('/product', (req,res)=>{ //render product page
 	let products = [{'name':'tristan'},{'name':'is'},{'name':'gay'}]
 	res.render(
