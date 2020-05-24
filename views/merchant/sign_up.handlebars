@@ -1,7 +1,7 @@
 
 <div class="container vertical-center ">
     <div class="login-container">
-            <h1 class="title">Create New User Account</h1>
+            <h1 class="title">Create New Merchant Account</h1>
 
             <form novalidate method="POST" action="">
 
@@ -13,23 +13,18 @@
                             <div class="row"> <!-- Name -->
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="first_name">First Name</label>
-                                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{first_name}}">
+                                        <label for="shop_name">Shop Name</label>
+                                        <input type="text" class="form-control" id="shop_name" name="shop_name" value="{{shop_name}}">
                                     </div>
                                 </div>
 
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="last_name">Last Name</label>
-                                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{last_name}}">
+                                        <label for="username"> Username</label>
+                                        <input type="text" class="form-control" id="username" name="username" value="{{username}}">
                                     </div>
                                 </div>
                             </div> <!-- End of Name -->
-
-                            <div class="form-group"> <!-- username -->
-                                <label for="username"> Username</label>
-                                <input type="text" class="form-control" id="username" name="username" value="{{username}}">
-                            </div><!-- End of username -->
 
                             <div class="form-group"> <!-- Email -->
                                 <label for="username">Email Address</label>
@@ -65,9 +60,9 @@
         </div>
         <hr>
         <div id="seller-redirect">
-            <h3>Want to become our sell items instead?</h3>
-            <h4>Become Our Merchant Now</h4>
-            <a href="/merchant/signup" class="btn btn-outline-secondary">Merchant Account</a>
+            <h3>Want to buy item instead?</h3>
+            <h4>Click Below</h4>
+            <a href="/user/signup" class="btn btn-outline-secondary">User Account</a>
         </div>
         
 </div>

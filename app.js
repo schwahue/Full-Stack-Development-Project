@@ -39,6 +39,7 @@ authenticate.localStrategy(passport);*/
 const mainRoute = require('./routes/main_route');
 const userRoute = require('./routes/user_route');
 const adminRoute = require('./routes/admin_route');
+const merchantRoute = require('./routes/merchant_route');
 
 // Bring in Handlebars Helpers here
 // Copy and paste this statement only!!
@@ -146,6 +147,7 @@ app.use('/', mainRoute); // mainRoute is declared to point to routes/main.js
 // This route maps the root URL to any path defined in main.js
 app.use('/user', userRoute);
 app.use('/admin', adminRoute);
+app.use('/merchant', merchantRoute);
 
 /*
 * Creates a unknown port 5000 for express server since we don't want our app to clash with well known

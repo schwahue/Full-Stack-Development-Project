@@ -1,8 +1,7 @@
 
 body, html {
     height:100%;
-    overflow: hidden;
-    background: #cccccc;
+    background: #464866;
 }
 
 .txt {
@@ -12,7 +11,7 @@ body, html {
 }
 
 .test {
-    color:orange;
+    color:#29648A;
     font-size: 50px;
 }
 
@@ -23,27 +22,24 @@ body, html {
 
 .login-container {
     background: #FFFFFF;
-    padding: 50px;
+    padding: 30px 50px 50px 50px;
     border-radius: 25px
+    
 }
 
-input[type=submit] {
+.container-1 a, .container-1 input{
     width: 100%;
     display: inline-block;
-    padding-top:12px;
-    padding-right:20px;
-    padding-bottom: 12px;
-    padding-left: 20px;
-    margin-top: 15px;
+    padding: 12px 20px;
     margin-bottom: 15px;
 }
 
 hr {
-   border-width: 4px;
+    border-width: 4px;
 }
 
 .login-elements {
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 .sign-up {
@@ -51,9 +47,21 @@ hr {
     color: #6a6b6a;
 }
 
+@media(max-width: 991px){
+
+    .container-1 {
+        max-width: 400px;
+    }
+    .vertical-center {
+    margin: 10% auto 10% auto;
+    }
+
+
+}
+
 @media (min-width: 992px) {
     .container-1 {
-        max-width: 600px;
+        max-width: 450px;
     }
     .vertical-center {
         margin: 5% auto 10% auto;
@@ -62,24 +70,12 @@ hr {
 
 @media (min-width: 1200px) {
     .container-1{
-        max-width: 700px;
-    }
-
-    .vertical-center {
-    margin: 10% auto 10% auto;
-    }
-
-}
-
-@media(max-width: 991px){
-
-    .container-1 {
         max-width: 500px;
     }
-    .vertical-center {
-    margin: 10% auto 10% auto;
-    }
 
+    .vertical-center {
+    margin: 5% auto 10% auto;
+    }
 
 }
 
