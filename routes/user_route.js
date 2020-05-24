@@ -9,6 +9,7 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
+
     let { username, password } = req.body;
     if (username == "admin" && password =="123456"){
         res.redirect('/admin');
@@ -22,7 +23,12 @@ router.post('/login', (req, res) => {
         res.render('user/login',{title:"login", style:"login_form"}); 
     }
 
-    
+});
+
+router.get('/choose_account', (req, res) => {
+
+    res.render('user/choose_account',  {title:"Choose Account", style:"signup_form"}); 
+
 });
 
 router.get('/signup', (req, res) => {
