@@ -1,0 +1,123 @@
+
+body{
+    min-height: 100%;
+    background: #F8F8F8;
+}
+
+.side-nav{
+   /* background:#d2d4d6;*/
+}
+
+.content{
+    background: #FFFFFF;
+
+}
+
+.sub-content-title{
+    margin: 15px 0px;
+}
+
+.main {
+    margin:60px 0 auto 0;
+    min-height:100%;
+    
+}
+
+ul {
+    list-style-type: none;
+
+}
+li a{
+  /*  color: #4d4d4d;*/
+}
+li a:hover{
+    color: #3366ff;
+    text-decoration: none;
+}
+
+.sub-title{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.welcome{
+    margin-top: 20px;
+}
+
+.active{
+    color: #3366ff;
+    /*color: #F7882F*/
+}
+
+.menu-title{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.p-info {
+    margin: 20px;
+}
+
+form {
+    margin-bottom: 30px;
+}
+
+.login-flash{
+    background: #3dd43d;
+    border-radius: 15px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/*
+.nav-item{
+    cursor: pointer;
+}*/
+/*
+.side-nav ul li{
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+*/
+
+/* For Delivery*/
+
+.selection-bar div{
+    padding: 10px;
+    cursor: pointer;
+}
+
+.selection-bar div:hover{
+    background: aqua;
+}
+
+.selection-bar p{
+    padding: 0px;
+    margin: 0px;
+}
+
+.filter{
+    margin-top: 10px;
+    background: #DCDCDC;
+}
+
+.order-items-list{
+    margin-top:20px;
+    white-space: nowrap;
+}
+
+.order-item{
+    border: 1px solid;
+    padding: 0;
+    margin: 15px;
+    max-width: 100%;
+}
+
+.item-photo{
+    padding:0px;
+
+}
+
+.nowrap{
+    white-space: nowrap;
+}
