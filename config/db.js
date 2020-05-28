@@ -1,6 +1,6 @@
 module.exports = {
     host: 'localhost',
-    database: 'vidjot',
-    username: 'itp211',
-    password: 'itp211'
+    database: 'fsdp_ecommerce',
+    username: 'fsdp2020',
+    password: 'fsdp2020'
 }
