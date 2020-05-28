@@ -15,18 +15,18 @@ const Handlebars = require('handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 
 const passport = require('passport');
-/*
+	
 // Library to use MySQL to store session objects
 const MySQLStore = require('express-mysql-session');
 const db = require('./config/db'); // db.js config file
 
 // Bring in database connection
-const vidjotDB = require('./config/DBConnection');
+const mySqlDatabase = require('./config/DBConnection');
 
 // Connects to MySQL database
-vidjotDB.setUpDB(false); // To set up database with new tables set (true)
+mySqlDatabase.setUpDB(false); // To set up database with new tables set (true)
 
-
+/*
 // Passport Config
 const authenticate = require('./config/passport');
 authenticate.localStrategy(passport);*/
@@ -40,6 +40,7 @@ const mainRoute = require('./routes/main_route');
 const userRoute = require('./routes/user_route');
 const adminRoute = require('./routes/admin_route');
 const merchantRoute = require('./routes/merchant_route');
+const testRoute = require('./routes/test_route');
 
 // Bring in Handlebars Helpers here
 // Copy and paste this statement only!!
@@ -88,33 +89,28 @@ app.use(methodOverride('_method'));
 // Enables session to be stored using browser's Cookie ID
 app.use(cookieParser());
 
-/*
-app.use(session({
-	key: 'vidjot_session',
-	secret: 'tojiv',
-	// store: new MySQLStore({
-	// host: db.host,
-	// port: 3306,
-	// user: db.username,
-	// password: db.password,
-	// database: db.database,
-	// clearExpired: true,
-	// // How frequently expired sessions will be cleared; milliseconds:
-	// checkExpirationInterval: 900000,
-	// // The maximum age of a valid session; milliseconds:
-	// expiration: 900000,
-	// }),
-	resave: false,
-	saveUninitialized: false,
-})); */
-
 // To store session information. By default it is stored as a cookie on browser
+
 app.use(session({
-	key: 'vidjot_session',
+	key: 'fsdp_session',
 	secret: 'tojiv',
+	store: new MySQLStore({
+	host: db.host,
+	port: 3306,
+	user: db.username,
+	password: db.password,
+	database: db.database,
+	clearExpired: true,
+	// How frequently expired sessions will be cleared; milliseconds:
+	checkExpirationInterval: 900000,
+	// The maximum age of a valid session; milliseconds:
+	expiration: 900000,
+	}),
 	resave: false,
 	saveUninitialized: false,
-}));
+})); 
+
+
 /*
 // Initilize Passport middleware
 app.use(passport.initialize());
@@ -148,6 +144,7 @@ app.use('/', mainRoute); // mainRoute is declared to point to routes/main.js
 app.use('/user', userRoute);
 app.use('/admin', adminRoute);
 app.use('/merchant', merchantRoute);
+app.use('/test', testRoute);
 
 /*
 * Creates a unknown port 5000 for express server since we don't want our app to clash with well known

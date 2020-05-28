@@ -110,7 +110,7 @@ form {
     border: 1px solid;
     padding: 0;
     margin: 15px;
-    max-width: 100%;
+    width: 100%;
 }
 
 .item-photo{
@@ -120,4 +120,8 @@ form {
 
 .nowrap{
     white-space: nowrap;
+}
+
+.test{
+    width: 100%;
 }
