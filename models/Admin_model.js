@@ -1,15 +1,15 @@
-const Sequelize = require('sequelize');
-const db = require('../config/DBConfig');
+// const Sequelize = require('sequelize');
+// const db = require('../config/DBConfig');
 
-const Admin = db.define('admin', {
+// const Admin = db.define('admin', {
     
-    username: {
-        type: Sequelize.STRING
-    },
-    password: {
-        type: Sequelize.STRING
-    }
+//     username: {
+//         type: Sequelize.STRING
+//     },
+//     password: {
+//         type: Sequelize.STRING
+//     }
     
-});
+// });
 
-module.exports = Admin;
+// module.exports = Admin;

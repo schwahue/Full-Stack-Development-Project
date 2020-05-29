@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const alertMessage = require('../helpers/messenger.js');
 
-router.get('/', (req, res) => {
+router.get('/account', (req, res) => {
 
-    res.render('admin/overview', {title:"admin", navbar:"admin"}); 
+    res.render('admin/account', {title:"admin", navbar:"admin"}); 
 
 });
 

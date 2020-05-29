@@ -1,13 +1,17 @@
-//const LocalStrategy = require('passport-local').Strategy;
-//const bcrypt = require('bcryptjs');
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcryptjs');
 
 // Load user model
-//const User = require('../models/User');
-/*
+const User = require('../models/User_model');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 function localStrategy(passport) {
-    passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password,
+    passport.use(new LocalStrategy({ usernameField: 'username' }, (login_name, password,
         done) => {
-        User.findOne({ where: { email: email } })
+            console.log("LOGIN NAME");
+            console.log(login_name);
+            User.findOne({ where: { [Op.or] : [ {username:login_name}, {email:login_name}] } })
             .then(user => {
                 if (!user) {
                     return done(null, false, { message: 'No User Found' });
@@ -21,7 +25,8 @@ function localStrategy(passport) {
                         return done(null, false, { message: 'Password incorrect' });
                     }
                 })
-            })
+            });
+
     }));
     // Serializes (stores) user id into session upon successful
     // authentication
@@ -40,4 +45,4 @@ function localStrategy(passport) {
             });
     });
 }
-module.exports = { localStrategy };*/
+module.exports = { localStrategy };

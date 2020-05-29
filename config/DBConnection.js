@@ -1,9 +1,11 @@
 const mySQLDB = require('./DBConfig');
 const customer = require('../models/Customer_model');
 const merchant = require('../models/Merchant_model');
-const admin = require('../models/Admin_model');
+const user = require('../models/User_model')
+//const admin = require('../models/Admin_model');
 
 // If drop is true, all existing tables are dropped and recreated
+
 const setUpDB = (drop) => {
     mySQLDB.authenticate()
         .then(() => {
