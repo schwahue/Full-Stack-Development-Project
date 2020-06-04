@@ -10,41 +10,32 @@ const Op = Sequelize.Op;
 
 //HF Test Code
 router.get('/login', (req, res) => {
-    //TODO: if user loggedin skip this page
-    res.render('user/login', {title:"login", style:"login_form"}); 
+    
+    if (res.locals.user){
+        res.redirect('/user/redirect');
+    }
+    else {
+        res.render('user/login', {title:"login", style:"login_form"}); 
+    }
+
+    
 });
 
 router.post('/login', (req, res, next) => {
-
-    /*
-    let { username, password } = req.body;
-    if (username == "admin" && password =="123456"){
-        res.redirect('/admin');
-    }
-    else if(username="test" && password == "test"){
-        res.redirect('/user/id');
-    }
-    else{
-        alertMessage(res, 'danger', 'Invalid Username or Password', 'fas fa-exclamation-circle', false);
-
-        res.render('user/login',{title:"login", style:"login_form"}); 
-    }*/
     
     passport.authenticate('local', {
         successRedirect: '/user/redirect', // Route to /user/account URL
         failureRedirect: '/user/login', // Route to /login URL
         failureFlash: true
         /* Setting the failureFlash option to true instructs Passport to flash an error message using the
-       message given by the strategy's verify callback, if any. When a failure occur passport passes the message
-       object as error */
+        message given by the strategy's verify callback, if any. When a failure occur passport passes the message
+        object as error */
     })(req, res, next);
-
-
 
 });
 
 router.get('/choose_account', (req, res) => {
-
+    
     res.render('user/choose_account',  {title:"Choose Account", style:"signup_form"}); 
 
 });

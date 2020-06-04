@@ -1,0 +1,50 @@
+<div id="user-list-page">
+    <h3>User List</h3>
+    <hr>
+    <div>
+        <label class="font-italic">Filter</label>
+        <br>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="language" id="chinese" value="Chinese" checked>
+            <label class="form-check-label" for="chinese">Admin</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="language" id="english" value="English" checked>
+            <label class="form-check-label" for="englishLang">Merchant</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="language" id="malay" value="Malay" checked>
+            <label class="form-check-label" for="malay">User</label>
+        </div>
+    </div>
+
+    <div>
+        <table class="table_list">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Type</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if user_list}}
+                    {{#each user_list}}
+                        <tr>
+                            <td>{{replaceEmptyString username}}</td>
+                            <td>{{replaceEmptyString email}}</td>
+                            <td>{{replaceEmptyString type}}</td>
+                            <td>{{replaceEmptyString first_name}}</td>
+                            <td>{{replaceEmptyString last_name}}</td>
+                        </tr>
+                    {{/each}}
+                {{else}}
+                    <h3>No User Found</h3>
+                {{/if}}
+
+            </tbody>
+        </table>
+    </>
+</div>

@@ -15,8 +15,18 @@
 						<a role="presentation" class="dropdown-item" href="">Other03</a>
                     </div>
                 </li>
-                <li role="presentation" class="nav-item"><a class="nav-link" href="/user/login">Login</a></li>
-				<li role="presentation" class="nav-item"><a class="nav-link" href="/user/choose_account">Sign Up</a></li>
+                {{#if user}}
+                    <li class="nav-item dropdown"><a data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link" href="#">myAccount</a>
+                    <div role="menu" class="dropdown-menu">
+                        <a role="presentation" class="dropdown-item" href="/user/account">Profile</a>
+						<a role="presentation" class="dropdown-item" href="/user/logout">Logout</a>
+                    </div>
+                </li>
+                {{else}}
+                    <li role="presentation" class="nav-item"><a class="nav-link" href="/user/login">Login</a></li>
+				    <li role="presentation" class="nav-item"><a class="nav-link" href="/user/choose_account">Sign Up</a></li>
+                {{/if}}
+                
             </ul>
         </div>
     </div>

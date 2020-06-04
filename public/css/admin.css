@@ -1,0 +1,16 @@
+#user-list-page{
+    margin-left: 80px;
+    margin-right: 80px;
+}
+
+.table_list{
+    width: 100%;
+    border-collapse:collapse;
+}
+
+.table_list tr{
+    border-bottom: 1px solid #000;
+}
+.table_list td{
+    padding: 10px 5px;
+}
