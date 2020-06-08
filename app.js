@@ -26,11 +26,10 @@ const mySqlDatabase = require('./config/DBConnection');
 // Connects to MySQL database
 mySqlDatabase.setUpDB(false); // To set up database with new tables set (true)
 
-/*
+
 // Passport Config
 const authenticate = require('./config/passport');
-authenticate.localStrategy(passport);*/
-
+authenticate.localStrategy(passport);
 
 /*
 * Loads routes file main.js in routes directory. The main.js determines which function
@@ -44,7 +43,7 @@ const testRoute = require('./routes/test_route');
 
 // Bring in Handlebars Helpers here
 // Copy and paste this statement only!!
-const {formatDate} = require('./helpers/hbs');
+const {formatDate, replaceEmptyString} = require('./helpers/hbs');
 const {if_Equal} = require('./helpers/hbs_conditional_operator');
 
 
@@ -67,7 +66,8 @@ const app = express();
 app.engine('handlebars', exphbs({
 	helpers: {
 		formatDate: formatDate,
-		if_Equal: if_Equal
+		if_Equal: if_Equal,
+		replaceEmptyString: replaceEmptyString
 	},
 	handlebars: allowInsecurePrototypeAccess(Handlebars),
 	defaultLayout: 'main' // Specify default template views/layout/main.handlebar 
@@ -111,10 +111,10 @@ app.use(session({
 })); 
 
 
-/*
+
 // Initilize Passport middleware
 app.use(passport.initialize());
-app.use(passport.session());*/
+app.use(passport.session());
 
 // Error message display
 app.use(flash());

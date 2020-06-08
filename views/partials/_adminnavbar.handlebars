@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/admin/account">Admin UI</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -29,4 +29,42 @@
       </li>
     </ul>
   </div>
+</nav>-->
+
+<nav id="mySidenav" class="sidenav">
+  <div id="closed-side-nav">
+    <span style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776;</span>
+  </div>
+
+  <div id="open-side-nav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="#">AdminUI</a>
+    <a href="#">Users</a>
+    <a href="#">myStore</a>
+    <a href="#">Orders</a>
+    <a href="#">Chat</a>
+    <a href="#">Sales</a>
+    <a href="#">Marketing</a>
+    <a href="/user/logout">Logout</a>
+  </div>
+  
 </nav>
+
+
+<script>
+/* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("content").style.marginLeft = "270px";
+  document.getElementById("closed-side-nav").style.display = "none";
+  document.getElementById("open-side-nav").style.display = "block";
+}
+
+/* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "60px";
+  document.getElementById("content").style.marginLeft = "80px";
+  document.getElementById("closed-side-nav").style.display = "block";
+  document.getElementById("open-side-nav").style.display = "none";
+}
+</script>

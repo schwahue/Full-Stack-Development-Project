@@ -1,17 +1,15 @@
 
 body, html {
-    height:100%;
-    background: #464866;
+    width:100%;
+    background: #D9D9D9;
+    background-image: url("../img/loginbg.jpg");
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover;
 }
 
-.txt {
-    font-size:20px;
-    color:#555;
-    line-height:1.5
-}
-
-.test {
-    color:#29648A;
+.form-title {
+    color:#F1984D;
     font-size: 50px;
 }
 
@@ -27,7 +25,7 @@ body, html {
     
 }
 
-.container-1 a, .container-1 input{
+.container-1 a, .container-1 input, .container-2 a, .container-2 input{
     width: 100%;
     display: inline-block;
     padding: 12px 20px;
@@ -38,8 +36,19 @@ hr {
     border-width: 4px;
 }
 
-.login-elements {
+.form-elements {
     margin-top: 20px;
+}
+
+.form-button{
+    background-color:#F1984D;
+    color: #FFFFFF;
+}
+
+/*whats this */
+.login-button:hover{
+    background-color:#db8c48;
+    color: #FFFFFF;
 }
 
 .sign-up {
@@ -47,11 +56,17 @@ hr {
     color: #6a6b6a;
 }
 
+
 @media(max-width: 991px){
 
     .container-1 {
         max-width: 400px;
     }
+
+    .container-2 {
+        max-width: 450px;
+    }
+
     .vertical-center {
     margin: 10% auto 10% auto;
     }
@@ -63,6 +78,10 @@ hr {
     .container-1 {
         max-width: 450px;
     }
+
+    .container-2 {
+        max-width: 500px;
+    }
     .vertical-center {
         margin: 5% auto 10% auto;
     }
@@ -71,6 +90,10 @@ hr {
 @media (min-width: 1200px) {
     .container-1{
         max-width: 500px;
+    }
+
+    .container-2 {
+        max-width: 650px;
     }
 
     .vertical-center {

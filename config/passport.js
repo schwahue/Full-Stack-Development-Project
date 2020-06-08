@@ -7,11 +7,11 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 function localStrategy(passport) {
-    passport.use(new LocalStrategy({ usernameField: 'username' }, (login_name, password,
+    passport.use(new LocalStrategy({ usernameField: 'email' }, (login_name, password,
         done) => {
             console.log("LOGIN NAME");
             console.log(login_name);
-            User.findOne({ where: { [Op.or] : [ {username:login_name}, {email:login_name}] } })
+            User.findOne({ where: { [Op.or] : [ {contact_number:login_name}, {email:login_name}] } })
             .then(user => {
                 if (!user) {
                     return done(null, false, { message: 'No User Found' });

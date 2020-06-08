@@ -1,0 +1,60 @@
+<section>
+    <div class="container-2 vertical-center ">
+        <div class="login-container">
+            <h1 class="form-title">Sign Up</h1>
+            <form novalidate method="POST" action="">
+                <div class="row">
+                    <!-- Name -->
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="first_name">First Name</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" value="{{first_name}}">
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" value="{{last_name}}">
+                        </div>
+                    </div>
+                </div> <!-- End of Name -->
+
+                <div class="form-group"> <!-- username -->
+                    <label for="contact_number"> Contact Number</label>
+                    <input type="text" class="form-control" id="contact_number" name="contact_number" value="{{contact_number}}">
+                </div><!-- End of username -->
+
+                <div class="form-group"> <!-- Email -->
+                    <label for="username">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{email}}">
+                </div> <!-- End of Email -->
+
+                <div class="row"> <!-- Password -->
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" value="{{password}}">
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="c_password">Confirm Password</label>
+                            <input type="password" class="form-control" id="c_password" name="c_password" value="{{cpassword}}">
+                        </div>
+                    </div>
+                </div> <!-- End of Password -->
+
+                <div class="container-2 form-elements">
+                    <input type="Submit" name="submit" value="Sign Up" class="btn form-button"/>
+                    <hr>
+                    <p class="sign-up"> Already have an account? Click below </p>
+                    <!--<input type="button" name="submit" value="Sign Up" onclick="location.href='/';" class="btn btn-outline-secondary"/>-->
+                    <a href="/user/choose_account" class="btn btn-outline-secondary">Login here</a>
+               </div>
+            </form>
+        </div>
+    </div>
+</section>
+

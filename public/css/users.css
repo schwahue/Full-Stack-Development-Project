@@ -4,8 +4,15 @@ body{
     background: #F8F8F8;
 }
 
+
+
 .side-nav{
    /* background:#d2d4d6;*/
+}
+
+.side-link-li{
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .content{
@@ -31,8 +38,14 @@ li a{
   /*  color: #4d4d4d;*/
 }
 li a:hover{
-    color: #3366ff;
+    color: #F1984D !important;
     text-decoration: none;
+}
+
+
+.form-button{
+    background-color:#F1984D;
+    color: #FFFFFF;
 }
 
 .sub-title{
@@ -45,7 +58,7 @@ li a:hover{
 }
 
 .active{
-    color: #3366ff;
+    color: #F1984D;
     /*color: #F7882F*/
 }
 

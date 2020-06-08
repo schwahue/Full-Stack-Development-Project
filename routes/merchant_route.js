@@ -5,12 +5,18 @@ var bcrypt = require('bcryptjs');
 
 const User = require('../models/User_model');
 
+/*
 router.get('/signup', (req, res) => {
 
     res.render('merchant/sign_up', {title:"Merchant - SignUp", style:"signup_form"});
 
-});
+});*/
 
+router.get('/signup', (req, res) => {
+
+    res.render('merchant/sign_up2', {title:"Merchant - SignUp", style:"login_form"});
+
+});
 
 router.post('/signup', (req, res) => {
 
@@ -18,7 +24,7 @@ router.post('/signup', (req, res) => {
     let errors = [];
 
     // Retrieves fields from register page from request body
-    let { username, email, password, c_password , shop_name } = req.body;
+    let { contact_number, email, password, c_password , shop_name } = req.body;
 
     
     // Checks if both passwords entered are the same
@@ -32,11 +38,11 @@ router.post('/signup', (req, res) => {
     }
 
     if (errors.length > 0) {
-        res.render('merchant/sign_up',  {
+        res.render('user/sign_up',  {
             title:"Sign Up", 
-            style:"signup_form", 
-            shop_name, 
-            username,
+            style:"signup_form",
+            shop_name,
+            contact_number,
             email,
             errors
         
@@ -44,14 +50,17 @@ router.post('/signup', (req, res) => {
 
     } 
     else  {
+
         
-        console.log("no errors");
+
+            console.log("no errors");
         // If all is well, checks if user is already registered
         User.findOne({ where: { email: req.body.email } })
             .then(user => {
                 if (user) {
                     // If user is found, that means email has already been
                     // registered
+                    /*
                     res.render('user/sign_up',  {
                         error: 'email: ' + user.email + ' already registered',
                         title:"Sign Up", 
@@ -61,24 +70,40 @@ router.post('/signup', (req, res) => {
                         username,
                         email
                     
-                    }); 
+                    }); */
+                    errors.push('email: ' + user.email + ' already registered ' );
+                    
 
-                } else {
-                    User.findOne({ where: { username: req.body.username } })
-                    .then(user2 =>{
-                        if (user2) {
+                } 
+
+                User.findOne({ where: { contact_number: req.body.contact_number } })
+                .then(user2 =>{
+                    if (user2)  {
+                        errors.push('contact_number: ' + user2.contact_number + ' already in use' );
+                        res.render('user/sign_up',  {
+                            errors,
+                            title:"Sign Up", 
+                            style:"signup_form", 
+                            shop_name,
+                            contact_number,
+                            email
+                        
+                        });
+
+                    } else {
+                        if(errors.length > 0){
                             res.render('user/sign_up',  {
-                                error: 'username: ' + user2.username + ' already in use',
+                                errors,
                                 title:"Sign Up", 
                                 style:"signup_form", 
-                                first_name, 
-                                last_name,
-                                username,
+                                shop_name, 
+                                contact_number,
                                 email
                             
                             });
-
                         } else {
+
+                        
                             // Create new user record
                             let type = 'merchant';
                             bcrypt.genSalt(10, function(err, salt) {
@@ -88,9 +113,9 @@ router.post('/signup', (req, res) => {
                                     
                                     password = hash;
                                     
-                                    User.create({ shop_name, email, password, username, type })
+                                    User.create({ shop_name, email, password, contact_number, type })
                                         .then(user => {
-                                            alertMessage(res, 'success', user.username + ' added. Please login', 'fas fa-sign-in-alt', true);
+                                            alertMessage(res, 'success', user.email + ' added. Please login', 'fas fa-sign-in-alt', true);
                                             res.redirect('/user/login');
                                         })
                                         .catch(err => console.log(err));
@@ -98,12 +123,13 @@ router.post('/signup', (req, res) => {
                                 });
                             });
                         }
+                    }
 
-                    });
+                });
                         
                         
                     
-                }
+                
             });
             
             

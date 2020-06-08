@@ -55,3 +55,13 @@ body {
   cursor: pointer;
 }
 /* JH CSS END */
+
+/* navbar - HF */
+.navbar-nav .nav-item .nav-link {
+  color: rgba(255,255,255,.70);
+}
+.navbar-nav .nav-item.active .nav-link,
+.navbar-nav .nav-item:hover .nav-link {
+  color: #F1984D;
+}
+/* navbar */
