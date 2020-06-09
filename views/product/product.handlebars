@@ -1,72 +1,74 @@
 <div class="container">
-    <div class="card border-0 shadow my-5">
-        <div class="card-body p-5">
-            <script>
-                function addToCart() {
-                    alert("Item has been added to cart. Thank you for your purchase!");
-                }
-            </script>
-            <form method="POST" action="">
 
-                <!-- Page Content -->
-                <div class="container">
+    <!-- Page Heading -->
+    <h1 class="my-4">
+        <small>Welcome {{ username }}!</small>
+    </h1>
 
-                    <!-- Page Heading -->
-                    <h1 class="my-4">
-                        <small>Welcome {{ username }}!</small>
-                    </h1>
 
-                    <div class="row" id="1">
-                        {{#each products}}
-                        <div class="col-lg-4 col-sm-6 mb-4">
-                            <div class="card h-100 text-center">
-                                <div class="card-body">
-                                    <h4 class="card-title">
-                                        <a href="#">{{name}}</a>
-                                    </h4>
-                                    <p class="card-text">x</p>
-                                </div>
-                                <div class="card-footer">
-                                    <button type="submit" name="item_button" onclick="addToCart()"
-                                        value=""
-                                        class="btn btn-danger">Add to cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        {{else}}
-                        <div>All item are out of stock at the moments.</div>
-                        {{/each}}
-                    </div>
-                    <!-- /.row -->
 
-                    <!-- Pagination -->
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.container -->
+    <form>
+        <!-- Search form -->
+        <div class="row">
+            <form class="form-inline d-flex justify-content-center md-form form-sm mt-0">
+                <i class="fas fa-search" aria-hidden="true"></i>
+                <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
+                    aria-label="Search">
             </form>
         </div>
+
+        <!-- LHS - Filter -->
+        <div class="row">
+            <div class="col-sm-3">
+                {{#each products}}
+                <div class='col'>
+                    <a class="btn btn-primary" data-toggle="collapse" href="#collapse{{category}}" role="button"
+                        aria-expanded="false" aria-controls="collapse{{category}}">{{category}}</a>
+                    <div class="collapse multi-collapse" id="collapse{{category}}">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">
+                                Default checkbox
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                {{else}}
+                <div>All</div>
+                {{/each}}
+                <div class="slidecontainer">
+                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                </div>
+            </div>
+
+    </form>
+
+    <!-- RHS - Product Display -->
+    <div class='col'>
+        <div class='row'>
+            {{#each products}}
+            <div class="col-lg-3 col-sm-6 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="#">{{name}}</a>
+                        </h4>
+                        <p class="card-text">x</p>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" name="item_button" onclick="addToCart()" value=""
+                            class="btn btn-danger">Add to cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {{else}}
+            <div>All item are out of stock at the moments.</div>
+            {{/each}}
+        </div>
     </div>
+</div>
+
+<!-- /.row -->
+<!-- /.container -->
 </div>
