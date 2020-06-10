@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@handlebars/allow-prototype-access": "^1.0.3",
+    "authy": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "connect-flash": "^0.1.1",
@@ -19,14 +20,19 @@
     "express-handlebars": "^3.1.0",
     "express-mysql-session": "^2.1.4",
     "express-session": "^1.15.6",
+    "firebase": "^7.15.0",
+    "firebase-admin": "^8.12.1",
+    "firebaseui": "^4.5.1",
     "flash-messenger": "^1.1.1",
     "handlebars": "^4.7.6",
     "method-override": "^3.0.0",
     "moment": "^2.25.3",
     "mysql2": "^2.1.0",
+    "nodemon": "^2.0.4",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "sequelize": "^5.21.7"
+    "sequelize": "^5.21.7",
+    "twilio": "^3.45.0"
   },
   "devDependencies": {}
 }
