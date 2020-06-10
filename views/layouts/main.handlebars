@@ -11,8 +11,9 @@
 
 	<!-- Our CSS -->
 	<link rel="stylesheet" href="/css/style.css">
-	<link rel="stylesheet" href="/css/{{style}}.css">
-
+	{{#if style}}
+		<link rel="stylesheet" href="/css/{{style}}.css">
+	{{/if}}
 	<!--For Bootstrap datepicker-->
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous">
@@ -37,10 +38,40 @@
 			integrity="sha256-Y1rRlwTzT5K5hhCBfAFWABD4cU13QGuRN6P5apfWzVs=" crossorigin="anonymous"></script>
 
 
-
 	<title>{{title}}</title>
 </head>
 <body>
+	<!-- firebase -->
+	<!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+	<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+
+	<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+	<script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-analytics.js"></script>
+
+	<!-- Add Firebase products that you want to use -->
+	<script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-firestore.js"></script>
+
+	<script>
+	// Your web app's Firebase configuration
+	var firebaseConfig = {
+		apiKey: "AIzaSyChyx6R5wRsaoNUiBZ7VJoxRp4PJyKMAZw",
+		authDomain: "ecommerce-fsdp.firebaseapp.com",
+		databaseURL: "https://ecommerce-fsdp.firebaseio.com",
+		projectId: "ecommerce-fsdp",
+		storageBucket: "ecommerce-fsdp.appspot.com",
+		messagingSenderId: "548076658656",
+		appId: "1:548076658656:web:38072e836b6ed8d41fd585",
+		measurementId: "G-5VHT5HKZZ7"
+	};
+	// Initialize Firebase
+	firebase.initializeApp(firebaseConfig);
+	firebase.analytics();
+	//firebase.analytics().logEvent('notification_received');
+	</script>
+	<!-- firebase end -->
 
 	{{#if (if_Equal navbar 'admin')}}
 	
@@ -89,6 +120,8 @@
 			rootSelector: '[data-toggle=confirmation]',
 		});
 	</script>
+	
+	
 
 </body>
 </html>
