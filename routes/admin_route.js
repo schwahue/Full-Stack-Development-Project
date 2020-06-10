@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const alertMessage = require('../helpers/messenger.js');
-
+const send_sms = require('../helpers/send_sms');
 
 const User = require('../models/User_model');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 router.get('/account', (req, res) => {
+    send_sms( 'LOGIN ADMIN ACCOUNT HF',req.user.contact_number);
 
-    res.render('admin/account', {title:"admin", navbar:"admin"}); 
+    res.render('admin/account', {title:"admin", navbar:"admin", style:"admin"}); 
 
 });
 
