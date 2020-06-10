@@ -21,19 +21,10 @@ var firebase = require("firebase/app");
 var serviceAccount = require("./ecommerce-fsdp-firebase-adminsdk-c5p0h-6b9b5bccca.json");
 
 // TODO: Replace the following with your app's Firebase project configuration
-var firebaseConfig = {
-	apiKey: "AIzaSyChyx6R5wRsaoNUiBZ7VJoxRp4PJyKMAZw",
-    authDomain: "ecommerce-fsdp.firebaseapp.com",
-    databaseURL: "https://ecommerce-fsdp.firebaseio.com",
-    projectId: "ecommerce-fsdp",
-    storageBucket: "ecommerce-fsdp.appspot.com",
-    messagingSenderId: "548076658656",
-    appId: "1:548076658656:web:38072e836b6ed8d41fd585",
-    measurementId: "G-5VHT5HKZZ7"
-};
+
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp();
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
