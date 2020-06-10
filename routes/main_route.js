@@ -3,7 +3,7 @@ const router = express.Router();
 const alertMessage = require('../helpers/messenger.js');
 
 router.get('/', (req, res) => {
-	res.render('index', {title: 'Home'}); // renders views/index.handlebars
+    res.render('index', { title: 'Home' }); // renders views/index.handlebars
 });
 
 
@@ -25,45 +25,45 @@ router.get('/', (req, res) => {
 // });
 
 
-router.get('/product', (req,res)=>{ //render product page
-	let products = [{'name':'tristan'},{'name':'is'},{'name':'gay'}]
-	res.render(
-		'product/product',{
-			products : products
-		}
-	);
+router.get('/product', (req, res) => { //render product page
+    let products = [{ 'name': 'test', 'category': 'Phone' }, { 'name': 'test', 'category': 'Grocery' }, { 'name': 'test0', 'category': 'Electronics' }, { 'name': 'test1', 'category': 'Skincares' }, { 'name': 'test2', 'category': 'Others' }]
+    res.render(
+        'product/product', {
+            products: products
+        }
+    );
 })
 
 // JH: Test codes
 router.get('/cart', (req, res) => {
-	res.render('payment/cart');
+    res.render('payment/cart');
 });
 
 router.get('/processing', (req, res) => {
-	res.render('payment/processing');
+    res.render('payment/processing');
 });
 
 
 router.get('/creditcard_s', (req, res) => {
-	res.render('payment/creditcard_success');
+    res.render('payment/creditcard_success');
 });
 
 router.get('/creditcard', (req, res) => {
-	res.render('payment/creditcard');
+    res.render('payment/creditcard');
 });
 
 // Matt
 
 router.get('/aboutus', (req, res) => {
-	res.render('feedback_and_others/aboutus');
+    res.render('feedback_and_others/aboutus');
 });
 
 router.get('/faq', (req, res) => {
-	res.render('feedback_and_others/faq');
+    res.render('feedback_and_others/faq');
 });
 
 router.get('/feedback', (req, res) => {
-	res.render('feedback_and_others/feedback');
+    res.render('feedback_and_others/feedback');
 })
 
 
