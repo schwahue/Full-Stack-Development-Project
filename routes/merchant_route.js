@@ -14,7 +14,7 @@ router.get('/signup', (req, res) => {
 
 router.get('/signup', (req, res) => {
 
-    res.render('merchant/sign_up2', {title:"Merchant - SignUp", style:"login_form"});
+    res.render('merchant/sign_up2', { title: "Merchant - SignUp", style: "login_form" });
 
 });
 
@@ -24,36 +24,35 @@ router.post('/signup', (req, res) => {
     let errors = [];
 
     // Retrieves fields from register page from request body
-    let { contact_number, email, password, c_password , shop_name } = req.body;
+    let { contact_number, email, password, c_password, shop_name } = req.body;
 
-    
+
     // Checks if both passwords entered are the same
     if (password !== c_password) {
-        errors.push('Passwords do not match' );
+        errors.push('Passwords do not match');
     }
 
     // Checks that password length is more than 4
     if (password.length < 4) {
-        errors.push('Password must be at least 4 characters' );
+        errors.push('Password must be at least 4 characters');
     }
 
     if (errors.length > 0) {
-        res.render('user/sign_up',  {
-            title:"Sign Up", 
-            style:"signup_form",
+        res.render('user/sign_up', {
+            title: "Sign Up",
+            style: "signup_form",
             shop_name,
             contact_number,
             email,
             errors
-        
-        }); 
 
-    } 
-    else  {
+        });
 
-        
+    } else {
 
-            console.log("no errors");
+
+
+        console.log("no errors");
         // If all is well, checks if user is already registered
         User.findOne({ where: { email: req.body.email } })
             .then(user => {
@@ -71,68 +70,68 @@ router.post('/signup', (req, res) => {
                         email
                     
                     }); */
-                    errors.push('email: ' + user.email + ' already registered ' );
-                    
+                    errors.push('email: ' + user.email + ' already registered ');
 
-                } 
+
+                }
 
                 User.findOne({ where: { contact_number: req.body.contact_number } })
-                .then(user2 =>{
-                    if (user2)  {
-                        errors.push('contact_number: ' + user2.contact_number + ' already in use' );
-                        res.render('user/sign_up',  {
-                            errors,
-                            title:"Sign Up", 
-                            style:"signup_form", 
-                            shop_name,
-                            contact_number,
-                            email
-                        
-                        });
-
-                    } else {
-                        if(errors.length > 0){
-                            res.render('user/sign_up',  {
+                    .then(user2 => {
+                        if (user2) {
+                            errors.push('contact_number: ' + user2.contact_number + ' already in use');
+                            res.render('user/sign_up', {
                                 errors,
-                                title:"Sign Up", 
-                                style:"signup_form", 
-                                shop_name, 
+                                title: "Sign Up",
+                                style: "signup_form",
+                                shop_name,
                                 contact_number,
                                 email
-                            
+
                             });
+
                         } else {
+                            if (errors.length > 0) {
+                                res.render('user/sign_up', {
+                                    errors,
+                                    title: "Sign Up",
+                                    style: "signup_form",
+                                    shop_name,
+                                    contact_number,
+                                    email
 
-                        
-                            // Create new user record
-                            let type = 'merchant';
-                            bcrypt.genSalt(10, function(err, salt) {
-                                if (err) return next(err);
-                                bcrypt.hash(password, salt, function(err, hash) {
-                                    if (err) return next(err);
-                                    
-                                    password = hash;
-                                    
-                                    User.create({ shop_name, email, password, contact_number, type })
-                                        .then(user => {
-                                            alertMessage(res, 'success', user.email + ' added. Please login', 'fas fa-sign-in-alt', true);
-                                            res.redirect('/user/login');
-                                        })
-                                        .catch(err => console.log(err));
-                                    
                                 });
-                            });
-                        }
-                    }
+                            } else {
 
-                });
-                        
-                        
-                    
-                
+
+                                // Create new user record
+                                let type = 'merchant';
+                                bcrypt.genSalt(10, function(err, salt) {
+                                    if (err) return next(err);
+                                    bcrypt.hash(password, salt, function(err, hash) {
+                                        if (err) return next(err);
+
+                                        password = hash;
+
+                                        User.create({ shop_name, email, password, contact_number, type })
+                                            .then(user => {
+                                                alertMessage(res, 'success', user.email + ' added. Please login', 'fas fa-sign-in-alt', true);
+                                                res.redirect('/user/login');
+                                            })
+                                            .catch(err => console.log(err));
+
+                                    });
+                                });
+                            }
+                        }
+
+                    });
+
+
+
+
             });
-            
-            
+
+
 
 
     }
@@ -141,8 +140,12 @@ router.post('/signup', (req, res) => {
 
 router.get('/account', (req, res) => {
 
-    res.render('merchant/account', {title:"Merchant - Account", style:"merchant", navbar:"merchant"});
+    res.render('merchant/account', { title: "Merchant - Account", style: "merchant", navbar: "merchant" });
 
 });
+
+router.get('/addProduct', (req, res) => {
+    res.render('merchant/addProduct', { title: "Merchant - AddProduct", style: 'merchant', navbar: 'merchant' })
+})
 
 module.exports = router;
