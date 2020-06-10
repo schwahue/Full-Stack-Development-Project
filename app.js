@@ -15,7 +15,41 @@ const Handlebars = require('handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 
 const passport = require('passport');
-	
+var admin = require('firebase-admin');
+var firebase = require("firebase/app");
+
+var serviceAccount = require("./ecommerce-fsdp-firebase-adminsdk-c5p0h-6b9b5bccca.json");
+
+// TODO: Replace the following with your app's Firebase project configuration
+var firebaseConfig = {
+	apiKey: "AIzaSyChyx6R5wRsaoNUiBZ7VJoxRp4PJyKMAZw",
+    authDomain: "ecommerce-fsdp.firebaseapp.com",
+    databaseURL: "https://ecommerce-fsdp.firebaseio.com",
+    projectId: "ecommerce-fsdp",
+    storageBucket: "ecommerce-fsdp.appspot.com",
+    messagingSenderId: "548076658656",
+    appId: "1:548076658656:web:38072e836b6ed8d41fd585",
+    measurementId: "G-5VHT5HKZZ7"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://ecommerce-fsdp.firebaseio.com"
+});
+
+/*
+var refreshToken; // Get refresh token from OAuth2 flow
+
+admin.initializeApp({
+  credential: admin.credential.refreshToken(refreshToken),
+  databaseURL: 'https://ecommerce-fsdp.firebaseio.com'
+});*/
+
+console.log(admin.app().name);  // '[DEFAULT]'
+
 // Library to use MySQL to store session objects
 const MySQLStore = require('express-mysql-session');
 const db = require('./config/db'); // db.js config file
@@ -40,6 +74,7 @@ const userRoute = require('./routes/user_route');
 const adminRoute = require('./routes/admin_route');
 const merchantRoute = require('./routes/merchant_route');
 const testRoute = require('./routes/test_route');
+const smsRoute = require('./routes/sms_route');
 
 // Bring in Handlebars Helpers here
 // Copy and paste this statement only!!
@@ -145,7 +180,7 @@ app.use('/user', userRoute);
 app.use('/admin', adminRoute);
 app.use('/merchant', merchantRoute);
 app.use('/test', testRoute);
-
+app.use('/sms', smsRoute);
 /*
 * Creates a unknown port 5000 for express server since we don't want our app to clash with well known
 * ports such as 80 or 8080.

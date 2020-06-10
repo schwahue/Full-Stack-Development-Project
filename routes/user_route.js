@@ -8,6 +8,11 @@ const passport = require('passport');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
+var admin = require('firebase-admin');
+var firebase = require("firebase/app");
+require("firebase/auth");
+require("firebase/firestore");
+
 //HF Test Code
 router.get('/login', (req, res) => {
     
@@ -16,6 +21,56 @@ router.get('/login', (req, res) => {
     }
     else {
         res.render('user/login', {title:"login", style:"login_form"}); 
+    }
+
+    
+});
+/*
+router.get('/createtoken', (req, res) => {
+    user = req.user;
+    let uid = user.email;
+
+    admin.auth().createCustomToken(uid)
+    .then(function(customToken) {
+        req.session.token = customToken;
+        firebase.auth().signInWithCustomToken(customToken).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log('Error SIGNING IN custom token:', error);
+            
+            
+        });
+        console.log("SIGNED IN WITH TOKEN");
+        res.redirect('/user/redirect');
+    })
+    .catch(function(error) {
+        console.log('Error creating custom token:', error);
+    });
+    
+
+    
+});*/
+
+router.get('/firebaselogin', (req, res) => {
+    
+    if (res.locals.user){
+        res.redirect('/user/redirect');
+    }
+    else {
+        res.render('user/firebaselogin', {title:"login", style:""}); 
+    }
+
+    
+});
+
+router.get('/firebasesignup', (req, res) => {
+    
+    if (res.locals.user){
+        res.redirect('/user/redirect');
+    }
+    else {
+        res.render('user/sign_up2', {title:"sign up", style:"login_form"}); 
     }
 
     
