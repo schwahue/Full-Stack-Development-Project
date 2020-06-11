@@ -15,31 +15,32 @@ const Handlebars = require('handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 
 const passport = require('passport');
-var admin = require('firebase-admin');
-var firebase = require("firebase/app");
 
-var serviceAccount = require("./ecommerce-fsdp-firebase-adminsdk-c5p0h-6b9b5bccca.json");
+// var admin = require('firebase-admin');
+// var firebase = require("firebase/app");
 
-// TODO: Replace the following with your app's Firebase project configuration
+// var serviceAccount = require("./ecommerce-fsdp-firebase-adminsdk-c5p0h-6b9b5bccca.json");
+
+// // TODO: Replace the following with your app's Firebase project configuration
 
 
-// Initialize Firebase
-firebase.initializeApp();
+// // Initialize Firebase
+// firebase.initializeApp();
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://ecommerce-fsdp.firebaseio.com"
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://ecommerce-fsdp.firebaseio.com"
+// });
 
-/*
-var refreshToken; // Get refresh token from OAuth2 flow
+// /*
+// var refreshToken; // Get refresh token from OAuth2 flow
 
-admin.initializeApp({
-  credential: admin.credential.refreshToken(refreshToken),
-  databaseURL: 'https://ecommerce-fsdp.firebaseio.com'
-});*/
+// admin.initializeApp({
+//   credential: admin.credential.refreshToken(refreshToken),
+//   databaseURL: 'https://ecommerce-fsdp.firebaseio.com'
+// });*/
 
-console.log(admin.app().name);  // '[DEFAULT]'
+// console.log(admin.app().name);  // '[DEFAULT]'
 
 // Library to use MySQL to store session objects
 const MySQLStore = require('express-mysql-session');
@@ -65,7 +66,7 @@ const userRoute = require('./routes/user_route');
 const adminRoute = require('./routes/admin_route');
 const merchantRoute = require('./routes/merchant_route');
 const testRoute = require('./routes/test_route');
-const smsRoute = require('./routes/sms_route');
+// const smsRoute = require('./routes/sms_route');
 
 // Bring in Handlebars Helpers here
 // Copy and paste this statement only!!
@@ -171,7 +172,7 @@ app.use('/user', userRoute);
 app.use('/admin', adminRoute);
 app.use('/merchant', merchantRoute);
 app.use('/test', testRoute);
-app.use('/sms', smsRoute);
+// app.use('/sms', smsRoute);
 /*
 * Creates a unknown port 5000 for express server since we don't want our app to clash with well known
 * ports such as 80 or 8080.
