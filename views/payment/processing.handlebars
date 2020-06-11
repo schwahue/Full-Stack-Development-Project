@@ -1,4 +1,8 @@
 <body style="overflow-y: scroll;height: 70vw;">
+    {{!-- Paypal --}}
+    <script
+    src="https://www.paypal.com/sdk/js?client-id=AfCx1zfNeE0VcM-q_2K1_qW0iKnU2OQHiL5s7Kh88SoI2lChcHNxhvKOFc9NWWArfobSAwlUEeleuydF&currency=SGD"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
+    </script>
     <div class="container col-md-10">
         <div class="card">
             <div class="card-header" style="background-color: rgb(33,37,41);">
@@ -11,7 +15,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col col-md-6 mx-auto"><button class="btn btn-primary border-dark" type="button" style="float: left;width: 45%;background-color: rgba(0,0,0,0.8);color: #f5f5f7;">Apple Pay</button><button class="btn btn-primary" type="button" style="float: right;width: 45%;">PayPal</button></div>
+                    <div class="col col-md-6 mx-auto"><div id="paypal-button-container"></div></div>
+                    {{!-- <div class="col col-md-6 mx-auto"><button class="btn btn-primary border-dark" type="button" style="float: left;width: 45%;background-color: rgba(0,0,0,0.8);color: #f5f5f7;">Apple Pay</button><button class="btn btn-primary" type="button" style="float: right;width: 45%;">PayPal</button></div> --}}
                 </div><div class="whitespace"></div><hr>
                 <div class="row">
                     <div class="col col-md-6 mx-auto">
@@ -64,6 +69,56 @@
             </div>
         </div>
     </div>
+    {{!-- Paypal --}}
+    <script>
+        paypal.Buttons({
+            createOrder: function (data, actions) {
+                // This function sets up the details of the transaction, including the amount and line item details.
+                return actions.order.create({
+                    "purchase_units": [
+                        {
+                            "amount": {
+                                "currency_code": "SGD",
+                                "value": "649.00",
+                                "breakdown": {
+                                    "item_total": {
+                                        "currency_code": "SGD",
+                                        "value": "649.00"
+                                    }
+                                }
+                            },
+                            "items": [
+                                {
+                                    "name": "iPhone SE 64GB",
+                                    "description": "PRODUCT(RED)",
+                                    "sku": "sku01",
+                                    "unit_amount": {
+                                        "currency_code": "SGD",
+                                        "value": "649.00"
+                                    },
+                                    "quantity": "1",
+                                    "category": "PHYSICAL_GOODS"
+                                }
+                            ]
+                        }
+                    ]
+                });
+            },
+            onError: function (err) {
+                console.log(err);
+            },
+            onApprove: function (data, actions) {
+                // This function captures the funds from the transaction.
+                return actions.order.capture().then(function (details) {
+                    // This function shows a transaction success message to your buyer.
+                    //alert('Transaction completed by ' + details.payer.name.given_name);
+                    location.replace("/creditcard_s")
+                });
+
+            }
+        }).render('#paypal-button-container');
+              //This function displays Smart Payment Buttons on your web page.
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
