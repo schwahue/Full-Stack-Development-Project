@@ -19,9 +19,6 @@ const Product = db.define('product', {
     },
     productCategory: {
         type: Sequelize.STRING
-    },
-    productReview: {
-        type: Sequelize.STRING
     }
 });
 

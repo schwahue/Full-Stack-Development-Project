@@ -4,6 +4,7 @@ const alertMessage = require('../helpers/messenger.js');
 var bcrypt = require('bcryptjs');
 
 const User = require('../models/User_model');
+const Product = require('../models/productModel.js');
 
 /*
 router.get('/signup', (req, res) => {
@@ -146,6 +147,28 @@ router.get('/account', (req, res) => {
 
 router.get('/addProduct', (req, res) => {
     res.render('merchant/addProduct', { title: "Merchant - AddProduct", style: 'merchant', navbar: 'merchant' })
+})
+
+router.post('/addProduct', (req, res) => {
+    let productID = req.body.productID;
+    let productName = req.body.productName;
+    let productDescription = req.body.prodcutDescription;
+    let productPrice = req.body.productPrice;
+    let productStock = req.body.productStock;
+    let productCategory = req.body.productCategory;
+
+    console.log(productID)
+
+    Product.create({
+        productID,
+        productName,
+        productDescription,
+        productPrice,
+        productStock,
+        productCategory,
+    }).then((product) =>{
+        res.render('merchant/addProduct', { title: "Merchant - AddProduct", style: 'merchant', navbar: 'merchant' })
+    })
 })
 
 module.exports = router;
