@@ -19,6 +19,12 @@ const Product = db.define('product', {
     },
     productCategory: {
         type: Sequelize.STRING
+    },
+    productBrand: {
+        type: Sequelize.STRING
+    },
+    productImage: {
+        type: Sequelize.STRING
     }
 });
 

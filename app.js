@@ -117,7 +117,6 @@ app.use(methodOverride('_method'));
 app.use(cookieParser());
 
 // To store session information. By default it is stored as a cookie on browser
-
 app.use(session({
 	key: 'fsdp_session',
 	secret: 'tojiv',

@@ -22,9 +22,9 @@
             <div class="col-sm-3">
                 {{#each products}}
                 <div class='col'>
-                    <a class="btn btn-primary" data-toggle="collapse" href="#collapse{{category}}" role="button"
-                        aria-expanded="false" aria-controls="collapse{{category}}">{{category}}</a>
-                    <div class="collapse multi-collapse" id="collapse{{category}}">
+                    <a class="btn btn-primary" data-toggle="collapse" href="#collapse{{productCategory}}" role="button"
+                        aria-expanded="false" aria-controls="collapse{{productCategory}}">{{productCategory}}</a>
+                    <div class="collapse multi-collapse" id="collapse{{productCategory}}">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                             <label class="form-check-label" for="defaultCheck1">
@@ -36,9 +36,6 @@
                 {{else}}
                 <div>All</div>
                 {{/each}}
-                <div class="slidecontainer">
-                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-                </div>
             </div>
 
     </form>

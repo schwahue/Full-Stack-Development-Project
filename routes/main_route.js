@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const alertMessage = require('../helpers/messenger.js');
+const Product = require('../models/productModel.js'); //import Product 
+const algoliasearch = require('algoliasearch')
+
 
 router.get('/', (req, res) => {
     res.render('index', { title: 'Home' }); // renders views/index.handlebars
 });
-
-const Product = require('../models/productModel.js'); //import Product 
-
 
 // router.get('/about', (req, res) => {
 
