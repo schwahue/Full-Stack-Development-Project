@@ -122,7 +122,7 @@ form {
 .order-item{
     border: 1px solid;
     padding: 0;
-    margin: 15px;
+    margin-bottom: 15px;
     width: 100%;
 }
 
@@ -137,4 +137,16 @@ form {
 
 .test{
     width: 100%;
+}
+
+.test1{
+    margin: 15px;
+}
+
+.test2{
+
+}
+
+.test3{
+
 }

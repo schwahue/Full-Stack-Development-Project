@@ -52,30 +52,6 @@ router.get('/createtoken', (req, res) => {
     
 });*/
 
-router.get('/firebaselogin', (req, res) => {
-    
-    if (res.locals.user){
-        res.redirect('/user/redirect');
-    }
-    else {
-        res.render('user/firebaselogin', {title:"login", style:""}); 
-    }
-
-    
-});
-
-router.get('/firebasesignup', (req, res) => {
-    
-    if (res.locals.user){
-        res.redirect('/user/redirect');
-    }
-    else {
-        res.render('user/sign_up2', {title:"sign up", style:"login_form"}); 
-    }
-
-    
-});
-
 router.post('/login', (req, res, next) => {
     
     passport.authenticate('local', {
@@ -91,7 +67,7 @@ router.post('/login', (req, res, next) => {
 
 router.get('/choose_account', (req, res) => {
     
-    res.render('user/choose_account',  {title:"Choose Account", style:"signup_form"}); 
+    res.render('user/choose_account',  {title:"Choose Account", style:"choose_acc"}); 
 
 });
 /*
@@ -253,7 +229,6 @@ router.get('/account', (req, res) => {
 });
 
 router.get('/redirect', (req, res) => {
-
     if (res.locals.user){
         if (res.locals.user.type == "customer"){
             res.redirect('/user/account');
@@ -270,6 +245,7 @@ router.get('/redirect', (req, res) => {
     }
 
 });
+
 
 
 //HF Test code End

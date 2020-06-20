@@ -13,16 +13,27 @@ const flash = require('connect-flash');
 const FlashMessenger = require('flash-messenger');
 const Handlebars = require('handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const passport = require('passport');
 
 // var admin = require('firebase-admin');
 // var firebase = require("firebase/app");
 
-// var serviceAccount = require("./ecommerce-fsdp-firebase-adminsdk-c5p0h-6b9b5bccca.json");
+// TODO: Replace the following with your app's Firebase project configuration
+var firebaseConfig = {
+	apiKey: "AIzaSyChyx6R5wRsaoNUiBZ7VJoxRp4PJyKMAZw",
+    authDomain: "ecommerce-fsdp.firebaseapp.com",
+    databaseURL: "https://ecommerce-fsdp.firebaseio.com",
+    projectId: "ecommerce-fsdp",
+    storageBucket: "ecommerce-fsdp.appspot.com",
+    messagingSenderId: "548076658656",
+    appId: "1:548076658656:web:38072e836b6ed8d41fd585",
+    measurementId: "G-5VHT5HKZZ7"
+};
 
-// // TODO: Replace the following with your app's Firebase project configuration
-
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 // // Initialize Firebase
 // firebase.initializeApp();
@@ -55,7 +66,9 @@ mySqlDatabase.setUpDB(false); // To set up database with new tables set (true)
 
 // Passport Config
 const authenticate = require('./config/passport');
-authenticate.localStrategy(passport);
+//authenticate.localStrategy(passport);
+authenticate.MultiStrategy(passport);
+
 
 /*
 * Loads routes file main.js in routes directory. The main.js determines which function
@@ -97,7 +110,7 @@ app.engine('handlebars', exphbs({
 		replaceEmptyString: replaceEmptyString
 	},
 	handlebars: allowInsecurePrototypeAccess(Handlebars),
-	defaultLayout: 'main' // Specify default template views/layout/main.handlebar 
+	defaultLayout: 'main' // Specify default template views/layout/main.handlebar
 }));
 app.set('view engine', 'handlebars');
 
@@ -134,13 +147,24 @@ app.use(session({
 	}),
 	resave: false,
 	saveUninitialized: false,
-})); 
+}));
 
 
 
 // Initilize Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/user/login' }),
+    function(req, res) {
+	// Successful authentication, redirect home.
+    res.redirect('/user/redirect');
+});
+
 
 // Error message display
 app.use(flash());
@@ -153,7 +177,7 @@ app.use(function(req, res, next){
 	res.locals.user = req.user || null;
 	next();
 });
-	
+
 
 // Place to define global variables - not used in practical 1
 app.use(function (req, res, next) {
