@@ -20,7 +20,10 @@ const Product = db.define('product', {
     productCategory: {
         type: Sequelize.STRING
     },
-    productReview: {
+    productBrand: {
+        type: Sequelize.STRING
+    },
+    productImage: {
         type: Sequelize.STRING
     }
 });
