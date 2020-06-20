@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const alertMessage = require('../helpers/messenger.js');
+const Product = require('../models/productModel.js'); //import Product 
+const algoliasearch = require('algoliasearch')
+
 
 router.get('/', (req, res) => {
     res.render('index', { title: 'Home' }); // renders views/index.handlebars
 });
-
 
 // router.get('/about', (req, res) => {
 
@@ -26,12 +28,12 @@ router.get('/', (req, res) => {
 
 
 router.get('/product', (req, res) => { //render product page
-    let products = [{ 'name': 'test', 'category': 'Phone' }, { 'name': 'test', 'category': 'Grocery' }, { 'name': 'test0', 'category': 'Electronics' }, { 'name': 'test1', 'category': 'Skincares' }, { 'name': 'test2', 'category': 'Others' }]
-    res.render(
-        'product/product', {
-            products: products
-        }
-    );
+    Product.findAll({
+    }).then((products) => {
+        res.render('product/productDisplay',{
+            products: products,
+        })
+    })
 })
 
 // JH: Test codes

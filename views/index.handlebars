@@ -1,11 +1,79 @@
+<style>
+	body {
+		font-family: sans-serif;
+		padding: 1em;
+	}
+
+	.ais-ClearRefinements {
+		margin: 1em 0;
+	}
+
+	.ais-SearchBox {
+		margin: 1em 0;
+	}
+
+	.ais-Pagination {
+		margin-top: 1em;
+	}
+
+	.left-panel {
+		float: left;
+		width: 250px;
+	}
+
+	.right-panel {
+		margin-left: 260px;
+	}
+
+	.ais-InstantSearch {
+		max-width: 960px;
+		overflow: hidden;
+		margin: 0 auto;
+	}
+
+	.ais-Hits-item {
+		margin-bottom: 1em;
+		width: calc(50% - 1rem);
+	}
+
+	.ais-Hits-item img {
+		margin-right: 1em;
+	}
+
+	.hit-name {
+		margin-bottom: 0.5em;
+	}
+
+	.hit-description {
+		color: #888;
+		font-size: 14px;
+		margin-bottom: 0.5em;
+	}
+</style>
 <div class="container">
-<div class="jumbotron text-center my-4">
-	<div class="container">
-		<h1 class="display-4">Temp Name</h1>
-		<p class="lead">blah blah blah</p>
+	<div class="jumbotron text-center my-4">
+		<div class="container">
+			<h1 class="display-4">Lazopee</h1>
+			<p class="lead">Lost child of Lazada & Shopee</p>
+		</div>
+		<div class="ais-InstantSearch">
+			<h1>InstantSearch.js e-commerce demo</h1>
+
+			<div class="left-panel">
+				<div id="clear-refinements"></div>
+
+				<h2>Brands</h2>
+				<div id="brand-list"></div>
+			</div>
+
+			<div class="right-panel">
+				<div id="searchbox" class="ais-SearchBox"></div>
+				<div id="hits"></div>
+				<div id="pagination"></div>
+			</div>
+		</div>
+
 	</div>
-	<br>
-</div>
 </div>
 
 <script>
