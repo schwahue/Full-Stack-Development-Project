@@ -1,30 +1,9 @@
-.p-info, .s-info {
-    margin: 20px;
+body, html {
+    width:100%;
+    background: #FFFFFF;
 }
 
-.title{
-    text-align: center;
-    margin-top: 20px;
-}
-
-.form-section {
-    margin-top: 50px;
-}
-
-.su-btn {
-    margin-top: 50px;
-    margin-bottom: 50px;
-    text-align: center;
-}
-
-input[type=submit], #seller-redirect a {
-    width: 20%;
-    display: inline-block;
-    padding: 15px 5px;
-    margin-top: 15px;
-    font-size: 20px;
-}
-
+/* choose acc */
 #seller-redirect{
     text-align: center;
 }
@@ -37,11 +16,14 @@ input[type=submit], #seller-redirect a {
 .choose-acc{
     text-align: center;
     margin-top: 50px;
+    
 }
-
+.choose-acc h1{
+    color:#6a0dad;
+}
 .acc{
     border: solid 1px;
-    margin: 10px 30px;
+    margin: 10px 100px;
 }
 
 .acc-type-title{
@@ -63,4 +45,15 @@ input[type=submit], #seller-redirect a {
     display: inline-block;
     padding: 12px 20px;
     margin-bottom: 15px;
+}
+
+.choose-acc-containter{
+    padding-top: 5px;
+    background: #FFFFFF;
+    padding-bottom: 50px;
+}
+
+.form-button{
+    background-color:#F1984D;
+    color: #FFFFFF;
 }
