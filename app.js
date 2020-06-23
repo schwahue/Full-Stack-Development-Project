@@ -18,7 +18,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
 
 // var admin = require('firebase-admin');
-// var firebase = require("firebase/app");
+var firebase = require("firebase/app");
 
 // TODO: Replace the following with your app's Firebase project configuration
 var firebaseConfig = {
