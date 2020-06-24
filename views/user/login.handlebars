@@ -1,27 +1,48 @@
 <!-- HF -->
+<!--<script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" /> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <section>
     <div class="container-1 vertical-center ">
         <div class="login-container">
-            <h1 class="form-title">Login</h1>
+            <div>
+                
+                <span class="form-title">Login</span>
+                <div class="sign-up-link-container">
+                    <div><a id="sign-up-link" href="/user/choose_account" tabindex="8">Create Account</a> instead?</div>
+                </div>
+            </div>
             <form novalidate method="POST" action="">
-                <div class="form-group">
+                <div class="">
                     <label for="email">Email</label>
                     <input type="text" class="form-control" id="email" name="email" value="{{email}}">
                 </div>
 
-                <div class="form-group">
+                <div class="">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password" value="">
                 </div>
 
                 <div class="container-1 form-elements">
                     <input type="Submit" name="submit" value="Login" class="btn form-button"/>
+                    <p class="sign-up"> - Or - </p>
+
+                    <a href="/auth/facebook" class="fb btn">
+                        <i class="fa fa-facebook fa-fw"></i> Login with Facebook
+                    </a>
+                    <a href="/auth/twitter" class="twitter btn">
+                        <i class="fa fa-twitter fa-fw"></i> Login with Twitter
+                    </a>
+                    <a href="/auth/google" class="google btn">
+                        <i class="fa fa-google fa-fw"></i> Login with Google
+                    </a>
+                    <!--
                     <hr>
                     <p class="sign-up"> No Account? Click below </p>
-                    <!--<input type="button" name="submit" value="Sign Up" onclick="location.href='/';" class="btn btn-outline-secondary"/>-->
-                    <a href="/user/choose_account" class="btn btn-outline-secondary">Sign Up</a>
-               </div>
+                    <input type="button" name="submit" value="Sign Up" onclick="location.href='/';" class="btn btn-outline-secondary"/>
+                    <a href="/user/choose_account" class="btn btn-outline-secondary">Sign Up</a>-->
+                </div>
             </form>
         </div>
     </div>
