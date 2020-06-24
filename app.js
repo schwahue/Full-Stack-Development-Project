@@ -80,6 +80,7 @@ const adminRoute = require('./routes/admin_route');
 const merchantRoute = require('./routes/merchant_route');
 const testRoute = require('./routes/test_route');
 // const smsRoute = require('./routes/sms_route');
+const authRoute = require('./routes/auth_route');
 
 // Bring in Handlebars Helpers here
 // Copy and paste this statement only!!
@@ -149,22 +150,9 @@ app.use(session({
 	saveUninitialized: false,
 }));
 
-
-
 // Initilize Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.get('/auth/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/user/login' }),
-    function(req, res) {
-	// Successful authentication, redirect home.
-    res.redirect('/user/redirect');
-});
-
 
 // Error message display
 app.use(flash());
@@ -195,7 +183,9 @@ app.use('/user', userRoute);
 app.use('/admin', adminRoute);
 app.use('/merchant', merchantRoute);
 app.use('/test', testRoute);
+app.use('/auth', authRoute);
 // app.use('/sms', smsRoute);
+
 /*
 * Creates a unknown port 5000 for express server since we don't want our app to clash with well known
 * ports such as 80 or 8080.
