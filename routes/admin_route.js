@@ -8,7 +8,7 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 router.get('/account', (req, res) => {
-    send_sms( 'LOGIN ADMIN ACCOUNT HF', req.user.contact_number);
+    //send_sms( 'LOGIN ADMIN ACCOUNT HF', req.user.contact_number);
 
     res.render('admin/account', {title:"admin", navbar:"admin", style:"admin"}); 
 

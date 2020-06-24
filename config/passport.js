@@ -1,6 +1,9 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
+const API_Keys = require('./API_Keys');
 
 // Load user model
 const User = require('../models/User_model');
@@ -74,13 +77,49 @@ function MultiStrategy(passport){
     }));
 
     passport.use(new GoogleStrategy({
-        clientID: "265980154753-7bh8t78b26o9ccs4h611k3unqaqd4lei.apps.googleusercontent.com",
-        clientSecret: "K67H3PqwtMUqMFggp0X_NOlI",
+        clientID: API_Keys.google.clientID,
+        clientSecret: API_Keys.google.clientSecret,
         callbackURL: "http://localhost:5000/auth/google/callback"
     },
     function(accessToken, refreshToken, profile, done) {
-        
         User.findOne({ where: { email: profile.emails[0].value} })
+            .then(user => {
+                if (!user) {
+                    User.create({ email: profile.emails[0].value, googleId: profile.id, type: "customer" })
+                    .then(user => {
+                        console.log("CREATE USER");
+                        console.log(user.id);
+                    return done(null, user);
+                    })
+                    .catch(err => console.log(err));
+                }
+                else{
+                    console.log("GOOGLE USER FOUND");
+                    console.log(user.id);
+                    if (!user.googleId){
+                        user.update({
+                            googleId: profile.id
+                        })
+                    }
+                    return done(null, user);
+                }
+            }).catch(err => console.log(err));
+        
+        }));
+
+    /*
+    passport.use(new TwitterStrategy({
+        consumerKey: API_Keys.twitter.consumerKey,
+        consumerSecret: API_Keys.twitter.consumerSecret,
+        callbackURL: "http://127.0.0.1:5000/auth/twitter/callback"
+        },
+        function(token, tokenSecret, profile, done) {
+            /*
+            User.findOrCreate({ twitterId: profile.id }, function (err, user) {
+                return cb(err, user);
+            });*/
+            /*
+            User.findOne({ where: { email: profile.emails[0].value} })
             .then(user => {
                 if (!user) {
                     User.create({ email: profile.emails[0].value, googleId: profile.id, type: "customer" })
@@ -97,43 +136,47 @@ function MultiStrategy(passport){
                     return done(null, user);
                 }
             }).catch(err => console.log(err));
-        
-            /*
-        User.findOne({ where: {email:profile.emails[0].value} })
-            .then(user => {
-                if (!user) {
-                    return done(null, false, { message: 'No User Found' });
-                }
-                console.log("LOGIN ID");
-                console.log(user.id);
-                // Match password
-                return done(null, user);
-            });*/
-            
-        /*
-        User.findOrCreate({
-            where: { email: profile.emails[0].value },
-            defaults: {
-                googleId: profile.id,
-            }, function (user) {
-                console.log("HEEEEEEEEEEEEEEEEE");
-                return done(null, user); }
-        });*/
-
-        //return done(null, profile);
-        /*.then(user => {
-            return cb(user);
-        }).catch((err) => { // No user found, not stored in req.session
-            console.log(err);
-        });*/
-        
-    }
-    
-
-    ));
-
+        }
+    ));*/
     // Serializes (stores) user id into session upon successful
     // authentication
+
+    passport.use(new FacebookStrategy({
+            clientID: API_Keys.facebook.clientID,
+            clientSecret: API_Keys.facebook.clientSecret,
+            callbackURL: "http://localhost:5000/auth/facebook/callback",
+            profileFields: ['name', 'email']
+        },
+        function(accessToken, refreshToken, profile, done) {
+            
+            User.findOne({ where: { email: profile.emails[0].value} })
+            .then(user => {
+                if (!user) {
+                    User.create({ email: profile.emails[0].value, faceebookId: profile.id, type: "customer" })
+                    .then(user => {
+                        console.log("CREATE FACEBOOK USER");
+                        console.log(user.id);
+                    return done(null, user);
+                    })
+                    .catch(err => console.log(err));
+                }
+                else{
+                    console.log("USER FOUND FACEBOOK");
+                    console.log(user.id);
+                    if (!user.facebookId){
+                        user.update({
+                            facebookId: profile.id
+                        })
+                    }
+
+                    return done(null, user);
+                }
+            }).catch(err => console.log(err));
+
+        }
+    ));
+
+
     passport.serializeUser((user, done) => {
         /*
         if (user.googleId){

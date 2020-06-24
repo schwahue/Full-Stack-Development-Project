@@ -1,5 +1,6 @@
-const accountSid = 'AC82fbac810960a6e8057840da7c2797e8';
-const authToken = '07cb6303c8f846968056de9ddf730eaf';
+const API_Keys = require('../config/API_Keys');
+const accountSid = API_Keys.twilio.accountSid;
+const authToken = API_Keys.twilio.authToken;
 const client = require('twilio')(accountSid, authToken);
 
 const send_message = (message, contact_number) =>{
