@@ -61,8 +61,14 @@ function MultiStrategy(passport){
                 if (!user) {
                     return done(null, false, { message: 'No User Found' });
                 }
+                else if (!user.password){
+                    // we send a incorrect password as user signed up with google/twitter or facebook and
+                    // no password is registered here, so in order not to leak too much info we send this.
+                    return done(null, false, { message: 'Password incorrect' });
+                }
                 console.log("LOGIN ID");
                 console.log(user.id);
+                
                 // Match password
                 bcrypt.compare(password, user.password, (err, isMatch) => {
                     if (err) throw err;
