@@ -8,8 +8,11 @@ const passport = require('passport');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
+const ensureAuthenticated = require('../helpers/auth');
+
 var admin = require('firebase-admin');
 var firebase = require("firebase/app");
+const { ensureUserAuthenticated } = require('../helpers/auth');
 require("firebase/auth");
 require("firebase/firestore");
 
@@ -222,7 +225,7 @@ router.get('/logout', (req, res) => {
 	res.redirect('/user/login');
 });
 
-router.get('/account', (req, res) => {
+router.get('/account', ensureUserAuthenticated, (req, res) => {
     console.log("Account Type");
     console.log(res.locals.user.type);
 	res.render('user/account', { style:"users"});

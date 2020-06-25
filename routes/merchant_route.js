@@ -5,8 +5,11 @@ var bcrypt = require("bcryptjs");
 const User = require("../models/User_model");
 const Product = require("../models/productModel.js");
 
+const ensureAuthenticated = require('../helpers/auth');
+
 //Algolia
 const algoliasearch = require("algoliasearch");
+const { ensureMerchantAuthenticated } = require("../helpers/auth");
 const client = algoliasearch("97Y32174KO", "d371533080d456f5aaedd6716056c612");
 const index = client.initIndex("Products");
 
@@ -133,7 +136,7 @@ router.post("/signup", (req, res) => {
   }
 });
 
-router.get("/account", (req, res) => {
+router.get("/account", ensureMerchantAuthenticated, (req, res) => {
   res.render("merchant/account", {
     title: "Merchant - Account",
     style: "merchant",
