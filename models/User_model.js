@@ -25,7 +25,26 @@ const User = db.define('user', {
     },
     facebookId:{
         type: Sequelize.STRING
+    },
+    twitterId:{
+        type: Sequelize.STRING
+    },
+    postal_code:{
+        type: Sequelize.STRING
+    },
+    unit_number:{
+        type: Sequelize.STRING
+    },
+    country:{
+        type: Sequelize.STRING
+    },
+    city:{
+        type: Sequelize.STRING
+    },
+    address:{
+        type: Sequelize.STRING
     }
+
 
     
 });
