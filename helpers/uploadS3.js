@@ -13,6 +13,7 @@ const s3 = new aws.S3({
 });
 
 //S3 upload method
+var uploadS3 = multer({
   storage: multerS3({
     s3: s3,
     bucket: "fsdf-images",
