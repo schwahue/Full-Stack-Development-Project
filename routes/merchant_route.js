@@ -4,12 +4,13 @@ const alertMessage = require("../helpers/messenger.js");
 var bcrypt = require("bcryptjs");
 const User = require("../models/User_model");
 const Product = require("../models/productModel.js");
-
-const ensureAuthenticated = require('../helpers/auth');
+const ensureAuthenticated = require("../helpers/auth");
+const { ensureMerchantAuthenticated } = require("../helpers/auth");
+const fs = require("fs");
+const uploadS3 = require("../helpers/uploadS3");
 
 //Algolia
 const algoliasearch = require("algoliasearch");
-const { ensureMerchantAuthenticated } = require("../helpers/auth");
 const client = algoliasearch("97Y32174KO", "d371533080d456f5aaedd6716056c612");
 const index = client.initIndex("Products");
 
@@ -150,7 +151,7 @@ router.get("/addProduct", (req, res) => {
     style: "merchant",
     navbar: "merchant",
   });
-});
+}); //getAdd Interface
 
 router.post("/addProduct", (req, res) => {
   let productID = req.body.productID;
@@ -160,7 +161,18 @@ router.post("/addProduct", (req, res) => {
   let productStock = req.body.productStock;
   let productCategory = req.body.productCategory;
 
-  console.log(productID);
+  //upload Image
+  uploadS3(req, res, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      if (req.file === undefined) {
+        console.log("undefined image");
+      } else {
+        console.log(`${req.file.location}`);
+      }
+    }
+  });
 
   //create Product in remote Algolia index
   const products = [
@@ -197,6 +209,56 @@ router.post("/addProduct", (req, res) => {
       navbar: "merchant",
     });
   });
-});
+}); //addProduct to db
+
+router.get("/updateProduct/:id", (req, res) => {
+  Product.findOne({
+    where: {
+      productID: req.params.id,
+    },
+  })
+    .then((product) => {
+      res.render("merchant/updateProduct", {
+        product,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}); //getUpdate Interface
+
+router.put("/updateProduct/saveUpdate/:id", (req, res) => {
+  let productID = req.body.productID;
+  let productName = req.body.productName;
+  let productDescription = req.body.productDescription;
+  let productPrice = req.body.productPrice;
+  let productStock = req.body.productStock;
+  let productCategory = req.body.productCategory;
+
+  Product.update({
+    productID,
+    productName,
+    productDescription,
+    productPrice,
+    productStock,
+    productCategory,
+  },{
+    where:{
+      productID: req.params.id
+    }
+  }).then((product)=>{
+    res.redirect('/');
+  }).catch((err) => {
+    console.log(err);
+  });
+}); //updateExisting Products
+
+/*
+router.get(); //getExsiting Products
+
+
+
+
+*/
 
 module.exports = router;
