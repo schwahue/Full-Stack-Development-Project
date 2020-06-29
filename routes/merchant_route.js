@@ -235,30 +235,57 @@ router.put("/updateProduct/saveUpdate/:id", (req, res) => {
   let productStock = req.body.productStock;
   let productCategory = req.body.productCategory;
 
-  Product.update({
-    productID,
-    productName,
-    productDescription,
-    productPrice,
-    productStock,
-    productCategory,
-  },{
-    where:{
-      productID: req.params.id
+  Product.update(
+    {
+      productID,
+      productName,
+      productDescription,
+      productPrice,
+      productStock,
+      productCategory,
+    },
+    {
+      where: {
+        productID: req.params.id,
+      },
     }
-  }).then((product)=>{
-    res.redirect('/');
-  }).catch((err) => {
-    console.log(err);
-  });
+  )
+    .then((product) => {
+      res.redirect("/merchant/displayProduct");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }); //updateExisting Products
 
-/*
-router.get(); //getExsiting Products
+router.get("/displayProduct", (req, res) => {
+  Product.findAll({})
+    .then((products) => {
+      res.render("merchant/displayProduct", {
+        products: products,
+      });
+    })
+    .catch((err) => console.log(err));
+}); //getExsiting Products
 
+router.get("/deleteProduct/:id", (req, res) => {
+  let productID = req.params.id;
 
-
-
-*/
+  Product.findOne({
+    where: { productID: productID },
+  }).then((product) => {
+    if (productID == null) {
+      res.redirect("/");
+    } else {
+      Product.destroy({
+        where: {
+          productID: productID,
+        },
+      }).then((product) => {
+        res.redirect("/merchant/displayProduct");
+      });
+    }
+  });
+});
 
 module.exports = router;
