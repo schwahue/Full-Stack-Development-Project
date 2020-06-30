@@ -1,8 +1,8 @@
 /* global instantsearch algoliasearch */
 
 const search = instantsearch({
-  indexName: "demo_ecommerce",
-  searchClient: algoliasearch("B1G2GM9NG0", "aadef574be1f9252bb48d4ea09b5cfe5"),
+  indexName: "Products",
+  searchClient: algoliasearch("97Y32174KO", "4facdb2ab4e15fcdfda63fe13674fb2e"),
 });
 
 search.addWidgets([
@@ -14,21 +14,21 @@ search.addWidgets([
   }),
   instantsearch.widgets.refinementList({
     container: "#brand-list",
-    attribute: "brand",
+    attribute: "productCategory",
   }),
   instantsearch.widgets.hits({
     container: "#hits",
     templates: {
       item: `
-          <div>
-            <img src="{{image}}" align="left" alt="{{name}}" />
+          <div class="text-center">
+            <img src="{{productImage}}" class="img-fluid img-thumbnail" align="left" alt="{{name}}" />
             <div class="hit-name">
-              {{#helpers.highlight}}{ "attribute": "name" }{{/helpers.highlight}}
+              {{#helpers.highlight}}{ "attribute": "productName" }{{/helpers.highlight}}
             </div>
             <div class="hit-description">
-              {{#helpers.highlight}}{ "attribute": "description" }{{/helpers.highlight}}
+              {{#helpers.highlight}}{ "attribute": "productDescription" }{{/helpers.highlight}}
             </div>
-            <div class="hit-price">\${{price}}</div>
+            <div class="hit-price">\${{productPrice}}</div>
           </div>
         `,
     },

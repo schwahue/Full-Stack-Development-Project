@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="jumbotron text-center my-4">
+        <div class="container">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Image</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Category</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each products}}
+                        <tr scope="row">
+                            <td><img src="{{productImage}}" class="img-fluid img-thumbnail" align="left" alt="{{name}}">
+                            </td>
+                            <td>{{productID}}</td>
+                            <td>{{productName}}</td>
+                            <td>{{productDescription}}</td>
+                            <td>{{productPrice}}</td>
+                            <td>{{productStock}}</td>
+                            <td>{{productCategory}}</td>
+                            <td><a href="updateProduct/{{productID}}" class="btn btn-warning">Update</a></td>
+                            <td><a href="deleteProduct/{{productID}}" class="btn btn-danger">Delete</a></td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
