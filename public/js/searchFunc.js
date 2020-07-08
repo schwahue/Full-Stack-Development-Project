@@ -29,6 +29,7 @@ search.addWidgets([
               {{#helpers.highlight}}{ "attribute": "productDescription" }{{/helpers.highlight}}
             </div>
             <div class="hit-price">\${{productPrice}}</div>
+            <button type="button" class="btn btn-success" href="/">Buy</button>
           </div>
         `,
     },
