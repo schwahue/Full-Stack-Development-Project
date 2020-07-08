@@ -170,13 +170,13 @@ router.post('/pay', async (req, res) => {
     request.requestBody({
         "intent": "CAPTURE",
         "application_context": {
-            "return_url": "http://localhost:5000/creditcard_s",
-            // "cancel_url": "https://www.example.com",
-            // "brand_name": "EXAMPLE INC",
-            // "locale": "en-US",
-            // "landing_page": "BILLING",
-            // "shipping_preference": "SET_PROVIDED_ADDRESS",
-            // "user_action": "CONTINUE"
+            "return_url": "http://localhost:5000/123",
+            "cancel_url": "https://www.google.com",
+            "brand_name": "EXAMPLE INC",
+            "locale": "en-US",
+            "landing_page": "BILLING",
+            "shipping_preference": "SET_PROVIDED_ADDRESS",
+            "user_action": "CONTINUE"
         },
         "purchase_units": [
             {
@@ -255,7 +255,8 @@ router.post('/success', async (req, res) => {
     }
 
     // 6. Return a successful response to the client
-    console.log('SUCCESS!');
+    res.redirect('debug');
+    console.log('SUCCESSjlksdsgpikesgoip!');
     shopping_cart = [];
 });
 // JH: <end>

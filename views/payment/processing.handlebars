@@ -106,7 +106,6 @@
                 });
             },
             onApprove: function (data) {
-                console.log('Are you approving?');
                 return fetch('/success', {
                     method: 'post',
                     headers: {
@@ -117,9 +116,10 @@
                     })
                 }).then(function (res) {
                     //return res.json();
-                    location.replace('http://localhost:5000/creditcard_s');
                 }).then(function (details) {
-                    alert('Transaction funds captured from ' + details.payer_given_name);
+                    //alert('Transaction funds captured from ' + details.payer_given_name);
+                }).then(function (nothing) {
+                    window.location.assign('/creditcard_s');
                 })
             }
         }).render('#paypal-button-container');
