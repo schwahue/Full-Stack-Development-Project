@@ -1,71 +1,68 @@
-<div class="container">
+<style>
+    body {
+        font-family: sans-serif;
+    }
 
-    <!-- Page Heading -->
-    <h1 class="my-4">
-        <small>Welcome {{ username }}!</small>
-    </h1>
+    .ais-ClearRefinements {
+        margin: 1em 0;
+    }
 
+    .ais-SearchBox {
+        margin: 1em 0;
+    }
 
+    .ais-Pagination {
+        margin-top: 1em;
+    }
 
-    <form>
-        <!-- Search form -->
-        <div class="row">
-            <form class="form-inline d-flex justify-content-center md-form form-sm mt-0">
-                <i class="fas fa-search" aria-hidden="true"></i>
-                <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
-                    aria-label="Search">
-            </form>
-        </div>
+    .left-panel {
+        float: left;
+        width: 250px;
+    }
 
-        <!-- LHS - Filter -->
-        <div class="row">
-            <div class="col-sm-3">
-                {{#each products}}
-                <div class='col'>
-                    <a class="btn btn-primary" data-toggle="collapse" href="#collapse{{productCategory}}" role="button"
-                        aria-expanded="false" aria-controls="collapse{{productCategory}}">{{productCategory}}</a>
-                    <div class="collapse multi-collapse" id="collapse{{productCategory}}">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                Default checkbox
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                {{else}}
-                <div>All</div>
-                {{/each}}
-            </div>
+    .right-panel {
+        margin-left: 260px;
+    }
 
-    </form>
+    .ais-InstantSearch {
+        max-width: 960px;
+        overflow: hidden;
+        margin: 0 auto;
+    }
 
-    <!-- RHS - Product Display -->
-    <div class='col'>
-        <div class='row'>
-            {{#each products}}
-            <div class="col-lg-3 col-sm-6 mb-4">
-                <div class="card h-100 text-center">
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            <a href="#">{{productName}}</a>
-                        </h4>
-                        <p class="card-text">{{productDescription}}</p>
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" name="item_button" onclick="addToCart()" value=""
-                            class="btn btn-danger">Add to cart
-                        </button>
-                    </div>
-                </div>
-            </div>
-            {{else}}
-            <div>All item are out of stock at the moments.</div>
-            {{/each}}
-        </div>
+    .ais-Hits-item {
+        margin-bottom: 1em;
+        width: calc(50% - 1rem);
+    }
+
+    .ais-Hits-item img {
+        margin-right: 1em;
+    }
+
+    .hit-name {
+        margin-bottom: 0.5em;
+    }
+
+    .hit-description {
+        color: #888;
+        font-size: 14px;
+        margin-bottom: 0.5em;
+    }
+</style>
+<div class="ais-InstantSearch">
+    <h1 class="text-center">Products</h1>
+
+    <div class="left-panel">
+        <div id="clear-refinements"></div>
+
+        <h2>Brands</h2>
+        <div id="brand-list"></div>
+    </div>
+
+    <div class="right-panel">
+        <div id="searchbox" class="ais-SearchBox"></div>
+        <div id="hits"></div>
+        <div id="pagination"></div>
     </div>
 </div>
-
-<!-- /.row -->
-<!-- /.container -->
-</div>
+<script src="/js/searchFunc.js"></script>
