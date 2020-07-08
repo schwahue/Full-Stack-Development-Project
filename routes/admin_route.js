@@ -21,7 +21,7 @@ router.get('/users', ensureAdminAuthenticated, (req, res) => {
 
     User.findAll()
     .then((user_list) => {
-        // pass object to listVideos.handlebar
+        
         res.render('admin/users_list', {title:"admin - Users List", navbar:"admin", style:"admin", user_list});
 
     })
