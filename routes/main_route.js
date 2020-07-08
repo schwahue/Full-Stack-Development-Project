@@ -3,15 +3,10 @@ const router = express.Router();
 const alertMessage = require('../helpers/messenger.js');
 const Product = require('../models/productModel.js'); //import Product 
 const algoliasearch = require('algoliasearch')
-const paypal = require('paypal-rest-sdk');
+const paypal = require('@paypal/checkout-server-sdk');
+const payPalClient = require('../config/payPalClient');
 
 var shopping_cart = [];
-
-paypal.configure({
-    'mode': 'sandbox', //sandbox or live
-    'client_id': 'AfCx1zfNeE0VcM-q_2K1_qW0iKnU2OQHiL5s7Kh88SoI2lChcHNxhvKOFc9NWWArfobSAwlUEeleuydF',
-    'client_secret': 'EIo1RA0kzzhe8Y8SX1rgB6JzgusfQ92GlXB5q-Vm4JEW1C1SUA74T03AIxOdPK3kK8F5PD-NMO2wWmfn'
-});
 
 router.get('/', (req, res) => {
     res.render('index', { title: 'Home' }); // renders views/index.handlebars
@@ -62,32 +57,7 @@ router.get('/processing', (req, res) => {
 });
 
 router.get('/creditcard_s', (req, res) => {
-    let totalprice = 0.0;
-    for (let i = 0; i < shopping_cart.length; i++) {
-        totalprice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
-    }
-	const payerId = req.query.PayerID;
-	const paymentId = req.query.paymentId;
-
-	const execute_payment_json = {
-		'payer_id': payerId,
-		'transactions': [{
-			'amount': {
-				'currency': 'USD',
-				'total': totalprice
-			}
-		}]
-	};
-
-	paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
-		if (error) {
-			console.log(error.response);
-			throw error;
-		} else {
-			console.log(JSON.stringify(payment));
-			res.render('payment/creditcard_success');
-		}
-	});
+    res.render('payment/creditcard_success');
 });
 
 router.get('/creditcard', (req, res) => {
@@ -162,6 +132,8 @@ router.get('/debug/add/:id', (req, res) => {
                         productPrice: product.productPrice.toFixed(2),
                         productTotal: product.productPrice.toFixed(2),
                         productID: product.productID,
+                        productDescription: product.productDescription,
+                        productCategory: product.productCategory,
                         quantity: 1,
                     });
                 }
@@ -173,53 +145,119 @@ router.get('/debug/add/:id', (req, res) => {
     res.redirect('/debug');
 });
 
-router.post('/pay', (req, res) => {
+router.post('/pay', async (req, res) => {
     let item_list = [];
+    let totalprice = 0.0;
     for (let i = 0; i < shopping_cart.length; i++) {
         item_list.push({
             name: shopping_cart[i].productName,
+            description: shopping_cart[i].productDescription,
             sku: shopping_cart[i].productID,
-            price: shopping_cart[i].productPrice,
-            currency: 'USD',
+            unit_amount : {
+                currency_code : "SGD",
+                value: shopping_cart[i].productPrice,
+            },
             quantity: shopping_cart[i].quantity,
+            category: 'PHYSICAL_GOODS'
         });
-    }
-    let totalprice = 0.0;
-    for (let i = 0; i < shopping_cart.length; i++) {
+
         totalprice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
     }
-	const create_payment_json = {
-		"intent": "sale",
-		"payer": {
-			"payment_method": "paypal"
-		},
-		"redirect_urls": {
-			"return_url": "http://localhost:5000/creditcard_s",
-			"cancel_url": "http://localhost:5000/cancel"
-		},
-		"transactions": [{
-			"item_list": {
-				"items": item_list
-			},
-			"amount": {
-				"currency": "USD",
-				"total": totalprice
-			},
-			"description": "This is a hat."
-		}]
-	};
+    // PayPal
+    // 3. Call PayPal to set up a transaction
+    const request = new paypal.orders.OrdersCreateRequest();
+    request.prefer("return=representation");
+    request.requestBody({
+        "intent": "CAPTURE",
+        "application_context": {
+            "return_url": "http://localhost:5000/123",
+            "cancel_url": "https://www.google.com",
+            "brand_name": "EXAMPLE INC",
+            "locale": "en-US",
+            "landing_page": "BILLING",
+            "shipping_preference": "SET_PROVIDED_ADDRESS",
+            "user_action": "CONTINUE"
+        },
+        "purchase_units": [
+            {
+                "reference_id": "PUHF",
+                "description": "Sporting Goods",
 
-	paypal.payment.create(create_payment_json, function (error, payment) {
-		if (error) {
-			throw error;
-		} else {
-			for (let i = 0; i < payment.links.length; i++) {
-				if (payment.links[i].rel === 'approval_url') {
-					res.redirect(payment.links[i].href)
-				}
-			}
-		}
-	});
+                "custom_id": "CUST-HighFashions",
+                "soft_descriptor": "HighFashions",
+                "amount": {
+                    "currency_code": "SGD",
+                    "value": totalprice,
+                    "breakdown": {
+                        "item_total": {
+                            "currency_code": "SGD",
+                            "value": totalprice
+                        }
+                    }
+                },
+                "items": item_list,
+                "shipping": {
+                    "method": "United States Postal Service",
+                    "name": {
+                        "full_name": "John Doe"
+                    },
+                    "address": {
+                        "address_line_1": "123 Townsend St",
+                        "address_line_2": "Floor 6",
+                        "admin_area_2": "San Francisco",
+                        "admin_area_1": "CA",
+                        "postal_code": "94107",
+                        "country_code": "US"
+                    }
+                }
+            }
+        ]
+    });
+
+    let order;
+    try {
+        order = await payPalClient.client().execute(request);
+    } catch (err) {
+
+        // 4. Handle any errors from the call
+        console.error(err);
+        return res.send(500);
+    }
+
+    // 5. Return a successful response to the client with the order ID
+    res.status(200).json({
+        orderID: order.result.id
+    });
+});
+
+router.post('/success', async (req, res) => {
+    console.log('do i come here?');
+    // 2a. Get the order ID from the request body
+    const orderID = req.body.orderID;
+
+    // 3. Call PayPal to capture the order
+    const request = new paypal.orders.OrdersCaptureRequest(orderID);
+    request.requestBody({});
+
+    try {
+        const capture = await payPalClient.client().execute(request);
+
+        // 4. Save the capture ID to your database. Implement logic to save capture to your database for future reference.
+        const captureID = capture.result.purchase_units[0]
+            .payments.captures[0].id;
+        // await database.saveCaptureID(captureID);
+
+    } catch (err) {
+
+        // 5. Handle any errors from the call
+        console.error(err);
+        return res.send(500);
+    }
+
+    // 6. Return a successful response to the client
+    res.redirect('debug');
+    console.log('SUCCESSjlksdsgpikesgoip!');
+    shopping_cart = [];
 });
 // JH: <end>
 

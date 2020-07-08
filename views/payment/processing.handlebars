@@ -1,95 +1,129 @@
 <body style="overflow-y: scroll;height: 70vw;">
-    <form action='/pay' method='post'>
-        <div class="container col-md-10">
-            <div class="card">
-                <div class="card-header" style="background-color: rgb(33,37,41);">
-                    <h5 class="mb-0" style="color: rgb(245,245,247);">Payment Options</h5>
+    <script
+    src="https://www.paypal.com/sdk/js?currency=SGD&client-id=AfCx1zfNeE0VcM-q_2K1_qW0iKnU2OQHiL5s7Kh88SoI2lChcHNxhvKOFc9NWWArfobSAwlUEeleuydF"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
+    </script>
+    <div class="container col-md-10">
+        <div class="card">
+            <div class="card-header" style="background-color: rgb(33,37,41);">
+                <h5 class="mb-0" style="color: rgb(245,245,247);">Payment Options</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col col-md-6 mx-auto">
+                        <p style="text-align: center;">Express Checkout</p>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col col-md-6 mx-auto">
-                            <p style="text-align: center;">Express Checkout</p>
+                <div class="row">
+                    <div class="col col-md-6 mx-auto">
+                        <div id="paypal-button-container"></div>
+                    </div>
+                    {{!-- <div class="col col-md-6 mx-auto"><button class="btn btn-primary border-dark" type="button" style="float: left;width: 45%;background-color: rgba(0,0,0,0.8);color: #f5f5f7;">Apple Pay</button><button class="btn btn-primary" type="button" style="float: right;width: 45%;">PayPal</button></div> --}}
+                </div>
+                <div class="whitespace"></div>
+                <hr>
+                <div class="row">
+                    <div class="col col-md-6 mx-auto">
+                        <p style="text-align: center;">Or</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-md-6 mx-auto">
+                        <p>Contact information</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-md-6 mx-auto"><input class="border rounded border-dark shadow-sm"
+                            type="text" style="width: 100%;padding-left: 1%;" placeholder="Email Address"></div>
+                </div><br>
+                <div class="row">
+                    <div class="col col-md-6 mx-auto">
+                        <p>Shipping Address</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-md-6 mx-auto"><input class="border rounded border-dark shadow-sm"
+                            type="text" style="width: 100%;padding-left: 1%;" placeholder="Full Name"></div>
+                </div><br>
+                <div class="row">
+                    <div class="col col-md-6 mx-auto"><input class="border rounded border-dark shadow-sm"
+                            type="text" style="width: 100%;padding-left: 1%;" placeholder="Address"></div>
+                </div><br>
+                <div class="row">
+                    <div class="col col-md-6 mx-auto"><input class="border rounded border-dark shadow-sm"
+                            type="text" style="width: 100%;padding-left: 1%;" placeholder="City"></div>
+                </div><br>
+                <div class="row">
+                    <div class="col col-md-6 mx-auto">
+                        <div class="dropdown"><button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false" id="countryregion" type="button"
+                                style="float: left;width: 45%;">Country/Region</button>
+                            <div class="dropdown-menu" role="menu"><a onclick="change()" role="presentation"
+                                    class="dropdown-item" target="_parent">Singapore</a>
+                                <script>
+                                    function change() {
+                                        document.getElementById('countryregion').innerHTML = "Singapore"
+                                    }
+                                </script><a class="dropdown-item" role="presentation" href="#">Malaysia</a><a
+                                    class="dropdown-item" role="presentation" href="#">US</a></div>
+                        </div>
+                        <div class="dropdown"><button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false" type="button"
+                                style="float: right;width: 45%;">Singapore</button>
+                            <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation"
+                                    href="#">Singapore</a><a class="dropdown-item" role="presentation"
+                                    href="#">Second Item</a><a class="dropdown-item" role="presentation"
+                                    href="#">Third Item</a></div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col col-md-6 mx-auto">
-                            <div id="paypal-button-container"></div>
-                        </div>
-                        {{!-- <div class="col col-md-6 mx-auto"><button class="btn btn-primary border-dark" type="button" style="float: left;width: 45%;background-color: rgba(0,0,0,0.8);color: #f5f5f7;">Apple Pay</button><button class="btn btn-primary" type="button" style="float: right;width: 45%;">PayPal</button></div> --}}
-                    </div>
-                    <div class="whitespace"></div>
-                    <hr>
-                    <div class="row">
-                        <div class="col col-md-6 mx-auto">
-                            <p style="text-align: center;">Or</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-md-6 mx-auto">
-                            <p>Contact information</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-md-6 mx-auto"><input class="border rounded border-dark shadow-sm"
-                                type="text" style="width: 100%;padding-left: 1%;" placeholder="Email Address"></div>
-                    </div><br>
-                    <div class="row">
-                        <div class="col col-md-6 mx-auto">
-                            <p>Shipping Address</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-md-6 mx-auto"><input class="border rounded border-dark shadow-sm"
-                                type="text" style="width: 100%;padding-left: 1%;" placeholder="Full Name"></div>
-                    </div><br>
-                    <div class="row">
-                        <div class="col col-md-6 mx-auto"><input class="border rounded border-dark shadow-sm"
-                                type="text" style="width: 100%;padding-left: 1%;" placeholder="Address"></div>
-                    </div><br>
-                    <div class="row">
-                        <div class="col col-md-6 mx-auto"><input class="border rounded border-dark shadow-sm"
-                                type="text" style="width: 100%;padding-left: 1%;" placeholder="City"></div>
-                    </div><br>
-                    <div class="row">
-                        <div class="col col-md-6 mx-auto">
-                            <div class="dropdown"><button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                                    aria-expanded="false" id="countryregion" type="button"
-                                    style="float: left;width: 45%;">Country/Region</button>
-                                <div class="dropdown-menu" role="menu"><a onclick="change()" role="presentation"
-                                        class="dropdown-item" target="_parent">Singapore</a>
-                                    <script>
-                                        function change() {
-                                            document.getElementById('countryregion').innerHTML = "Singapore"
-                                        }
-                                    </script><a class="dropdown-item" role="presentation" href="#">Malaysia</a><a
-                                        class="dropdown-item" role="presentation" href="#">US</a></div>
-                            </div>
-                            <div class="dropdown"><button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                                    aria-expanded="false" type="button"
-                                    style="float: right;width: 45%;">Singapore</button>
-                                <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation"
-                                        href="#">Singapore</a><a class="dropdown-item" role="presentation"
-                                        href="#">Second Item</a><a class="dropdown-item" role="presentation"
-                                        href="#">Third Item</a></div>
-                            </div>
-                        </div>
-                    </div><br>
-                    <div class="row">
-                        <div class="col col-md-6 mx-auto"><a class="btn btn-primary border rounded border-white"
-                                role="button" data-bs-hover-animate="pulse"
-                                style="background-color: rgba(255,0,0,0);color: rgb(0,0,0);" href="/cart"><strong><span
-                                        style="text-decoration: underline;">&lt; Return</span></strong></a>
-                            {{!-- <a class="btn btn-primary bg-primary border rounded border-white button-selected"
-                                role="button" data-bs-hover-animate="pulse"
-                                style="width: 25%;color: #f5f5f7;background: linear-gradient(#42a1ec,#0070c9);float: right;"
-                                href="/pay">Payment</a> --}}
-                                <input type='submit' value='Purchase' class='btn btn-dark' style="width: 25%; float: right;>
-                        </div>
+                </div><br>
+                <div class="row">
+                    <div class="col col-md-6 mx-auto"><a class="btn btn-primary border rounded border-white"
+                            role="button" data-bs-hover-animate="pulse"
+                            style="background-color: rgba(255,0,0,0);color: rgb(0,0,0);" href="/cart"><strong><span
+                                    style="text-decoration: underline;">&lt; Return</span></strong></a>
+                        {{!-- <a class="btn btn-primary bg-primary border rounded border-white button-selected"
+                            role="button" data-bs-hover-animate="pulse"
+                            style="width: 25%;color: #f5f5f7;background: linear-gradient(#42a1ec,#0070c9);float: right;"
+                            href="/pay">Payment</a> --}}
+                            <input type='submit' value='Purchase' class='btn btn-dark' style="width: 25%; float: right;">
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+    <script>
+        paypal.Buttons({
+            createOrder: function () {
+                return fetch('/pay', {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                }).then(function (res) {
+                    return res.json();
+                }).then(function (data) {
+                    return data.orderID; // Use the same key name for order ID on the client and server
+                });
+            },
+            onApprove: function (data) {
+                return fetch('/success', {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID
+                    })
+                }).then(function (res) {
+                    //return res.json();
+                }).then(function (details) {
+                    //alert('Transaction funds captured from ' + details.payer_given_name);
+                }).then(function (nothing) {
+                    window.location.assign('/creditcard_s');
+                })
+            }
+        }).render('#paypal-button-container');
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
