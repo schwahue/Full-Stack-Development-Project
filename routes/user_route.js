@@ -119,10 +119,7 @@ router.post('/signup', (req, res) => {
 
     } 
     else  {
-
         
-
-            console.log("no errors");
         // If all is well, checks if user is already registered
         User.findOne({ where: { email: req.body.email } })
             .then(user => {

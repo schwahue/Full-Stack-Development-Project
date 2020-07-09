@@ -46,9 +46,9 @@ router.post("/signup", (req, res) => {
   }
 
   if (errors.length > 0) {
-    res.render("user/sign_up", {
-      title: "Sign Up",
-      style: "signup_form",
+    res.render("user/sign_up2", {
+      title: "Merchant - SignUp",
+      style: "login_form",
       shop_name,
       contact_number,
       email,
@@ -81,20 +81,20 @@ router.post("/signup", (req, res) => {
             errors.push(
               "contact_number: " + user2.contact_number + " already in use"
             );
-            res.render("user/sign_up", {
+            res.render("user/sign_up2", {
+              title: "Merchant - SignUp",
+              style: "login_form",
               errors,
-              title: "Sign Up",
-              style: "signup_form",
               shop_name,
               contact_number,
               email,
             });
           } else {
             if (errors.length > 0) {
-              res.render("user/sign_up", {
+              res.render("user/sign_up2", {
+                title: "Merchant - SignUp",
+                style: "login_form",
                 errors,
-                title: "Sign Up",
-                style: "signup_form",
                 shop_name,
                 contact_number,
                 email,
