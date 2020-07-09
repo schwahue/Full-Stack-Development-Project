@@ -6,11 +6,14 @@ const User = require("../models/User_model");
 const Product = require("../models/productModel.js");
 const ensureAuthenticated = require("../helpers/auth");
 const { ensureMerchantAuthenticated } = require("../helpers/auth");
+
+// Required for file upload
 const fs = require("fs");
-const uploadS3 = require("../helpers/uploadS3");
+const upload = require("../helpers/imageUpload");
 
 //Algolia
 const algoliasearch = require("algoliasearch");
+const { error } = require("console");
 const client = algoliasearch("97Y32174KO", "d371533080d456f5aaedd6716056c612");
 const index = client.initIndex("Products");
 
@@ -161,19 +164,6 @@ router.post("/addProduct", (req, res) => {
   let productStock = req.body.productStock;
   let productCategory = req.body.productCategory;
 
-  //upload Image
-  uploadS3(req, res, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      if (req.file === undefined) {
-        console.log("undefined image");
-      } else {
-        console.log(`${req.file.location}`);
-      }
-    }
-  });
-
   //create Product in remote Algolia index
   const products = [
     {
@@ -286,6 +276,28 @@ router.get("/deleteProduct/:id", (req, res) => {
       });
     }
   });
-});
+}); //deleteExisting Products
+
+router.post("/upload", (req, res) => {
+  // Creates user id directory for upload if not exist
+  if (!fs.existsSync("./public/uploads/testing")) {
+    fs.mkdirSync("./public/uploads/testing");
+  }
+
+  upload(req, res, (err) => {
+    if (err) {
+      console.log(err)
+      res.json({ file: "/img/no-image.jpg", err: err });
+    } else {
+      if (req.file === undefined) {
+        console.log(err)
+        res.json({ file: "/img/no-image.jpg", err: err });
+      } else {
+        res.json({ file: `/uploads/testing/${req.file.filename}` });
+        console.log("Image uploaded!")
+      }
+    }
+  });
+}); //uploadImage
 
 module.exports = router;
