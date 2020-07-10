@@ -3,6 +3,7 @@ const multer = require("multer");
 const aws = require("aws-sdk");
 const sharp = require("sharp");
 
+//API keys are volatile.
 //S3 Innit
 const keyID = "ASIA3V5NZNWSJF3C65ZG";
 const SECRET = "8x/GCn03APINuz2J+i3kfW/AONbX5nGmbmEZG7UQ";
@@ -35,4 +36,5 @@ var uploadS3 = multer({
   },
 }).single("productImage"); //Same fieldname as input html
 
+//Obselete code, keeping for future reference
 module.exports = uploadS3;
