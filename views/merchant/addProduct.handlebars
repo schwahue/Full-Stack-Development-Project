@@ -35,14 +35,15 @@
                 </div>
                 <div class="form-group">
                     <label for="productImage">Image input</label>
-                    <img id="imageProd" src="https://fsdf-images.s3.amazonaws.com/BobRoss01.jpg" alt=""
+                    <img id="imageProduct" src="https://fsdf-images.s3.amazonaws.com/BobRoss01.jpg" alt=""
                         class="border img-thumbnail img-fluid" style="height:95%;width:100%">
-                    <input type="file" class="form-control-file" id="imageUpload" name="imageUpload"
-                        accept="image/png,image/jpeg,image/webp,image/gif,image/jpg">
-                    <input id="productImage" name="productImage" value="">
+                    <input type="file" class="form-control-file" id="imageUpload" name="imageUpload">
+                    <input id="productImageURL" name="productImageURL" type="hidden" value="">
+                    <div class="font-weight-bold text-danger-small" id="imageErr" style="display:none"></div>
                 </div>
                 <button id="butAddVideo" type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>
     </div>
 </div>
+<script src="/js/uploadImg.js"></script>

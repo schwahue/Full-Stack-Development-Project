@@ -23,7 +23,7 @@ const Product = db.define('product', {
     productBrand: {
         type: Sequelize.STRING
     },
-    productImage: {
+    productImageURL: {
         type: Sequelize.STRING
     }
 });

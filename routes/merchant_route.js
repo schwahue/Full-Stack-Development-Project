@@ -6,13 +6,16 @@ const User = require("../models/User_model");
 const Product = require("../models/productModel.js");
 const ensureAuthenticated = require("../helpers/auth");
 const { ensureMerchantAuthenticated } = require("../helpers/auth");
+
+// Required for file upload
 const fs = require("fs");
-const uploadS3 = require("../helpers/uploadS3");
+const upload = require("../helpers/imageUpload");
 
 const { body, validationResult } = require('express-validator');
 
 //Algolia
 const algoliasearch = require("algoliasearch");
+const { error } = require("console");
 const client = algoliasearch("97Y32174KO", "d371533080d456f5aaedd6716056c612");
 const index = client.initIndex("Products");
 
@@ -143,7 +146,7 @@ router.post('/signup', [
         });
     });
     }
-    
+
     console.log("NO ERROR CREATIING")
     // FOR TESTING
     //res.json({ msg: "DONE" });
@@ -151,7 +154,7 @@ router.post('/signup', [
 
 /*
 router.post("/signup", (req, res) => {
-    
+
     // TEST
     let errors = [];
 
@@ -384,21 +387,43 @@ router.get("/displayProduct", (req, res) => {
 router.get("/deleteProduct/:id", (req, res) => {
     let productID = req.params.id;
 
-    Product.findOne({
-        where: { productID: productID },
-    }).then((product) => {
-        if (productID == null) {
-            res.redirect("/");
-        } else {
-            Product.destroy({
-                where: {
-                    productID: productID,
-                },
-            }).then((product) => {
-                res.redirect("/merchant/displayProduct");
-            });
-        }
-    });
-});
+  Product.findOne({
+    where: { productID: productID },
+  }).then((product) => {
+    if (productID == null) {
+      res.redirect("/");
+    } else {
+      Product.destroy({
+        where: {
+          productID: productID,
+        },
+      }).then((product) => {
+        res.redirect("/merchant/displayProduct");
+      });
+    }
+  });
+}); //deleteExisting Products
+
+router.post("/upload", (req, res) => {
+  // Creates user id directory for upload if not exist
+  if (!fs.existsSync("./public/uploads/testing")) {
+    fs.mkdirSync("./public/uploads/testing");
+  }
+
+  upload(req, res, (err) => {
+    if (err) {
+      console.log(err)
+      res.json({ file: "/img/no-image.jpg", err: err });
+    } else {
+      if (req.file === undefined) {
+        console.log(err)
+        res.json({ file: "/img/no-image.jpg", err: err });
+      } else {
+        res.json({ file: `/uploads/testing/${req.file.filename}` });
+        console.log("Image uploaded!")
+      }
+    }
+  });
+}); //uploadImage
 
 module.exports = router;
