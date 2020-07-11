@@ -43,7 +43,10 @@ const User = db.define('user', {
     },
     address:{
         type: Sequelize.STRING
-    }
+    },
+    shop_name:{
+        type: Sequelize.STRING
+    },
 
 
     
