@@ -9,6 +9,7 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 const ensureAuthenticated = require('../helpers/auth');
+const { body, validationResult } = require('express-validator');
 
 var admin = require('firebase-admin');
 var firebase = require("firebase/app");
@@ -82,10 +83,134 @@ router.get('/signup', (req, res) => {
 
 router.get('/signup', (req, res) => {
 
-    res.render('user/sign_up2',  {title:"Sign Up", style:"login_form"}); 
+    res.render('user/sign_up',  {title:"Sign Up", style:"login_form"}); 
 
 });
 
+router.post('/signup', [
+
+    // password must be at least 4 chars long
+    body('first_name')
+    .notEmpty().withMessage('Invalid First Name').bail()
+    .isLength({ min: 4 }).withMessage('First Name must be at least 4 characters long').bail()
+    .matches('^[a-zA-Z0-9]*$').withMessage('Enter valid First Name').bail(),
+
+    // password must be at least 4 chars long
+    body('last_name')
+    .notEmpty().withMessage('Invalid Last Name').bail()
+    .isLength({ min: 4 }).withMessage('Last Name must be at least 4 characters long').bail()
+    .matches('^[a-zA-Z0-9]*$').withMessage('Enter valid Last Name').bail(),
+
+
+    // username must be an email
+    body('email')
+    .notEmpty().withMessage('Invalid Email').bail()
+    .normalizeEmail().bail()
+    .isEmail().bail()
+    .trim()
+    .custom((value, {req}) => {
+        return User.findOne({ where: { email: req.body.email } }).then(user => {
+            if (user) {
+                return Promise.reject('Email already in use');
+            }
+            return true;
+        });
+    }),
+
+    // password must be at least 4 chars long
+    body('password')
+    .notEmpty().withMessage('Invalid Password').bail()
+    .isLength({ min: 4 }).withMessage('Passwordmust be at least 4 characters long').bail(),
+
+    body('c_password')
+    .notEmpty().withMessage('Invalid Password Comfirmation').bail()
+    .custom((value, { req }) => value === req.body.password).withMessage('Password Confirmation must be the same as password').bail(),
+
+    body('contact_number')
+    .notEmpty().withMessage('Invalid Contact Number').bail()
+    .matches('(8|9)[0-9]{7}').withMessage('Enter valid Contact Number').bail()
+    .isLength({ min: 8, max: 8 }).withMessage('Contact Number must be 8 characters long').bail()
+    .trim()
+    .custom((value, {req}) => {
+        return User.findOne({ where: { contact_number: req.body.contact_number } }).then(user => {
+            if (user) {
+                return Promise.reject('Contact Number already in use');
+            }
+            return true;
+        });
+    }),
+
+
+    ], (req, res) => {
+    // Finds the validation errors in this request and wraps them in an object with handy functions
+    const errors = validationResult(req);
+
+    //console.log("=============errors==============")
+    //console.log(errors);
+    let { contact_number, email, password, first_name, last_name } = req.body;
+
+    if (!errors.isEmpty()) {
+        //FOR TESTING
+        //return res.status(422).json({ errors: errors.array() });
+
+        let error_holder = errors.array();
+        let errors_msg = [];
+
+        for(i = 0; i < error_holder.length; i++){
+            errors_msg.push(error_holder[i].msg);
+        }
+        res.render("user/sign_up", {
+            title: "Sign Up",
+            style: "login_form",
+            first_name,
+            last_name,
+            contact_number,
+            email,
+            errors: errors_msg,
+        });
+        return;
+    }
+    else{
+        // Create new user record
+    
+        let type = "customer";
+        bcrypt.genSalt(10, function (err, salt) {
+            if (err) return next(err);
+            bcrypt.hash(password, salt, function (err, hash) {
+                if (err) return next(err);
+
+                password = hash;
+
+                User.create({
+                    first_name,
+                    last_name,
+                    email,
+                    password,
+                    contact_number,
+                    type,
+                })
+                    .then((user) => {
+                        alertMessage(
+                            res,
+                            "success",
+                            user.email + " added. Please login",
+                            "fas fa-sign-in-alt",
+                            true
+                        );
+                        res.redirect("/user/login");
+                    })
+                    .catch((err) => console.log(err));
+            });
+        });
+    }
+    
+    console.log("NO ERROR CREATIING") 
+    // FOR TESTING
+    //res.json({ msg: "DONE" });
+});
+
+
+/*
 router.post('/signup', (req, res) => {
 
     // TEST
@@ -108,7 +233,7 @@ router.post('/signup', (req, res) => {
     if (errors.length > 0) {
         res.render('user/sign_up',  {
             title:"Sign Up", 
-            style:"signup_form", 
+            style:"login_form", 
             first_name, 
             last_name,
             contact_number,
@@ -120,23 +245,10 @@ router.post('/signup', (req, res) => {
     } 
     else  {
         
-        // If all is well, checks if user is already registered
+        // checks if user is already registered
         User.findOne({ where: { email: req.body.email } })
             .then(user => {
                 if (user) {
-                    // If user is found, that means email has already been
-                    // registered
-                    /*
-                    res.render('user/sign_up',  {
-                        error: 'email: ' + user.email + ' already registered',
-                        title:"Sign Up", 
-                        style:"signup_form", 
-                        first_name, 
-                        last_name,
-                        username,
-                        email
-                    
-                    }); */
                     errors.push('email: ' + user.email + ' already registered ' );
                     
 
@@ -149,7 +261,7 @@ router.post('/signup', (req, res) => {
                         res.render('user/sign_up',  {
                             errors,
                             title:"Sign Up", 
-                            style:"signup_form", 
+                            style:"login_form", 
                             first_name, 
                             last_name,
                             contact_number,
@@ -162,7 +274,7 @@ router.post('/signup', (req, res) => {
                             res.render('user/sign_up',  {
                                 errors,
                                 title:"Sign Up", 
-                                style:"signup_form", 
+                                style:"login_form", 
                                 first_name, 
                                 last_name,
                                 contact_number,
@@ -207,7 +319,7 @@ router.post('/signup', (req, res) => {
 
     
 });
-
+*/
 
 router.get('/delivery', (req, res)=> {
 
