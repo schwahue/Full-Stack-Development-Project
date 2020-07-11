@@ -1,11 +1,18 @@
-body, html {
-    width:100%;
+html {
+    min-height: 100%;
+    margin: 0;
+    
+}
+body{
+    min-height: 100%;
+    margin: 0;
     background: #D9D9D9;
     background-image: url("../img/loginbg.jpg");
-    background-position: center; /* Center the image */
+    background-position: center center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
-    background-size: cover;
+    background-size: cover; 
 }
+
 
 .form-title {
     color:#F1984D;
@@ -39,6 +46,13 @@ body, html {
 }
 
 .btn{
+    width: 100%;
+    padding: 12px 15px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.ref{
     width: 100%;
     padding: 12px 15px;
     display: inline-block;
