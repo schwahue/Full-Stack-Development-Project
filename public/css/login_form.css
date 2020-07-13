@@ -1,6 +1,7 @@
 html {
     min-height: 100%;
 }
+
 body{
     min-height: 100%;
     background: #D9D9D9;
@@ -9,7 +10,6 @@ body{
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; 
 }
-
 
 .form-title {
     color:#F1984D;
@@ -32,7 +32,7 @@ body{
     background: #FFFFFF;
     padding: 30px 50px 50px 50px;
     border-radius: 25px;
-    min-width: 500px;
+    min-width: 400px;
 }
 
 .container-1 input, .container-2 input{
@@ -43,13 +43,6 @@ body{
 }
 
 .btn{
-    width: 100%;
-    padding: 12px 15px;
-    display: inline-block;
-    margin-bottom: 15px;
-}
-
-.ref{
     width: 100%;
     padding: 12px 15px;
     display: inline-block;
@@ -69,8 +62,7 @@ hr {
     color: #FFFFFF;
 }
 
-/*whats this */
-.login   -button:hover{
+.login-button:hover{
     background-color:#db8c48;
     color: #FFFFFF;
 }
@@ -92,9 +84,39 @@ hr {
     }
 
     .vertical-center {
-    margin: 10% auto 10% auto;
+        margin: 5% auto 5% auto;
     }
 
+
+}
+
+@media(max-width: 442px){
+    .container-1, .container-2 {
+        max-width: 100%;
+    }
+
+    .container-1 input, .container-2 input{
+        width: 100%;
+        display: inline-block;
+        padding: 12px 2px;
+        margin-bottom: 15px;
+    }
+
+    .login-container{
+        border-radius: 0;
+        padding: 10px 30px;
+        min-width: 300px;
+    }
+
+    .signup-container {
+        border-radius: 0;
+        padding: 10px 30px;
+        min-width: 400px;
+    }
+
+    .vertical-center {
+        margin: 0;
+    }
 
 }
 
