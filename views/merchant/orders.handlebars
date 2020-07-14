@@ -1,0 +1,117 @@
+<div id="content" class="container-fluid">
+    <h4> orders </h4>
+
+    <hr>
+    <p>filter</p>
+    <hr>
+
+    <!-- ORDER 2-->
+    <div class="row order">
+
+        <!-- Start of all orders -->
+        <div class="order-header-containter">
+            <div class="order-header">
+                <p class="order-header-info">#{{order_number}}</p>
+                <p class="order-header-info">Date</p>
+                <hr>
+            </div>
+            <!-- Start of order container -->
+            <div class="row order-container">
+                <div class="col-md-9">
+                    <!-- Start of each order -->
+                    <div class="row order-item">
+                        <div class="col-sm-3 item-photo">
+                            <img src="/img/image-placeholder.jpg" alt="..." class="img-thumbnail order-item-photo">
+                        </div>
+                        <div class="col-sm-3">
+                            <p> test 2 </p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p> test 2 </p>
+                        </div>
+                        <div class="col-sm-3">
+                            test 2
+                        </div>
+                    </div>
+
+                    <div class="row order-item">
+                        <div class="col-sm-3 item-photo">
+                            <img src="/img/image-placeholder.jpg" alt="..." class="img-thumbnail order-item-photo">
+                        </div>
+                        <div class="col-sm-3">
+                            <p> test 2</p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p> test 2</p>
+                        </div>
+                        <div class="col-sm-3">
+                            test 2
+                        </div>
+
+                    </div>
+                    <!-- End of all orders -->
+                </div>
+
+                <div class="col-md-3 btn-col">
+                    <a href="" data-toggle="modal" data-target="#confirmModal"
+                        class="acpt-btn btn btn2 btn-outline-secondary">Arrange Delivery </a>
+                    <a href="" data-toggle="modal" data-target="#deleteModal" 
+                        class="rej-btn btn btn2 2btn-outline-secondary"> Reject Order </a>
+                </div>
+            </div>
+            <!-- End of orders containter -->
+        </div>
+        <!-- End of all orders -->
+
+        <!-- Confirm Modal -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalLabel">Order Confirmation for #{{order_number}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Please make sure you have the available stock before confirming the order.
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button" style="color:#FFFFFF" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                        <a hreftype="button" style="color:#FFFFFF"  value="confirm_delivery" class="btn btn-primary">Confirm Delivery</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- End of modal -->
+
+    <!-- Delete Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Order Rejection for #{{order_number}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Once rejected, action cannot be undone.
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button" style="color:#FFFFFF" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                        <a hreftype="button" style="color:#FFFFFF"  value="confirm_delivery" class="btn btn-primary">Confirm Reject</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- End of modal -->
+
+        
+    </div>
+
+    
+
+</div>
