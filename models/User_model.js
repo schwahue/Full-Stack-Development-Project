@@ -47,7 +47,9 @@ const User = db.define('user', {
     shop_name:{
         type: Sequelize.STRING
     },
-
+    verified: {
+        type: Sequelize.BOOLEAN
+    },
 
     
 });
