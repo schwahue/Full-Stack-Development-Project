@@ -47,8 +47,6 @@ const send_shipping_confirmation_email = (recipient_emails) =>{
         to: "user.cust.proj@gmail.com",
         from: 'user.ad.proj@gmail.com',
         subject: 'Shipping Confirmation',
-        text: 'and easy to do anywhere, even with Node.js',
-        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
         templateId: 'd-b4be4ef8965d48908476f2176cf951a4',
         dynamic_template_data: {
             first_name: 'hieu',
@@ -62,6 +60,31 @@ const send_shipping_confirmation_email = (recipient_emails) =>{
             Sender_Zip: "S790483",
             order_number: "12345",
             order_link: ""
+        },
+    };
+
+    sgMail.send(msg).then(() => {
+        console.log('Message sent')
+    }).catch((error) => {
+        console.log(error.response.body);
+        // console.log(error.response.body.errors[0].message)
+    })
+    
+}
+
+const send_promotions_email = (recipient_emails) =>{
+    // recepient email must be in array format
+    const msg = {
+        //to: recipient_emails,
+        to: "user.cust.proj@gmail.com",
+        from: 'user.ad.proj@gmail.com',
+        subject: 'Shipping Confirmation',
+        templateId: 'd-b6f89938ef6e4ff4aa4137748775154f',
+        dynamic_template_data: {
+            first_name: 'hieu',
+            last_name: 'jh',
+            //image_url: "https://i.ibb.co/5vdy0ds/Sub1.png",
+            //order_link: ""
         },
     };
 
