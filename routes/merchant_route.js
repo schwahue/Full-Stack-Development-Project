@@ -37,7 +37,7 @@ router.post('/signup', [
     // username must be an email
     body('email')
     .notEmpty().withMessage('Invalid Email').bail()
-    .normalizeEmail().bail()
+    .normalizeEmail({gmail_remove_dots: false}).bail()
     .isEmail().bail()
     .trim()
     .custom((value, {req}) => {
@@ -74,7 +74,7 @@ router.post('/signup', [
 
     body('shop_name')
     .notEmpty().withMessage('Invalid Shop Name').bail()
-    .matches('^[a-zA-Z0-9_]*$').withMessage('Enter valid Shop Name').bail()
+    .matches('^[a-zA-Z0-9_ ]*$').withMessage('Enter valid Shop Name').bail()
     .isLength({ min: 8 }).withMessage('must be at least 8 characters long').bail()
     .trim()
     .custom((value, {req}) => {
@@ -97,7 +97,7 @@ router.post('/signup', [
 
     if (!errors.isEmpty()) {
         //FOR TESTING
-        return res.status(422).json({ errors: errors.array() });
+        //return res.status(422).json({ errors: errors.array() });
 
         let error_holder = errors.array();
         let errors_msg = [];
@@ -152,106 +152,25 @@ router.post('/signup', [
     //res.json({ msg: "DONE" });
 });
 
-/*
-router.post("/signup", (req, res) => {
+router.get("/orders", (req, res) => {
+    res.render("merchant/orders", {
+        title: "Merchant - Orders",
+        style: "merchant",
+        navbar: "merchant",
+        order_number: "123"
+    });
+});
 
-    // TEST
-    let errors = [];
+router.get("/order_confirmation", (req, res) => {
+ 
+});
 
-    // Retrieves fields from register page from request body
-    let { contact_number, email, password, c_password, shop_name } = req.body;
-
-    // Checks if both passwords entered are the same
-    if (password !== c_password) {
-        errors.push("Passwords do not match");
-    }
-
-    // Checks that password length is more than 4
-    if (password.length < 4) {
-        errors.push("Password must be at least 4 characters");
-    }
-
-    if (errors.length > 0) {
-        res.render("user/sign_up", {
-            title: "Merchant - SignUp",
-            style: "login_form",
-            shop_name,
-            contact_number,
-            email,
-            errors,
-        });
-    } else {
-        console.log("no errors");
-        // If all is well, checks if user is already registered
-        User.findOne({ where: { email: req.body.email } }).then((user) => {
-            if (user) {
-                errors.push("email: " + user.email + " already registered ");
-            }
-
-            User.findOne({ where: { contact_number: req.body.contact_number } }).then(
-                (user2) => {
-                    if (user2) {
-                        errors.push(
-                            "contact_number: " + user2.contact_number + " already in use"
-                        );
-                        res.render("user/sign_up", {
-                            title: "Merchant - SignUp",
-                            style: "login_form",
-                            errors,
-                            shop_name,
-                            contact_number,
-                            email,
-                        });
-                    } else {
-                        if (errors.length > 0) {
-                            res.render("merchant/sign_up", {
-                                title: "Merchant - SignUp",
-                                style: "login_form",
-                                errors,
-                                shop_name,
-                                contact_number,
-                                email,
-                            });
-                        } else {
-                            // Create new user record
-                            let type = "merchant";
-                            bcrypt.genSalt(10, function (err, salt) {
-                                if (err) return next(err);
-                                bcrypt.hash(password, salt, function (err, hash) {
-                                    if (err) return next(err);
-
-                                    password = hash;
-
-                                    User.create({
-                                        shop_name,
-                                        email,
-                                        password,
-                                        contact_number,
-                                        type,
-                                    })
-                                        .then((user) => {
-                                            alertMessage(
-                                                res,
-                                                "success",
-                                                user.email + " added. Please login",
-                                                "fas fa-sign-in-alt",
-                                                true
-                                            );
-                                            res.redirect("/user/login");
-                                        })
-                                        .catch((err) => console.log(err));
-                                });
-                            });
-                        }
-                    }
-                }
-            );
-        });
-    }
+router.get("/order_delete", (req, res) => {
+ 
+});
 
 
 
-});*/
 
 router.get("/account", ensureMerchantAuthenticated, (req, res) => {
     res.render("merchant/account", {

@@ -11,6 +11,12 @@ const Op = Sequelize.Op;
 const ensureAuthenticated = require('../helpers/auth');
 const { body, validationResult } = require('express-validator');
 
+// SendGrid
+const sgMail = require('@sendgrid/mail');
+// JWT
+const jwt = require('jsonwebtoken');
+
+
 var admin = require('firebase-admin');
 var firebase = require("firebase/app");
 const { ensureUserAuthenticated } = require('../helpers/auth');
@@ -29,6 +35,7 @@ router.get('/login', (req, res) => {
 
     
 });
+
 /*
 router.get('/createtoken', (req, res) => {
     user = req.user;
@@ -92,20 +99,20 @@ router.post('/signup', [
     // password must be at least 4 chars long
     body('first_name')
     .notEmpty().withMessage('Invalid First Name').bail()
-    .isLength({ min: 4 }).withMessage('First Name must be at least 4 characters long').bail()
+    .isLength({ min: 3 }).withMessage('First Name must be at least 3 characters long').bail()
     .matches('^[a-zA-Z0-9]*$').withMessage('Enter valid First Name').bail(),
 
     // password must be at least 4 chars long
     body('last_name')
     .notEmpty().withMessage('Invalid Last Name').bail()
-    .isLength({ min: 4 }).withMessage('Last Name must be at least 4 characters long').bail()
+    .isLength({ min: 3 }).withMessage('Last Name must be at least 3 characters long').bail()
     .matches('^[a-zA-Z0-9]*$').withMessage('Enter valid Last Name').bail(),
 
 
     // username must be an email
     body('email')
     .notEmpty().withMessage('Invalid Email').bail()
-    .normalizeEmail().bail()
+    .normalizeEmail({gmail_remove_dots: false}).bail()
     .isEmail().bail()
     .trim()
     .custom((value, {req}) => {
