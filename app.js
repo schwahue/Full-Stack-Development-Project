@@ -17,6 +17,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const passport = require('passport');
 
+/*
 // var admin = require('firebase-admin');
 var firebase = require("firebase/app");
 
@@ -51,7 +52,7 @@ firebase.initializeApp(firebaseConfig);
 //   databaseURL: 'https://ecommerce-fsdp.firebaseio.com'
 // });*/
 
-// console.log(admin.app().name);  // '[DEFAULT]'
+// console.log(admin.app().name);  // '[DEFAULT]'*/
 
 // Library to use MySQL to store session objects
 const MySQLStore = require('express-mysql-session');

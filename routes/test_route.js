@@ -65,6 +65,7 @@ router.get('/pwa', (req, res) => {
     res.render('test/testss');
 });
 
+/*
 const fb = require('../helpers/firebase');
 
 router.get('/firebase', (req, res) => {
@@ -79,5 +80,5 @@ router.get('/upload', (req, res) => {
     console.log("=============");
     res.render('test/testupload');
 });
-
+*/
 module.exports = router;
