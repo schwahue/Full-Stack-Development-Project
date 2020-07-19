@@ -1,5 +1,4 @@
 module.exports = {
-    /* Used by Hui Feng */
     google:{
         clientID: "123",
         clientSecret: "123"
@@ -7,19 +6,17 @@ module.exports = {
     facebook:{
         clientID: "123",
         clientSecret: "123"
-    },/*
     twitter:{
         consumerKey: TWITTER_CONSUMER_KEY,
         consumerSecret: TWITTER_CONSUMER_SECRET
-    },*/
     twilio:{
         accountSid: "AC123",
         authToken: "123"
+    },
+    sendgrid:{
+        email: "SG.30r0923jr023jr032j02j30r"
     }
-    /* HF Ends */
 
 }
 
-/* face book test account
-    email: cbdlwwriqy_1592979972@tfbnw.net
-*/
+}
