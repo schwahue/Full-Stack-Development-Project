@@ -3,7 +3,7 @@ const router = express.Router();
 const alertMessage = require('../helpers/messenger.js');
 const User = require('../models/User_model');
 var bcrypt = require('bcryptjs');
-const send_single_email = require('../helpers/send_email');
+//const send_single_email = require('../helpers/send_email');
 
 router.get('/signup', (req, res) => {
 
