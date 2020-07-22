@@ -1,3 +1,19 @@
+<head>
+    <script type="text/javascript" src="/css/style.css"></script>
+    <script type="text/javascript" src="/js/typeahead.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input.typeahead').typeahead({
+                name: 'countries',
+                remote: 'http://localhost:5000/search?key=%QUERY',
+                limit: 10
+            });
+        });
+    </script>
+    <style type="text/css">
+        
+    </style>
+</head>
 <section class="totalprice">
     {{#if info}}
     {{#each info}}
@@ -7,6 +23,11 @@
     {{/if}}
     <div style="padding-top: 20px;"><button class="btn btn-primary border rounded" type="button"
             style="width: 18em;">Check Out</button></div>
+    <div class="bs-example">
+    <input type="text" name="typeahead" class="typeahead tt-query" autocomplete="off" spellcheck="false"
+        placeholder="Search Cart">
+    <a href="/cart/search" class="btn btn-primary">Search</a>
+</div>
 </section>
 <section class="baginfo container col-lg-9">
     {{#if products}}
@@ -21,11 +42,11 @@
                     <div class="col-md-7 productname" style="max-height: 100%;float: left">
                         <h4 style="float: left;">{{productName}}</h4>
                     </div>
-                    <div class="col-md-2 col-6" style="max-height: 100%;float: left;"><select class="quantity">
-                            <option value="1" selected="">{{quantity}}</option>
-                            <option value="2">2</option>
-                            <option value="14">3</option>
-                        </select></div>
+                    <div class="col-md-2 col-6" style="max-height: 100%;float: left;">
+                        <a href='/cart/up/{{productID}}' class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                        <p class="quantity">{{quantity}}</p>
+                        <a href='/cart/down/{{productID}}' class="btn btn-primary btn-sm"><i class="fa fa-minus"></i></a>
+                    </div>
                     <div class="col-md-2 col-6" style="max-height: 100%; float: right; padding-right:0px">
                         <h4 style="float:right; padding-right: 20px;">${{productTotal}}</h4>
                     </div>
@@ -33,15 +54,16 @@
             </div>
             <div class="row" style="padding-top:10px">
                 <div class="col">
-                    <div class="col-md-2 col-6" style="max-height: 100%; float: right; padding-right:0px;"><button
-                            class="btn btn-primary remove" type="button"
-                            style="float:right; padding-right: 20px;">Remove</button></div>
+                    <div class="col-md-2 col-6" style="max-height: 100%; float: right; padding-right:0px;"><a href="/cart/remove/{{productID}}"
+                            class="btn btn-primary remove" style="float:right; padding-right: 20px;">Remove</a></div>
                 </div>
             </div>
             <hr>
             <div class="row">
+                {{!-- Spinner here --}}
                 <div class="col">
-                    <div><span class="spinner-border spinner-border-sm" role="status"></span></div>
+                    {{!-- <div><span class="spinner-border spinner-border-sm" role="status"></span></div> --}}
+                    <p>PLACEHOLDER</p>
                 </div>
             </div>
             <hr>
