@@ -36,5 +36,17 @@ var uploadS3 = multer({
   },
 }).single("productImage"); //Same fieldname as input html
 
-//Obselete code, keeping for future reference
+//Obselete codes, keeping for future reference
+//upload Image
+uploadS3(req, res, (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    if (req.file === undefined) {
+      console.log("undefined image");
+    } else {
+      console.log(`${req.file.location}`);
+    }
+  }
+});
 module.exports = uploadS3;
