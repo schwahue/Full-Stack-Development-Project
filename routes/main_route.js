@@ -6,6 +6,7 @@ const algoliasearch = require('algoliasearch')
 const paypal = require('@paypal/checkout-server-sdk');
 const payPalClient = require('../config/payPalClient');
 
+// User's cart
 var shopping_cart = [];
 
 router.get('/', (req, res) => {
@@ -52,6 +53,60 @@ router.get('/cart', (req, res) => {
     });
 });
 
+// Remove item
+function RemoveFromCart(id) {
+    for (let i = 0; i < shopping_cart.length; i++) {
+        if (id == shopping_cart[i].productID) {
+            shopping_cart.splice(i, 1);
+            break;
+        }
+    }
+}
+
+router.get('/cart/remove/:id', (req, res) => {
+    RemoveFromCart(req.params.id);
+    res.redirect('/cart');
+});
+
+// Plus quantity
+router.get('/cart/up/:id', (req, res) => {
+    for (let i = 0; i < shopping_cart.length; i++) {
+        if (req.params.id == shopping_cart[i].productID) {
+            shopping_cart[i].quantity += 1
+        }
+    }
+    res.redirect('/cart');
+});
+
+// Minus quantity
+router.get('/cart/down/:id', (req, res) => {
+    for (let i = 0; i < shopping_cart.length; i++) {
+        if (req.params.id == shopping_cart[i].productID) {
+            shopping_cart[i].quantity -= 1
+            if (shopping_cart[i].quantity < 1) {
+                RemoveFromCart(shopping_cart[i].productID);
+            }
+        }
+    }
+    res.redirect('/cart');
+});
+
+// Search cart
+router.get('/cart/search', (req, res) => {
+    for (let i = 0; i < matches.length; i++) {
+        console.log(matches[i]);
+    }
+    let totalprice = 0.0;
+    for (let i = 0; i < shopping_cart.length; i++) {
+        totalprice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
+    }
+    info = [{ totalprice: totalprice }]
+    res.render('payment/cart', {
+        products: matches,
+        info: info
+    });
+});
+
 router.get('/processing', (req, res) => {
     res.render('payment/processing');
 });
@@ -76,7 +131,7 @@ router.get('/debug/database', (req, res) => {
             } else {
                 Product.create({
                     productID: '1',
-                    productName: 'iPhone SE 64GB (PRODUCT)RED',
+                    productName: 'iPhone SE 64GB RED',
                     productDescription: 'Another iPhone',
                     productPrice: 649.00,
                     productStock: 5,
@@ -259,6 +314,31 @@ router.post('/success', async (req, res) => {
     console.log('SUCCESSjlksdsgpikesgoip!');
     shopping_cart = [];
 });
+var matches;
+router.get('/search', (req, res) => {
+    var substringRegex;
+    matches = [];
+    let matches_name = []
+    substrRegex = new RegExp(req.query.key, 'i');
+    for (let i = 0; i < shopping_cart.length; i++) {
+        if (substrRegex.test(shopping_cart[i].productName)) {
+            console.log('this is asd123');
+            console.log(shopping_cart[i]);
+            matches.push(shopping_cart[i]);
+        }
+    }
+    let totalprice = 0.0;
+    for (let i = 0; i < shopping_cart.length; i++) {
+        totalprice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
+    }
+    for (let i = 0; i < matches.length; i++) {
+        matches_name.push(matches[i].productName);
+    }
+    res.end(JSON.stringify(matches_name));
+    info = [{ totalprice: totalprice }]
+    console.log('does it come here?');
+});
+
 // JH: <end>
 
 // Matt
