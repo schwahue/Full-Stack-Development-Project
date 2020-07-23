@@ -153,24 +153,41 @@ router.post('/signup', [
 });
 
 router.get("/orders", (req, res) => {
+    purchases_set1 = [];
+    purchases1 = {name: "Phone", quantity: "2"};
+    purchases2 = {name: "Notebook", quantity: "4"};
+
+    purchases_set1.push(purchases1);
+    purchases_set1.push(purchases2);
+
+    purchases_set2 = [];
+    purchases1 = {name: "pen", quantity: "2"};
+    purchases2 = {name: "pencil", quantity: "4"};
+
+    purchases_set2.push(purchases1);
+    purchases_set2.push(purchases2);
+
+    orders = [];
+    order1 = {id:"123", date:"23/12/2000", purchases: purchases_set1};
+    order2 = {id:"333", date:"11/11/2001", purchases: purchases_set2};
+    orders.push(order1);
+    orders.push(order2);
+
     res.render("merchant/orders", {
         title: "Merchant - Orders",
         style: "merchant",
         navbar: "merchant",
-        order_number: "123"
+        orders: orders
     });
 });
 
 router.get("/order_confirmation", (req, res) => {
- 
+
 });
 
 router.get("/order_delete", (req, res) => {
- 
+
 });
-
-
-
 
 router.get("/account", ensureMerchantAuthenticated, (req, res) => {
     res.render("merchant/account", {
