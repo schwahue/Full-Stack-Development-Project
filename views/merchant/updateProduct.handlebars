@@ -2,48 +2,81 @@
     <div class="card border-0 shadow my-5">
         <div class="card-body p-5">
 
-            <h1 class="display-4">Create Item</h1>
-        
-            <form method="POST" action="saveUpdate/{{product.productID}}?_method=PUT" method='post'>
-                <div class="form-group">
-                    <label for="productID">Product ID</label>
-                    <textarea class="form-control" id="productID" name="productID" rows="1"
-                        onblur="toUpperCase()">{{product.productID}}</textarea>
+            <h1 class="display-4">Update Item</h1>
+
+            <form method="POST" action="saveUpdate/{{product.productID}}?_method=PUT" id="formUpdateItem">
+                <input type='hidden' name='_method' value='PUT'>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="productID">Product ID</label>
+                        <input type="text" class="form-control" id="productID" name="productID"
+                            placeholder="Enter a product ID" value="{{product.productID}}">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="productName">Product Name</label>
+                        <input type="text" class="form-control" id="productName" name="productName"
+                            placeholder="Enter a product name" value="{{product.productName}}">
+
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="productDescription">Product Description</label>
+                        <textarea class="form-control" id="productDescription" name="productDescription"
+                            row="5">{{product.productDescription}}</textarea>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="productPrice">Product Price</label>
+                        <input type="number" class="form-control" id="productPrice" name="productPrice"
+                            placeholder="Enter a product price" value="{{product.productPrice}}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="productStock">Product Stock</label>
+                        <input type="number" class="form-control" id="productStock" name="productStock"
+                            placeholder="Enter a product price" value="{{product.productStock}}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <p>Product Category</p>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="productCategory"
+                                id="productCategory" value="Grocery">
+                            <label class="form-check-label" for="inlineRadio1">Grocery</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="productCategory"
+                                id="productCategory" value="Electronic">
+                            <label class="form-check-label" for="inlineRadio2">Electronic</label>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="form-group">
-                    <label for="productName">Product Name</label>
-                    <textarea class="form-control" id="productName" name="productName" rows="1"
-                        onblur="toUpperCase()">{{product.productName}}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="productDescription">Product Description</label>
-                    <textarea class="form-control" id="productDescription" name="productDescription" rows="1"
-                        onblur="toUpperCase()">{{product.productDescription}}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="productPrice">Product Price</label>
-                    <textarea class="form-control" id="productPrice" name="productPrice" rows="1">{{product.productPrice}}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="productStock">Product Stock</label>
-                    <textarea class="form-control" id="productStock" name="productStock" rows="1">{{product.productStock}}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="productCategory">Product Category</label>
-                    <textarea class="form-control" id="productCategory" name="productCategory" rows="1"
-                        onblur="toUpperCase()">{{product.productCategory}}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="productImage">Image input</label>
-                    <img id="poster" src="{{product.productImage}}" alt=""
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Image Upload</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="imageUpload" name="imageUpload">
+                            <label class="custom-file-label" for="imageUpload">Choose file</label>
+                        </div>
+                    </div>
+
+                    <img id="imageProduct" src="{{product.productImageURL}}" alt=""
                         class="border img-thumbnail img-fluid" style="height:95%;width:100%">
-                    <input type="file" class="form-control-file" id="imageUpload" name="imageUpload"
-                        accept="image/png,image/jpeg,image/webp,image/gif,image/jpg">
-                    <input id="productImage" name="productImage" value="{{product.productImage}}">
-                    <div class="font-weight-bold text-danger-small" id="posterErr" style="display:none"></div>>
+
+                    <input id="productImageURL" name="productImageURL" type="hidden" value="{{product.productImageURL}}">
+                    <div class="font-weight-bold text-danger-small" id="imageErr" style="display:none"></div>
                 </div>
                 <button id="butAddVideo" type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>
     </div>
 </div>
+<script src="/js/uploadImg.js"></script>
