@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const alertMessage = require('../helpers/messenger.js');
 const Product = require('../models/productModel.js'); //import Product 
+const orders = require('../models/orderModel.js');
 const algoliasearch = require('algoliasearch')
 const paypal = require('@paypal/checkout-server-sdk');
 const payPalClient = require('../config/payPalClient');
@@ -36,9 +37,9 @@ router.get('/product', (req, res) => { //render product page
     }).then((products) => {
         res.render('product/productDisplay', {
             products: products,
-        })
+        });
     })
-})
+});
 
 // JH: <start>
 router.get('/cart', (req, res) => {
@@ -310,10 +311,27 @@ router.post('/success', async (req, res) => {
     }
 
     // 6. Return a successful response to the client
+
+    // Save payment record to database
+    let itemsObject = {};
+    let totalPrice = 0.0;
+    for (let i = 0; i < shopping_cart.length; i++) {
+        itemsObject[shopping_cart[i].productID] = shopping_cart[i].quantity;
+        totalPrice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
+    }
+    let dateObject = new Date();
+    let currentDate = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + dateObject.getDate(); 
+    console.log('this is totalprice: ' + totalPrice);
+    orders.create({
+        userId: req.user.id,
+        items: JSON.stringify(itemsObject),
+        date: currentDate,
+        totalPrice: totalPrice
+    });
     res.redirect('debug');
-    console.log('SUCCESSjlksdsgpikesgoip!');
     shopping_cart = [];
 });
+
 var matches;
 router.get('/search', (req, res) => {
     var substringRegex;

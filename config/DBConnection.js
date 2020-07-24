@@ -1,6 +1,6 @@
 const mySQLDB = require('./DBConfig');
-const customer = require('../models/Customer_model');
-const merchant = require('../models/Merchant_model');
+//const customer = require('../models/Customer_model');
+//const merchant = require('../models/Merchant_model');
 const user = require('../models/User_model')
 //const admin = require('../models/Admin_model');
 
