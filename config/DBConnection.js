@@ -1,8 +1,8 @@
 const mySQLDB = require('./DBConfig');
-const customer = require('../models/Customer_model');
-const merchant = require('../models/Merchant_model');
-const user = require('../models/User_model')
-//const admin = require('../models/Admin_model');
+const user = require('../models/User_model');
+const order = require('../models/Order_model');
+const order_item = require('../models/OrderItem_model');
+const product = require('../models/productModel');
 
 // If drop is true, all existing tables are dropped and recreated
 
@@ -19,6 +19,13 @@ const setUpDB = (drop) => {
             */
             //user.hasMany(video);
             //merchant.hasMany(customer);
+            user.hasMany(order);
+            order.hasMany(order_item);
+            order.belongsTo(user, { as: 'merchant'});
+            order.belongsTo(user, { as: 'user'});
+            //order_item.belongsTo(product, { through: 'order_details', sourceKey: 'OrderId' });
+            order_item.belongsTo(product);
+            
             mySQLDB.sync({ // Creates table if none exists
                 force: drop
             }).then(() => {
