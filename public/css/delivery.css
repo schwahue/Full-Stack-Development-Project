@@ -1,0 +1,28 @@
+.content{
+    text-align: center;
+}
+
+.acpt-btn{
+    background-color:#F1984D;
+    color: #FFFFFF;
+}
+
+.acpt-btn:hover{
+    background-color:#F1984D;
+    color: #212529;
+}
+
+.status-choice{
+    margin-top:10px;
+}
+
+.btn2{
+    margin-top: 10px;
+    width: 100%;
+    border: none;
+    padding: 15px;
+}
+
+.html, body{
+    background: #d9d9d9;
+}

@@ -1,0 +1,32 @@
+<div id="content" style="">
+
+    <a href="/merchant/orders" style="font-size: 30px; color:#6b6a6a;"> &#60; Back to Orders </a>
+
+    <div style="border: 1px solid; margin-top:20px">
+        <div class="row" style="margin-left: 20px; margin-right: 20px"> 
+            <div class="col">
+                <p>To: {{order.user.address}}, {{order.user.unit_number}} <br> {{order.user.postal_code}}</p>
+            </div>
+            
+        </div>
+        <hr>
+        <div class="row" style="margin-left: 20px; margin-right: 20px"> 
+            <div class="col">
+                <p> LAZOPEE</p>
+            </div>
+            
+        </div>
+        <hr>
+
+        <div class="row" style="margin-left: 20px; margin-right: 20px"> 
+            <div class="col">
+                <p>{{order.user.first_name}} {{order.user.last_name}}</p>
+                <p>{{order.user.contact_number}} </p>
+            </div>
+            
+        </div>
+        <hr>
+        <img style="width:200px;" src="{{qr_data}}"/>
+
+    </div>
+</div>

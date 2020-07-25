@@ -5,113 +5,134 @@
     <p>filter</p>
     <hr>
 
-    <!-- ORDER 2-->
-    <div class="row order">
+    {{#if orders}}
+        <!-- ORDER 2-->
+        {{#each orders}}
+            <div class="row order">
 
-        <!-- Start of all orders -->
-        <div class="order-header-containter">
-            <div class="order-header">
-                <p class="order-header-info">#{{order_number}}</p>
-                <p class="order-header-info">Date</p>
-                <hr>
-            </div>
-            <!-- Start of order container -->
-            <div class="row order-container">
-                <div class="col-md-9">
-                    <!-- Start of each order -->
-                    <div class="row order-item">
-                        <div class="col-sm-3 item-photo">
-                            <img src="/img/image-placeholder.jpg" alt="..." class="img-thumbnail order-item-photo">
-                        </div>
-                        <div class="col-sm-3">
-                            <p> test 2 </p>
-                        </div>
-                        <div class="col-sm-3">
-                            <p> test 2 </p>
-                        </div>
-                        <div class="col-sm-3">
-                            test 2
-                        </div>
+                <!-- Start of all orders -->
+                <div class="order-header-containter">
+                    <div class="order-header">
+                        <p class="order-header-info">#{{id}}</p>
+                        <p class="order-header-info">{{date}}</p>
+                        <hr>
                     </div>
 
-                    <div class="row order-item">
-                        <div class="col-sm-3 item-photo">
-                            <img src="/img/image-placeholder.jpg" alt="..." class="img-thumbnail order-item-photo">
-                        </div>
-                        <div class="col-sm-3">
-                            <p> test 2</p>
-                        </div>
-                        <div class="col-sm-3">
-                            <p> test 2</p>
-                        </div>
-                        <div class="col-sm-3">
-                            test 2
+
+                    <!-- Start of order_purchases container -->
+                    <div class="row order-container">
+                        <div class="col-md-9">
+                            <!-- Start of each order -->
+                            {{#each Order_Items}}
+                            <div class="row order-item">
+                                <div class="col-sm-4 item-photo">
+                                    <img src="/img/image-placeholder.jpg" alt="..." class="img-thumbnail order-item-photo">
+                                </div>
+                                <div class="col-sm-4">
+                                    <p> {{product.productName}} </p>
+                                    <p> {{product.productDescription}}</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p> Qty: {{quantity}} </p>
+                                </div>
+                                <!--
+                                    <div class="col-sm-3">
+                                        {{customer_name}}
+                                    </div>-->
+                            </div>
+                            {{/each}}
+                            <!--
+                                <div class="row order-item">
+                                    <div class="col-sm-3 item-photo">
+                                        <img src="/img/image-placeholder.jpg" alt="..." class="img-thumbnail order-item-photo">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p> test 2</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p> test 2</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        test 2
+                                    </div>
+
+                                </div>-->
+                            <!-- End of all orders -->
                         </div>
 
+                        <div class="col-md-3 btn-col">
+                            <!-- 
+                                <a href="" data-toggle="modal" data-target="#confirmModal"
+                                    class="acpt-btn btn btn2 btn-outline-secondary">Arrange Delivery </a>
+                                <a href="" data-toggle="modal" data-target="#deleteModal" 
+                                    class="rej-btn btn btn2 btn-outline-secondary"> Reject Order </a> -->
+                            <a href="/merchant/order/{{id}}" class=" acpt-btn btn btn2 btn-normal btn-outline-secondary">View Details</a>
+                        </div>
                     </div>
-                    <!-- End of all orders -->
+                    <!-- End of order_purchases containter -->
                 </div>
+                <!-- End of all orders -->
 
-                <div class="col-md-3 btn-col">
-                    <a href="" data-toggle="modal" data-target="#confirmModal"
-                        class="acpt-btn btn btn2 btn-outline-secondary">Arrange Delivery </a>
-                    <a href="" data-toggle="modal" data-target="#deleteModal" 
-                        class="rej-btn btn btn2 2btn-outline-secondary"> Reject Order </a>
-                </div>
-            </div>
-            <!-- End of orders containter -->
-        </div>
-        <!-- End of all orders -->
 
-        <!-- Confirm Modal -->
-        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmModalLabel">Order Confirmation for #{{order_number}}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                <!-- Confirm Modal -->
+                <!--
+                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmModalLabel">Order Confirmation for #{{order_number}}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Please make sure you have the available stock before confirming the order.
+                            </div>
+                            <div class="modal-footer">
+                                <a type="button" style="color:#FFFFFF" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                                <a hreftype="button" style="color:#FFFFFF"  value="confirm_delivery" class="btn btn-primary">Confirm Delivery</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        Please make sure you have the available stock before confirming the order.
-                    </div>
-                    <div class="modal-footer">
-                        <a type="button" style="color:#FFFFFF" class="btn btn-secondary" data-dismiss="modal">Close</a>
-                        <a hreftype="button" style="color:#FFFFFF"  value="confirm_delivery" class="btn btn-primary">Confirm Delivery</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!-- End of modal -->
+                </div> -->
+                <!-- End of modal -->
 
-    <!-- Delete Modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteModalLabel">Order Rejection for #{{order_number}}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Once rejected, action cannot be undone.
-                    </div>
-                    <div class="modal-footer">
-                        <a type="button" style="color:#FFFFFF" class="btn btn-secondary" data-dismiss="modal">Close</a>
-                        <a hreftype="button" style="color:#FFFFFF"  value="confirm_delivery" class="btn btn-primary">Confirm Reject</a>
+                <!-- Delete Modal -->
+                <!--
+                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Order Rejection for #{{order_number}}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Once rejected, action cannot be undone.
+                            </div>
+                            <div class="modal-footer">
+                                <a type="button" style="color:#FFFFFF" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                                <a hreftype="button" style="color:#FFFFFF"  value="confirm_delivery" class="btn btn-primary">Confirm Reject</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                -->
+                <!-- End of modal -->
+
+
             </div>
-        </div>
-    <!-- End of modal -->
+        {{/each}}
 
-        
-    </div>
+    {{else}}
 
-    
+    <h3 style="text-align:center; margin-top:40px; color:#818181;">-- No Orders Available --</h3>
+
+    {{/if}}
+
+
 
 </div>

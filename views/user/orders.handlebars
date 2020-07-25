@@ -1,0 +1,146 @@
+<div class="main">
+    <div class="row mw">
+        <div class=" col-md-2  side-nav offset-md-1 ">
+            <p class="welcome"> Welcome {{user.last_name}},</p>
+            <hr>
+            <a class="sub-title" style="color:#000000" href="/user/account">Account</a>
+
+            <hr>
+            <p class="sub-title">My Order</p>
+            <ul class="navbar-nav navbar-ligh">
+                <li class="nav-item active"><a class="side-link-a">Track My Order</a></li>
+
+            </ul>
+            <hr>
+        </div>
+
+        <div class="content col-md-7">
+
+            <h4 class="sub-content-title">My Purchases</h4>
+
+            <div class="row selection-bar" style="background-color:orange; text-align:center">
+                <div class="col">
+                    <p>All</p>
+                </div>
+                <div class="col">
+                    <p>On Delivery</p>
+                </div>
+                <div class="col">
+                    <p>Past Purchase</p>
+                </div>
+            </div>
+
+            <div class="row filter" style="text-align:right;">
+                <h3> --Filter here--</h3>
+            </div>
+
+            <!-- items -->
+
+            {{#if orders}}
+            <!-- ORDER 2-->
+            {{#each orders}}
+            <div class="row order">
+
+                <!-- Start of all orders -->
+                <div class="order-header-containter">
+                    <div class="order-header">
+                        <p class="order-header-info">#{{id}}</p>
+                        <p class="order-header-info">{{date}}</p>
+                        <hr>
+                    </div>
+
+
+                    <!-- Start of order_purchases container -->
+                    <div class="row order-container">
+                        <div class="col-md-9">
+                            <!-- Start of each order -->
+                            {{#each Order_Items}}
+                            <div class="row order-item">
+                                <div class="col-sm-4 item-photo">
+                                    <img src="/img/image-placeholder.jpg" alt="..."
+                                        class="img-thumbnail order-item-photo">
+                                </div>
+                                <div class="col-sm-4">
+                                    <p> {{product.productName}} </p>
+                                    <p> {{product.productDescription}}</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p> Qty: {{quantity}} </p>
+                                </div>
+                                <!--
+                                    <div class="col-sm-3">
+                                        {{customer_name}}
+                                    </div>-->
+                            </div>
+                            {{/each}}
+                            <!--
+                                <div class="row order-item">
+                                    <div class="col-sm-3 item-photo">
+                                        <img src="/img/image-placeholder.jpg" alt="..." class="img-thumbnail order-item-photo">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p> test 2</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p> test 2</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        test 2
+                                    </div>
+
+                                </div>-->
+                            <!-- End of all orders -->
+                        </div>
+
+                        <div class="col-md-3 btn-col">
+                            <!-- 
+                                <a href="" data-toggle="modal" data-target="#confirmModal"
+                                    class="acpt-btn btn btn2 btn-outline-secondary">Arrange Delivery </a>
+                                <a href="" data-toggle="modal" data-target="#deleteModal" 
+                                    class="rej-btn btn btn2 btn-outline-secondary"> Reject Order </a> -->
+                            <a href="" class=" acpt-btn btn btn2 btn-normal btn-outline-secondary">View Details</a>
+                        </div>
+                    </div>
+                    <!-- End of order_purchases containter -->
+                </div>
+                <!-- End of all orders -->
+
+
+            </div>
+            {{/each}}
+
+            {{else}}
+
+            <h3 style="text-align:center; margin-top:40px; color:#818181; margin-bottom:60px;">-- No Orders Available --
+            </h3>
+
+            {{/if}}
+            <!--
+                <div class="row test1">
+                    <p> ORDER ID</p>
+                    <div class="row order-item">
+                        <div class="col-md-3 item-photo">
+                            <img src="/img/image-placeholder.jpg" alt="..." class="img-thumbnail">
+                        </div>
+                        <div class="col-md-9">
+                            <p> test 2</p>
+                        </div>
+                    </div>
+
+                    <div class="row order-item">
+                        <div class="col-md-3 item-photo">
+                            <img src="/img/image-placeholder.jpg" alt="..." class="img-thumbnail">
+                        </div>
+                        <div class="col-md-9">
+                            <p> test 2</p>
+                        </div>
+                    </div>
+                </div> -->
+        </div>
+    </div>
+
+
+
+    <script>
+
+    </script>
