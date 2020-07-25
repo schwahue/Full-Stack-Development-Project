@@ -4,6 +4,9 @@ const alertMessage = require('../helpers/messenger.js');
 var bcrypt = require('bcryptjs');
 
 const User = require('../models/User_model');
+const Order = require('../models/Order_model');
+const OrderItem = require('../models/OrderItem_model');
+const Product = require('../models/productModel');
 const passport = require('passport');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -36,33 +39,6 @@ router.get('/login', (req, res) => {
     
 });
 
-/*
-router.get('/createtoken', (req, res) => {
-    user = req.user;
-    let uid = user.email;
-
-    admin.auth().createCustomToken(uid)
-    .then(function(customToken) {
-        req.session.token = customToken;
-        firebase.auth().signInWithCustomToken(customToken).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log('Error SIGNING IN custom token:', error);
-            
-            
-        });
-        console.log("SIGNED IN WITH TOKEN");
-        res.redirect('/user/redirect');
-    })
-    .catch(function(error) {
-        console.log('Error creating custom token:', error);
-    });
-    
-
-    
-});*/
-
 router.post('/login', (req, res, next) => {
     
     passport.authenticate('local', {
@@ -75,18 +51,6 @@ router.post('/login', (req, res, next) => {
     })(req, res, next);
 
 });
-
-router.get('/choose_account', (req, res) => {
-    
-    res.render('user/choose_account',  {title:"Choose Account", style:"choose_acc"}); 
-
-});
-/*
-router.get('/signup', (req, res) => {
-
-    res.render('user/sign_up',  {title:"Sign Up", style:"signup_form"}); 
-
-});*/
 
 router.get('/signup', (req, res) => {
 
@@ -217,120 +181,27 @@ router.post('/signup', [
 });
 
 
-/*
-router.post('/signup', (req, res) => {
+router.get('/orders', (req, res)=> {
 
-    // TEST
-    let errors = [];
+    Order.findAll({
+        where: {
+            userId: req.user.id
+        },
+        attributes: ['id', 'date', 'status', 'userId'],
+        /*include: [{model: OrderItem, attributes: ['id', 'quantity', 'productId']}],*/
+        include: [{model: OrderItem, include: Product}]
 
-    // Retrieves fields from register page from request body
-    let { contact_number, email, password, c_password , last_name, first_name  } = req.body;
+        /*
+        order: [
+            ['userId']
+        ]*/
+    })
+    .then((orders) => {
+        //console.log(orders.Order_Items);
+        res.render('user/orders', {title:"deliverys", style:"users", orders: orders});
+        //return res.json({ msg: orders});
 
-    
-    // Checks if both passwords entered are the same
-    if (password !== c_password) {
-        errors.push('Passwords do not match' );
-    }
-
-    // Checks that password length is more than 4
-    if (password.length < 4) {
-        errors.push('Password must be at least 4 characters' );
-    }
-
-    if (errors.length > 0) {
-        res.render('user/sign_up',  {
-            title:"Sign Up", 
-            style:"login_form", 
-            first_name, 
-            last_name,
-            contact_number,
-            email,
-            errors
-        
-        }); 
-
-    } 
-    else  {
-        
-        // checks if user is already registered
-        User.findOne({ where: { email: req.body.email } })
-            .then(user => {
-                if (user) {
-                    errors.push('email: ' + user.email + ' already registered ' );
-                    
-
-                } 
-
-                User.findOne({ where: { contact_number: req.body.contact_number } })
-                .then(user2 =>{
-                    if (user2)  {
-                        errors.push('contact_number: ' + user2.contact_number + ' already in use' );
-                        res.render('user/sign_up',  {
-                            errors,
-                            title:"Sign Up", 
-                            style:"login_form", 
-                            first_name, 
-                            last_name,
-                            contact_number,
-                            email
-                        
-                        });
-
-                    } else {
-                        if(errors.length > 0){
-                            res.render('user/sign_up',  {
-                                errors,
-                                title:"Sign Up", 
-                                style:"login_form", 
-                                first_name, 
-                                last_name,
-                                contact_number,
-                                email
-                            
-                            });
-                        } else {
-
-                        
-                            // Create new user record
-                            let type = 'customer';
-                            bcrypt.genSalt(10, function(err, salt) {
-                                if (err) return next(err);
-                                bcrypt.hash(password, salt, function(err, hash) {
-                                    if (err) return next(err);
-                                    
-                                    password = hash;
-                                    
-                                    User.create({ first_name, last_name, email, password, contact_number, type })
-                                        .then(user => {
-                                            alertMessage(res, 'success', user.email + ' added. Please login', 'fas fa-sign-in-alt', true);
-                                            res.redirect('/user/login');
-                                        })
-                                        .catch(err => console.log(err));
-                                    
-                                });
-                            });
-                        }
-                    }
-
-                });
-                        
-                        
-                    
-                
-            });
-            
-            
-
-
-    }
-
-    
-});
-*/
-
-router.get('/delivery', (req, res)=> {
-
-    res.render('user/delivery', {title:"delivery", style:"users"});
+    }).catch(err => console.log(err));
 
 });
 
@@ -435,7 +306,6 @@ router.get('/redirect', (req, res) => {
     }
 
 });
-
 
 
 //HF Test code End

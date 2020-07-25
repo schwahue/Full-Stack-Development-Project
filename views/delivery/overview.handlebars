@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="content">
+        <h1>Order #{{order.id}}</h1>
+        <div style="margin-top:50px;">
+            <h4>Deliver Address:</h4>
+            <span>{{order.user.address}},</span>
+            <span>{{order.user.unit_number}},</span>
+            <p>S{{order.user.postal_code}}</p>
+        </div>
+        <h3 style="margin-top: 20px;"> Delivery Status: <span style="color:#458B00;">{{order.status}}</span> </h3>
+        <div style="margin-top: 40px;">
+            <h4> Status Update:</h4>
+            <form method="post" action="">
+                <div class="status-choice">
+                    <input type="Submit" name="submit" value="Picked Up" class="btn acpt-btn btn2" />
+                </div>
+
+                <div class="status-choice">
+                    <input type="Submit" name="submit" value="On Delivery" class="btn acpt-btn btn2" />
+                </div>
+
+                <div class="status-choice">
+                    <input type="Submit" name="submit" value="Delivered" class="btn acpt-btn btn2" />
+                </div>
+                <input type="hidden" style="display:hidden" name="orderid" value="{{order.id}}">
+            </form>
+        </div>
+
+    </div>
+
+</div>
