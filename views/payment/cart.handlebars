@@ -30,12 +30,36 @@
 </div>
 </section>
 <section class="baginfo container col-lg-9">
+    {{!-- {{#if recommended}}
+        {{#each recommended}}
+        <div>
+            <h4>{{productName}}</h4>
+        </div>
+        {{/each}}
+        {{/if}} --}}
+    <a href="#frequentitems" class="btn btn-info" data-toggle="collapse">Frequently Bought Together</a>
+    <div id="frequentitems" class="collapse">
+        {{#if recommended}}
+        {{#each recommended}}
+        <div>
+            <div class="col col-12 col-md-12 col-sm-6" style="text-align: center;">
+                <img class="img-fluid" src="{{productImageURL}}" style="max-width: 30%; height: auto;">
+                <h4>{{productName}}, {{productDescription}}</h4>
+                <h4>${{productPrice}}</h4>
+                <a href="/recommended/{{productID}}" class="btn btn-primary">Add to cart</a>
+            </div>
+        </div>
+        {{/each}}
+        {{/if}}
+        
+</section>
+<section class="baginfo container col-lg-9">
     {{#if products}}
     {{#each products}}
     <hr>
     <div class="row" style="padding-top: 30px;">
         <div class="col col-12 col-md-2" style="text-align: center;"><img class="img-fluid"
-                src="/img/iphone-se-red-select-2020.jpg" style="max-width: 100%; height: auto;"></div>
+                src="{{productImageURL}}" style="max-width: 100%; height: auto;"></div>
         <div class="col" style="text-align: center;">
             <div class="row">
                 <div class="col">
@@ -63,7 +87,9 @@
                 {{!-- Spinner here --}}
                 <div class="col">
                     {{!-- <div><span class="spinner-border spinner-border-sm" role="status"></span></div> --}}
-                    <p>PLACEHOLDER</p>
+                    <div style="float: left;">
+                        <span style="font-size: 17px; font-weight: 600; padding-left:15px;">{{productDescription}}</span>
+                    </div>
                 </div>
             </div>
             <hr>

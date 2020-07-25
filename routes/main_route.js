@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 const alertMessage = require('../helpers/messenger.js');
 const Product = require('../models/productModel.js'); //import Product 
+const simpleOrder = require('../models/simpleOrderModel.js');
 const algoliasearch = require('algoliasearch')
 const paypal = require('@paypal/checkout-server-sdk');
 const payPalClient = require('../config/payPalClient');
 
 // User's cart
 var shopping_cart = [];
+var frequentlyBoughtTogether = {};
 
 router.get('/', (req, res) => {
     res.render('index', { title: 'Home' }); // renders views/index.handlebars
@@ -36,21 +38,136 @@ router.get('/product', (req, res) => { //render product page
     }).then((products) => {
         res.render('product/productDisplay', {
             products: products,
-        })
+        });
     })
-})
+});
 
 // JH: <start>
-router.get('/cart', (req, res) => {
-    let totalprice = 0.0;
+async function GetFrequent() {
+    // Get shopping cart items
+    let cart_items = [];
     for (let i = 0; i < shopping_cart.length; i++) {
-        totalprice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
+        cart_items.push(shopping_cart[i].productID);
     }
-    info = [{ totalprice: totalprice }]
-    res.render('payment/cart', {
-        products: shopping_cart,
-        info: info
+
+    // Retrieve items of orders in database
+    let recommendedItems = {};
+    const items = await simpleOrder.findAll({
+        attributes: ['items']
     });
+
+    // Find how frequently bought together items
+    for (let i = 0; i < items.length; i++) {
+        let boolSearch = false;
+        var obj = JSON.parse(items[i].dataValues.items);
+        let theItems = Object.keys(obj);
+
+        // Check if this order has items that relate to user's cart
+        cart_items.forEach(productID => {
+            if (theItems.includes(productID)) {
+                boolSearch = true;
+            }
+        });
+        if (boolSearch) {
+            for (let i = 0; i < theItems.length; i++) {
+                if (!Object.keys(recommendedItems).includes(theItems[i])) {
+                    recommendedItems[theItems[i]] = 1;
+                } else {
+                    recommendedItems[theItems[i]] = parseInt(recommendedItems[theItems[i]] + 1);
+                }
+            }
+        }
+
+    }
+
+    // Sort it
+    var sortable = [];
+    for (var i in recommendedItems) {
+        sortable.push([i, recommendedItems[i]]);
+    }
+    sortable.sort(function (a, b) {
+        return b[1] - a[1];
+    });
+
+    //Choose top 3 that are not in cart
+    const testrecommendedItems = [1, 2];
+    recommendedItems = [];
+    for (let i = 0; i < sortable.length; i++) {
+        console.log('test code ' + cart_items + '|' + sortable[i][0] + '|' + cart_items.includes(sortable[i][0]));
+        if (!cart_items.includes(sortable[i][0])) {
+                Product.findOne({ where: { productID: sortable[i][0] } })
+                .then(product => {
+                    if (product) {
+                        recommendedItems.push({
+                            productName: product.productName,
+                            productPrice: product.productPrice.toFixed(2),
+                            productTotal: product.productPrice.toFixed(2),
+                            productID: product.productID,
+                            productDescription: product.productDescription,
+                            productCategory: product.productCategory,
+                            productImageURL: product.productImageURL
+                        });
+                    }
+                }).then(function(result) {
+                    frequentlyBoughtTogether = recommendedItems;
+                }).then(() => {
+                    console.log('this is frequent ' + frequentlyBoughtTogether);
+                })
+        }
+    }
+    frequentlyBoughtTogether = recommendedItems;
+}
+
+router.get('/cart', async (req, res) => {
+    // const secondFunction = async () => {
+    //     const result = await GetFrequent()
+    //     let totalprice = 0.0;
+    //     for (let i = 0; i < shopping_cart.length; i++) {
+    //         totalprice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
+    //         // Update product total
+    //         shopping_cart[i].productTotal = shopping_cart[i].productPrice * shopping_cart[i].quantity;
+    //         shopping_cart[i].productTotal = parseFloat(shopping_cart[i].productTotal).toFixed(2);
+    //     }
+    //     info = [{ totalprice: totalprice }]
+    //     res.render('payment/cart', {
+    //         products: shopping_cart,
+    //         info: info,
+    //         recommended: frequentlyBoughtTogether
+    //     });
+    // }
+    // secondFunction();
+    GetFrequent().then(function(something) {
+        while (frequentlyBoughtTogether.length > 3) {
+            frequentlyBoughtTogether.pop();
+        }
+    }).then(function (somethingagain) {
+        let totalprice = 0.0;
+        for (let i = 0; i < shopping_cart.length; i++) {
+            totalprice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
+            // Update product total
+            shopping_cart[i].productTotal = shopping_cart[i].productPrice * shopping_cart[i].quantity;
+            shopping_cart[i].productTotal = parseFloat(shopping_cart[i].productTotal).toFixed(2);
+        }
+        info = [{ totalprice: totalprice }]
+        res.render('payment/cart', {
+            products: shopping_cart,
+            info: info,
+            recommended: frequentlyBoughtTogether
+        });
+    });
+    // let totalprice = 0.0;
+    // for (let i = 0; i < shopping_cart.length; i++) {
+    //     totalprice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
+    //     // Update product total
+    //     shopping_cart[i].productTotal = shopping_cart[i].productPrice * shopping_cart[i].quantity;
+    //     shopping_cart[i].productTotal = parseFloat(shopping_cart[i].productTotal).toFixed(2);
+    // }
+    // info = [{ totalprice: totalprice }]
+    // res.render('payment/cart', {
+    //     products: shopping_cart,
+    //     info: info,
+    //     recommended: frequentlyBoughtTogether
+    // });
 });
 
 // Remove item
@@ -64,8 +181,10 @@ function RemoveFromCart(id) {
 }
 
 router.get('/cart/remove/:id', (req, res) => {
-    RemoveFromCart(req.params.id);
-    res.redirect('/cart');
+    RemoveFromCart(req.params.id)
+    GetFrequent().then(() => {
+        res.redirect('/cart');
+    })
 });
 
 // Plus quantity
@@ -136,7 +255,8 @@ router.get('/debug/database', (req, res) => {
                     productPrice: 649.00,
                     productStock: 5,
                     productCategory: 'Phones',
-                    productBrand: 'Apple'
+                    productBrand: 'Apple',
+                    productImageURL: '/img/iphone-se-red-select-2020.jpg'
                 })
             }
         });
@@ -148,12 +268,31 @@ router.get('/debug/database', (req, res) => {
             } else {
                 Product.create({
                     productID: '2',
-                    productName: 'iPhone 11 64GB Rose Gold',
+                    productName: 'iPhone 11 64GB Yellow',
                     productDescription: 'Another iPhone',
                     productPrice: 649.00,
                     productStock: 5,
                     productCategory: 'Phones',
-                    productBrand: 'Apple'
+                    productBrand: 'Apple',
+                    productImageURL: '/img/iphone11-yellow-select-2019.jpg'
+                })
+            }
+        });
+
+    Product.findOne({ where: { productID: '3' } })
+        .then(product => {
+            if (product) {
+                // do something
+            } else {
+                Product.create({
+                    productID: '3',
+                    productName: 'Apple AirPods',
+                    productDescription: 'A revolutionary true wireless earbuds that will elevate your listening experience to a whole new level',
+                    productPrice: 249.00,
+                    productStock: 5,
+                    productCategory: 'Audio',
+                    productBrand: 'Apple',
+                    productImageURL: '/img/iphone-se-red-select-2020.jpg'
                 })
             }
         });
@@ -189,8 +328,10 @@ router.get('/debug/add/:id', (req, res) => {
                         productID: product.productID,
                         productDescription: product.productDescription,
                         productCategory: product.productCategory,
+                        productImageURL: product.productImageURL,
                         quantity: 1,
                     });
+                    GetFrequent();
                 }
                 shopping_cart.forEach(element => console.log(element));
             } else {
@@ -198,6 +339,29 @@ router.get('/debug/add/:id', (req, res) => {
             }
         });
     res.redirect('/debug');
+});
+
+router.get('/recommended/:id', (req, res) => {
+    Product.findOne({ where: { productID: req.params.id.toString() } })
+        .then(product => {
+            if (product) {
+                shopping_cart.push({
+                    productName: product.productName,
+                    productPrice: product.productPrice.toFixed(2),
+                    productTotal: product.productPrice.toFixed(2),
+                    productID: product.productID,
+                    productDescription: product.productDescription,
+                    productCategory: product.productCategory,
+                    productImageURL: product.productImageURL,
+                    quantity: 1,
+                });
+            }
+        }).then(function(nothing) {
+            GetFrequent();
+        }).then(function(nothing) {
+            res.redirect('/cart');
+        })
+    // res.redirect('/cart');
 });
 
 router.post('/pay', async (req, res) => {
@@ -310,10 +474,27 @@ router.post('/success', async (req, res) => {
     }
 
     // 6. Return a successful response to the client
+
+    // Save payment record to database
+    let itemsObject = {};
+    let totalPrice = 0.0;
+    for (let i = 0; i < shopping_cart.length; i++) {
+        itemsObject[shopping_cart[i].productID] = shopping_cart[i].quantity;
+        totalPrice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
+    }
+    let dateObject = new Date();
+    let currentDate = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + dateObject.getDate(); 
+    console.log('this is totalprice: ' + totalPrice);
+    simpleOrder.create({
+        userId: req.user.id,
+        items: JSON.stringify(itemsObject),
+        date: currentDate,
+        totalPrice: totalPrice
+    });
     res.redirect('debug');
-    console.log('SUCCESSjlksdsgpikesgoip!');
     shopping_cart = [];
 });
+
 var matches;
 router.get('/search', (req, res) => {
     var substringRegex;
