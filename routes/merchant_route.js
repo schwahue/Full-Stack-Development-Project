@@ -2,10 +2,16 @@ const express = require("express");
 const router = express.Router();
 const alertMessage = require("../helpers/messenger.js");
 var bcrypt = require("bcryptjs");
-const User = require("../models/User_model");
-const Product = require("../models/productModel.js");
+
+const User = require('../models/User_model');
+const Order = require('../models/Order_model');
+const OrderItem = require('../models/OrderItem_model');
+const Product = require('../models/productModel');
+
 const ensureAuthenticated = require("../helpers/auth");
 const { ensureMerchantAuthenticated } = require("../helpers/auth");
+
+const QRCode = require('qrcode');
 
 // Required for file upload
 const fs = require("fs");
@@ -16,16 +22,11 @@ const { body, validationResult } = require("express-validator");
 //Algolia
 const algoliasearch = require("algoliasearch");
 const { error } = require("console");
+const { UserBindingContext } = require("twilio/lib/rest/ipMessaging/v2/service/user/userBinding");
 const client = algoliasearch("97Y32174KO", "d371533080d456f5aaedd6716056c612");
 const index = client.initIndex("Products");
 
-/*
-router.get('/signup', (req, res) => {
-
-res.render('merchant/sign_up', {title:"Merchant - SignUp", style:"signup_form"});
-
-});*/
-
+/* Hui Feng start */
 router.get("/signup", (req, res) => {
   res.render("merchant/sign_up", {
     title: "Merchant - SignUp",
@@ -183,41 +184,65 @@ router.post(
 );
 
 router.get("/orders", (req, res) => {
-    purchases_set1 = [];
-    purchases1 = {name: "Phone", quantity: "2"};
-    purchases2 = {name: "Notebook", quantity: "4"};
 
-    purchases_set1.push(purchases1);
-    purchases_set1.push(purchases2);
+    Order.findAll({
+      where: {
+        merchantId: req.user.id
+      },
+      /*include: [{model: OrderItem, attributes: ['id', 'quantity', 'productId']}],*/
+      include: [{model: OrderItem, include: Product}],
 
-    purchases_set2 = [];
-    purchases1 = {name: "pen", quantity: "2"};
-    purchases2 = {name: "pencil", quantity: "4"};
-
-    purchases_set2.push(purchases1);
-    purchases_set2.push(purchases2);
-
-    orders = [];
-    order1 = {id:"123", date:"23/12/2000", purchases: purchases_set1};
-    order2 = {id:"333", date:"11/11/2001", purchases: purchases_set2};
-    orders.push(order1);
-    orders.push(order2);
-
-    res.render("merchant/orders", {
+      order: [
+        ['date', 'DESC']
+      ]
+  })
+  .then((orders) => {
+      //console.log(orders.Order_Items);
+      res.render("merchant/orders", {
         title: "Merchant - Orders",
         style: "merchant",
         navbar: "merchant",
         orders: orders
     });
-});
+      //return res.json({ msg: orders});
 
-router.get("/order_confirmation", (req, res) => {
-
-});
-
-router.get("/order_delete", (req, res) => {
+  }).catch(err => console.log(err));
 
 });
+
+router.get("/order/:id", (req, res) => {
+  Order.findOne({
+    where: {
+      id: req.params.id,
+    },
+    include: [{model: User, as: "user", 
+    attributes: ['first_name', 'last_name', 'contact_number', 'postal_code' ,'unit_number', 'address']}]
+
+  })
+    .then((order) => {
+      // Testing 
+      //return res.json({ msg: order});
+      const myurl = `http://localhost:5000/delivery/${req.params.id}`
+
+      QRCode.toDataURL(myurl, [{width: 300}])
+
+        .then(url => {
+            console.log(url)
+            res.render("merchant/order_detail", {
+              order,
+              qr_data: url,
+              title: "Merchant - OrderDetail",
+              style: "merchant",
+              navbar: "merchant",
+            });
+        })
+        .catch(err => { console.error(err); })
+
+    })
+    .catch((err) => { console.log(err); });
+
+});
+/* Hui Feng end */
 
 router.get("/account", ensureMerchantAuthenticated, (req, res) => {
   res.render("merchant/account", {
@@ -226,6 +251,7 @@ router.get("/account", ensureMerchantAuthenticated, (req, res) => {
     navbar: "merchant",
   });
 });
+
 
 router.get("/addProduct", (req, res) => {
   res.render("merchant/addProduct", {
