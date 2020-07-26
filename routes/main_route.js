@@ -6,6 +6,7 @@ const simpleOrder = require('../models/simpleOrderModel.js');
 const algoliasearch = require('algoliasearch')
 const paypal = require('@paypal/checkout-server-sdk');
 const payPalClient = require('../config/payPalClient');
+const requestify = require('requestify');
 
 // User's cart
 var shopping_cart = [];
@@ -447,6 +448,42 @@ router.post('/pay', async (req, res) => {
     res.status(200).json({
         orderID: order.result.id
     });
+});
+
+router.post('/getlocation', (req, res) => {
+	let custlon, custlat, deliverylon, deliverylat;
+	let newlocation = {}
+	let key = '340903c45281bd'
+	let q = 'Punggol Waterway point'
+	let format = 'json'
+	let url = 'https://us1.locationiq.com/v1/search.php' + '?key=' + key + '&q=' + q + '&format=' + format;
+	
+	requestify.get(url)
+	.then(function(response) {
+		let location = response.getBody();
+		custlon = location[0].lon;
+		custlat = location[0].lat;
+	}).then(() => {
+		q = 'Jurong Bird Park'
+		url = 'https://us1.locationiq.com/v1/search.php' + '?key=' + key + '&q=' + q + '&format=' + format;
+		requestify.get(url)
+			.then(function (response) {
+				let location = response.getBody();
+				deliverylon = location[0].lon;
+				deliverylat = location[0].lat;
+			}).then(() => {
+				res.send({
+					deliverylon: deliverylon,
+					deliverylat: deliverylat,
+					custlon: custlon,
+					custlat: custlat
+				});
+			});
+	})
+});
+
+router.get('/testlocation', (req, res) => {
+	res.render('user/testshippinglocation');
 });
 
 router.post('/success', async (req, res) => {
