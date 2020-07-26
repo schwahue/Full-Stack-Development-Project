@@ -24,14 +24,6 @@
     <div id="map"></div>
 
     <script>
-        function wait(ms) {
-            var start = new Date().getTime();
-            var end = start;
-            while (end < start + ms) {
-                end = new Date().getTime();
-            }
-        }
-
         let custlon, custlat, deliverylon, deliverylat;
         var getlocation = function (priceId) {
             return fetch("/getlocation", {
@@ -155,9 +147,73 @@
                         'icon-image': 'pulsing-dot'
                     }
                 });
-                var marker = new mapboxgl.Marker()
-                    .setLngLat([custlon, custlat])
-                    .addTo(map);
+                // Add customer location
+                var marker = new mapboxgl.Marker().setLngLat([custlon, custlat]).addTo(map);
+
+                // Projected delivery
+                var url = 'https://wanderdrone.appspot.com/';
+                let iDeliverylon = parseFloat(deliverylon);
+                let iDeliverylat = parseFloat(deliverylat);
+                let lonDiff = 0;
+                let latDiff = 0;
+                lonDiff = (iDeliverylon - parseFloat(custlon)) / 3;
+                latDiff = (iDeliverylat - parseFloat(custlat)) / 3;
+                var request = new XMLHttpRequest();
+                let counter = 0;
+                window.setInterval(function () {
+                    // make a GET request to parse the GeoJSON at the url
+                    request.open('GET', url, true);
+                    request.onload = function () {
+                        if (this.status >= 200 && this.status < 400) {
+                            // retrieve the JSON from the response
+                            var json = JSON.parse(this.response);
+                            new_thing = JSON.parse('{"geometry": {"type": "Point", "coordinates": [' + iDeliverylon + ',' + iDeliverylat + ']}, "type": "Feature", "properties": {}}');
+                            // increase the rocket
+                            if (lonDiff >= 0) {
+                                iDeliverylon -= lonDiff;
+                            } else {
+                                console.log('comes here? add');
+                                iDeliverylon += Math.abs(lonDiff);
+                            }
+                            if (latDiff >= 0) {
+                                iDeliverylat -= latDiff;
+                            } else {
+                                iDeliverylat += Math.abs(latDiff);
+                            }
+                            counter++;
+                            if (counter == 4) {
+                                iDeliverylon = parseFloat(deliverylon);
+                                iDeliverylat = parseFloat(deliverylat);
+                                counter = 0;
+                            }
+                            // update the drone symbol's location on the map
+                            //map.getSource('drone').setData(json);
+                            
+                            map.getSource('drone').setData(new_thing);
+                            
+                            //console.log(json);
+
+                            // fly the map to the drone's current location
+                            /*
+                            map.flyTo({
+                                center: json.geometry.coordinates,
+                                speed: 0.5
+                            });
+                            */
+                        }
+                    };
+                    request.send();
+                }, 2000);
+
+                map.addSource('drone', { type: 'geojson', data: url });
+                map.addLayer({
+                    'id': 'drone',
+                    'type': 'symbol',
+                    'source': 'drone',
+                    'layout': {
+                        'icon-image': 'rocket-15'
+                    }
+                });
             });
         })
         
