@@ -1,3 +1,24 @@
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: sticky;
+            top: 100px;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
 <body style="overflow-y: scroll;height: 70vw;">
     <script
     src="https://www.paypal.com/sdk/js?currency=SGD&client-id=AfCx1zfNeE0VcM-q_2K1_qW0iKnU2OQHiL5s7Kh88SoI2lChcHNxhvKOFc9NWWArfobSAwlUEeleuydF"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
@@ -20,6 +41,15 @@
                     {{!-- <div class="col col-md-6 mx-auto"><button class="btn btn-primary border-dark" type="button" style="float: left;width: 45%;background-color: rgba(0,0,0,0.8);color: #f5f5f7;">Apple Pay</button><button class="btn btn-primary" type="button" style="float: right;width: 45%;">PayPal</button></div> --}}
                 </div>
                 <div class="whitespace"></div>
+                <hr>
+                <div class="row">
+                    <div class="col col-md-6 mx-auto">
+                        <p style="text-align: center;">Projected Delivery</p>
+                        <div id="map"></div>
+                    </div>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> <!--why do i have to do this? -->
+                </div>
+                <br><br>
                 <hr>
                 <div class="row">
                     <div class="col col-md-6 mx-auto">
@@ -123,6 +153,201 @@
                 })
             }
         }).render('#paypal-button-container');
+    </script>
+    <script>
+        let custlon, custlat, deliverylon, deliverylat;
+        var getlocation = function (priceId) {
+            return fetch("/getlocation", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(function (result) {
+                return result.json();
+            });
+        };
+        getlocation("").then(function (data) {
+            // Call Stripe.js method to redirect to the new Checkout page
+            custlon = data.custlon;
+            custlat = data.custlat;
+            deliverylon = data.deliverylon;
+            deliverylat = data.deliverylat;
+            console.log(data);
+        }).then(() => {
+            mapboxgl.accessToken = 'pk.eyJ1IjoiamhsZWU0MDg0IiwiYSI6ImNrZDJyOWo5OTBsYmYyd255c2plMHVxNWEifQ.s6h4fZHiLCpRM-sHNODusg';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v9',
+                center: [deliverylon, deliverylat],
+                zoom: 9
+            });
+
+            var size = 200;
+
+            // implementation of CustomLayerInterface to draw a pulsing dot icon on the map
+            // see https://docs.mapbox.com/mapbox-gl-js/api/#customlayerinterface for more info
+            var pulsingDot = {
+                width: size,
+                height: size,
+                data: new Uint8Array(size * size * 4),
+
+                // get rendering context for the map canvas when layer is added to the map
+                onAdd: function () {
+                    var canvas = document.createElement('canvas');
+                    canvas.width = this.width;
+                    canvas.height = this.height;
+                    this.context = canvas.getContext('2d');
+                },
+
+                // called once before every frame where the icon will be used
+                render: function () {
+                    var duration = 1000;
+                    var t = (performance.now() % duration) / duration;
+
+                    var radius = (size / 2) * 0.3;
+                    var outerRadius = (size / 2) * 0.7 * t + radius;
+                    var context = this.context;
+
+                    // draw outer circle
+                    context.clearRect(0, 0, this.width, this.height);
+                    context.beginPath();
+                    context.arc(
+                        this.width / 2,
+                        this.height / 2,
+                        outerRadius,
+                        0,
+                        Math.PI * 2
+                    );
+                    context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
+                    context.fill();
+
+                    // draw inner circle
+                    context.beginPath();
+                    context.arc(
+                        this.width / 2,
+                        this.height / 2,
+                        radius,
+                        0,
+                        Math.PI * 2
+                    );
+                    context.fillStyle = 'rgba(255, 100, 100, 1)';
+                    context.strokeStyle = 'white';
+                    context.lineWidth = 2 + 4 * (1 - t);
+                    context.fill();
+                    context.stroke();
+
+                    // update this image's data with data from the canvas
+                    this.data = context.getImageData(
+                        0,
+                        0,
+                        this.width,
+                        this.height
+                    ).data;
+
+                    // continuously repaint the map, resulting in the smooth animation of the dot
+                    map.triggerRepaint();
+
+                    // return `true` to let the map know that the image was updated
+                    return true;
+                }
+            };
+
+            map.on('load', function () {
+                map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
+
+                map.addSource('points', {
+                    'type': 'geojson',
+                    'data': {
+                        'type': 'FeatureCollection',
+                        'features': [
+                            {
+                                'type': 'Feature',
+                                'geometry': {
+                                    'type': 'Point',
+                                    'coordinates': [deliverylon, deliverylat]
+                                }
+                            }
+                        ]
+                    }
+                });
+                map.addLayer({
+                    'id': 'points',
+                    'type': 'symbol',
+                    'source': 'points',
+                    'layout': {
+                        'icon-image': 'pulsing-dot'
+                    }
+                });
+                // Add customer location
+                var marker = new mapboxgl.Marker().setLngLat([custlon, custlat]).addTo(map);
+
+                // Projected delivery
+                var url = 'https://wanderdrone.appspot.com/';
+                let iDeliverylon = parseFloat(deliverylon);
+                let iDeliverylat = parseFloat(deliverylat);
+                let lonDiff = 0;
+                let latDiff = 0;
+                lonDiff = (iDeliverylon - parseFloat(custlon)) / 3;
+                latDiff = (iDeliverylat - parseFloat(custlat)) / 3;
+                var request = new XMLHttpRequest();
+                let counter = 0;
+                window.setInterval(function () {
+                    // make a GET request to parse the GeoJSON at the url
+                    request.open('GET', url, true);
+                    request.onload = function () {
+                        if (this.status >= 200 && this.status < 400) {
+                            // retrieve the JSON from the response
+                            var json = JSON.parse(this.response);
+                            new_thing = JSON.parse('{"geometry": {"type": "Point", "coordinates": [' + iDeliverylon + ',' + iDeliverylat + ']}, "type": "Feature", "properties": {}}');
+                            // increase the rocket
+                            if (lonDiff >= 0) {
+                                iDeliverylon -= lonDiff;
+                            } else {
+                                console.log('comes here? add');
+                                iDeliverylon += Math.abs(lonDiff);
+                            }
+                            if (latDiff >= 0) {
+                                iDeliverylat -= latDiff;
+                            } else {
+                                iDeliverylat += Math.abs(latDiff);
+                            }
+                            counter++;
+                            if (counter == 4) {
+                                iDeliverylon = parseFloat(deliverylon);
+                                iDeliverylat = parseFloat(deliverylat);
+                                counter = 0;
+                            }
+                            // update the drone symbol's location on the map
+                            //map.getSource('drone').setData(json);
+
+                            map.getSource('drone').setData(new_thing);
+
+                            //console.log(json);
+
+                            // fly the map to the drone's current location
+                            /*
+                            map.flyTo({
+                                center: json.geometry.coordinates,
+                                speed: 0.5
+                            });
+                            */
+                        }
+                    };
+                    request.send();
+                }, 2000);
+
+                map.addSource('drone', { type: 'geojson', data: url });
+                map.addLayer({
+                    'id': 'drone',
+                    'type': 'symbol',
+                    'source': 'drone',
+                    'layout': {
+                        'icon-image': 'rocket-15'
+                    }
+                });
+            });
+        })
+
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
