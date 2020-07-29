@@ -1,10 +1,12 @@
+// Initialize the Image Classifier method with MobileNet
+const classifier = ml5.imageClassifier("darknet", modelLoaded);
+
 function toUpperCase() {
   let str = document.getElementById("title");
   str.value = str.value.replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 }
-
 
 $("#imageUpload").on("change", function () {
   console.log("init upload");
@@ -28,5 +30,17 @@ $("#imageUpload").on("change", function () {
       }
     },
   });
+  // Make a prediction with a selected image
+  classifier.classify(
+    document.getElementById("imageProduct"),
+    (err, results) => {
+      console.log(results);
+    }
+  );
   console.log("end upload. return json");
 });
+
+// When the model is loaded
+function modelLoaded() {
+  console.log("Model Loaded!");
+}

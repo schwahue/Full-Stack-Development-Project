@@ -44,6 +44,11 @@
 		integrity="sha256-6S7q0JJs/Kx4kb/fv0oMjS855QTz5Rc2hh9AkIUjUsk=" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7/themes/algolia-min.css" />
 
+	{{!--- ML5 --}}
+	<script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+
+	
+
 	<title>{{title}}</title>
 </head>
 
@@ -85,9 +90,9 @@
 	{{> _adminnavbar }}
 
 	{{else if (if_Equal navbar 'merchant')}}
-	
+
 	{{> _merchantnavbar }}
-	
+
 	{{else if (if_Equal navbar 'none')}}
 
 	{{else}}
