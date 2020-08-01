@@ -86,7 +86,7 @@ const deliveryRoute = require('./routes/delivery_route');
 
 // Bring in Handlebars Helpers here
 // Copy and paste this statement only!!
-const {formatDate, replaceEmptyString} = require('./helpers/hbs');
+const {formatDate, replaceEmptyString, radioCheck} = require('./helpers/hbs');
 const {if_Equal} = require('./helpers/hbs_conditional_operator');
 
 
@@ -110,7 +110,8 @@ app.engine('handlebars', exphbs({
 	helpers: {
 		formatDate: formatDate,
 		if_Equal: if_Equal,
-		replaceEmptyString: replaceEmptyString
+		replaceEmptyString: replaceEmptyString,
+		radioCheck: radioCheck,
 	},
 	handlebars: allowInsecurePrototypeAccess(Handlebars),
 	defaultLayout: 'main' // Specify default template views/layout/main.handlebar

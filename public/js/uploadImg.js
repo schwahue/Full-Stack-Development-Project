@@ -1,5 +1,5 @@
 // Initialize the Image Classifier method with MobileNet
-const classifier = ml5.imageClassifier("darknet", modelLoaded);
+const classifier = ml5.imageClassifier("Mobilenet", modelLoaded);
 
 function toUpperCase() {
   let str = document.getElementById("title");
