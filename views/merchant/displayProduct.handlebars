@@ -11,13 +11,13 @@
                 {{#each products}}
                 <div class="col-sm-12 col-lg-4">
                     <div class="card" style="width: 18rem; margin: 10px;">
-                        <img class="card-img-top" src="{{productImageURL}}" alt="Card image cap">
+                        <img class="card-img-top img-thumbnails img-fluid" style="height:300px; width:300px"src="{{productImageURL}}" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">{{productName}}</h5>
                             <p class="card-text"><b>ID:</b> {{productID}}</p>
                             <p class="card-text"><b>Description:</b> {{productDescription}}</p>
                             <p class="card-text"><b>Price:</b> {{productPrice}}</p>
-                            <p class="card-text"><b>Stock:</b> {{productStock}}</p>
+                            <p class="card-text"><b>Stock:</b> ${{productStock}}</p>
                             <p class="card-text"><b>Category:</b> {{productCategory}}</p>
                             <div class="row text-center">
                                 <div class="col"><a href="updateProduct/{{productID}}" class="btn btn-success">Update
