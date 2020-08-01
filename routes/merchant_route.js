@@ -310,6 +310,12 @@ router.post("/addProduct", (req, res) => {
   });
 }); //addProduct to db
 
+// Creates variables with ‘check’ to put a tick in the appropriate radiobox
+function checkOptions(product) {
+  product.chineseLang = video.language.search("Chinese") >= 0 ? "checked" : "";
+  product.englishLang = video.language.search("English") >= 0 ? "checked" : "";
+}
+
 router.get("/updateProduct/:id", (req, res) => {
   Product.findOne({
     where: {
@@ -323,6 +329,7 @@ router.get("/updateProduct/:id", (req, res) => {
         style: "merchant",
         navbar: "merchant",
       });
+      console.log(product.productCategory);
     })
     .catch((err) => {
       console.log(err);
