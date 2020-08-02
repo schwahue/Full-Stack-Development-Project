@@ -35,6 +35,19 @@ $("#imageUpload").on("change", function () {
     document.getElementById("imageProduct"),
     (err, results) => {
       console.log(results);
+      let name = document.getElementById("productName").value;
+      let nameReg = new RegExp(name, "gi")
+      if (
+        results[0].label.match(nameReg) ||
+        results[1].label.match(nameReg) ||
+        results[2].label.match(nameReg)
+      ) {
+        console.log(name)
+        console.log(nameReg)
+        console.log("Success");
+      } else {
+        console.log("Not Success");
+      }
     }
   );
   console.log("end upload. return json");
@@ -43,4 +56,26 @@ $("#imageUpload").on("change", function () {
 // When the model is loaded
 function modelLoaded() {
   console.log("Model Loaded!");
+}
+
+function nameCheck() {
+  classifier.classify(
+    document.getElementById("imageProduct"),
+    (err, results) => {
+      console.log(results);
+      let name = document.getElementById("productName").value;
+      let nameReg = new RegExp(name, "gi")
+      if (
+        results[0].label.match(nameReg) ||
+        results[1].label.match(nameReg) ||
+        results[2].label.match(nameReg)
+      ) {
+        console.log(name)
+        console.log(nameReg)
+        console.log("Success");
+      } else {
+        console.log("Not Success");
+      }
+    }
+  );
 }
