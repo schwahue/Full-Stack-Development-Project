@@ -63,6 +63,7 @@ function nameCheck() {
     document.getElementById("imageProduct"),
     (err, results) => {
       console.log(results);
+      let submitBut = document.getElementById("butAddProduct")
       let name = document.getElementById("productName").value;
       let nameReg = new RegExp(name, "gi")
       if (
@@ -70,10 +71,10 @@ function nameCheck() {
         results[1].label.match(nameReg) ||
         results[2].label.match(nameReg)
       ) {
-        console.log(name)
-        console.log(nameReg)
+        submitBut.disabled = true
         console.log("Success");
       } else {
+        submitBut.disabled = false
         console.log("Not Success");
       }
     }
