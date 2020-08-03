@@ -5,6 +5,9 @@
             <h1 class="display-4">Create Item</h1>
 
             <form method="POST" action="addProduct">
+                <div class='row'>
+                    <h1></h1>
+                </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -15,22 +18,22 @@
                     <div class="form-group col-md-6">
                         <label for="productName">Product Name</label>
                         <input type="text" class="form-control" id="productName" name="productName"
-                            placeholder="Enter a product name" required>
+                            placeholder="Enter a product name" onchange="nameCheck()"required>
 
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="productDescription">Product Description</label>
-                        <textarea class="form-control" id="productDescription" name="productDescription"
-                            row="5" required></textarea>
+                        <textarea class="form-control" id="productDescription" name="productDescription" row="5"
+                            required></textarea>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="productPrice">Product Price</label>
                         <input type="number" class="form-control" id="productPrice" name="productPrice"
-                            placeholder="Enter a product price" required>
+                            placeholder="Enter a product price" step=".01" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -45,13 +48,13 @@
                         <p>Product Category</p>
 
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="productCategory"
-                                id="Grocery" value="Grocery" checked> 
+                            <input class="form-check-input" type="radio" name="productCategory" id="Grocery"
+                                value="Grocery" checked>
                             <label class="form-check-label" for="inlineRadio1">Grocery</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="productCategory"
-                                id="Electronic" value="Electronic">
+                            <input class="form-check-input" type="radio" name="productCategory" id="Electronic"
+                                value="Electronic">
                             <label class="form-check-label" for="inlineRadio2">Electronic</label>
                         </div>
                     </div>
