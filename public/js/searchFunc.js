@@ -32,6 +32,10 @@ search.addWidgets([
             <button type="button" class="btn btn-success" href="/">Buy</button>
           </div>
         `,
+      empty: `<div>
+        <p>No results have been found for {{ query }}</p>
+        <a role="button" href="/product">Clear all filters</a>
+      </div>`,
     },
   }),
   instantsearch.widgets.pagination({

@@ -5,6 +5,9 @@
             <h1 class="display-4">Create Item</h1>
 
             <form method="POST" action="addProduct">
+                <div class='row'>
+                    <h1></h1>
+                </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -15,29 +18,29 @@
                     <div class="form-group col-md-6">
                         <label for="productName">Product Name</label>
                         <input type="text" class="form-control" id="productName" name="productName"
-                            placeholder="Enter a product name">
+                            placeholder="Enter a product name" onchange="nameCheck()"required>
 
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="productDescription">Product Description</label>
-                        <textarea class="form-control" id="productDescription" name="productDescription"
-                            row="5"></textarea>
+                        <textarea class="form-control" id="productDescription" name="productDescription" row="5"
+                            required></textarea>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="productPrice">Product Price</label>
                         <input type="number" class="form-control" id="productPrice" name="productPrice"
-                            placeholder="Enter a product price">
+                            placeholder="Enter a product price" step=".01" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="productStock">Product Stock</label>
                         <input type="number" class="form-control" id="productStock" name="productStock"
-                            placeholder="Enter a product price">
+                            placeholder="Enter a product price" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -45,13 +48,13 @@
                         <p>Product Category</p>
 
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="productCategory"
-                                id="productCategory" value="Grocery">
+                            <input class="form-check-input" type="radio" name="productCategory" id="Grocery"
+                                value="Grocery" checked>
                             <label class="form-check-label" for="inlineRadio1">Grocery</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="productCategory"
-                                id="productCategory" value="Electronic">
+                            <input class="form-check-input" type="radio" name="productCategory" id="Electronic"
+                                value="Electronic">
                             <label class="form-check-label" for="inlineRadio2">Electronic</label>
                         </div>
                     </div>
@@ -63,7 +66,7 @@
                             <span class="input-group-text">Image Upload</span>
                         </div>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="imageUpload" name="imageUpload">
+                            <input type="file" class="custom-file-input" id="imageUpload" name="imageUpload" required>
                             <label class="custom-file-label" for="imageUpload">Choose file</label>
                         </div>
                     </div>
@@ -74,7 +77,7 @@
                     <input id="productImageURL" name="productImageURL" type="hidden" value="">
                     <div class="font-weight-bold text-danger-small" id="imageErr" style="display:none"></div>
                 </div>
-                <button id="butAddVideo" type="submit" class="btn btn-primary">Save</button>
+                <input id="butAddProduct" type="submit" class="btn btn-primary">
             </form>
         </div>
     </div>

@@ -1,38 +1,34 @@
 <div class="container">
-    <div class="jumbotron text-center my-4">
+    <div class="jumbotron my-4" style="background-color:white">
         <div class="container">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Image</th>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Stock</th>
-                            <th scope="col">Category</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each products}}
-                        <tr scope="row">
-                            <td><img src="{{productImageURL}}" class="img-fluid img-thumbnail" align="left" alt="{{name}}">
-                            </td>
-                            <td>{{productID}}</td>
-                            <td>{{productName}}</td>
-                            <td>{{productDescription}}</td>
-                            <td>{{productPrice}}</td>
-                            <td>{{productStock}}</td>
-                            <td>{{productCategory}}</td>
-                            <td><a href="updateProduct/{{productID}}" class="btn btn-warning">Update</a></td>
-                            <td><a href="deleteProduct/{{productID}}" class="btn btn-danger">Delete</a></td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
+            <div class="row">
+                <div class="col-sm-12 col-lg-12" align="center">
+                    <h1>Products Catalog</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                {{#each products}}
+                <div class="col-sm-12 col-lg-4">
+                    <div class="card" style="width: 18rem; margin: 10px;">
+                        <img class="card-img-top img-thumbnails img-fluid" style="height:300px; width:300px"src="{{productImageURL}}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{productName}}</h5>
+                            <p class="card-text"><b>ID:</b> {{productID}}</p>
+                            <p class="card-text"><b>Description:</b> {{productDescription}}</p>
+                            <p class="card-text"><b>Price:</b> {{productPrice}}</p>
+                            <p class="card-text"><b>Stock:</b> ${{productStock}}</p>
+                            <p class="card-text"><b>Category:</b> {{productCategory}}</p>
+                            <div class="row text-center">
+                                <div class="col"><a href="updateProduct/{{productID}}" class="btn btn-success">Update
+                                    </a></div>
+                                <div class="col"><a href="deleteProduct/{{productID}}" class="btn btn-danger">Delete
+                                    </a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
             </div>
         </div>
     </div>
