@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const alertMessage = require('../helpers/messenger.js');
 const Product = require('../models/productModel.js'); //import Product 
+const discountCode = require('../models/discountModel.js');
 const simpleOrder = require('../models/simpleOrderModel.js');
 const algoliasearch = require('algoliasearch')
 const paypal = require('@paypal/checkout-server-sdk');
@@ -11,6 +12,7 @@ const requestify = require('requestify');
 // User's cart
 var shopping_cart = [];
 var frequentlyBoughtTogether = {};
+var discount_code = {'code': null};
 
 router.get('/', (req, res) => {
     res.render('index', { title: 'Home' }); // renders views/index.handlebars
@@ -142,18 +144,31 @@ router.get('/cart', async (req, res) => {
             frequentlyBoughtTogether.pop();
         }
     }).then(function (somethingagain) {
+        console.log(discount_code);
         let totalprice = 0.0;
         for (let i = 0; i < shopping_cart.length; i++) {
             totalprice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
             // Update product total
-            shopping_cart[i].productTotal = shopping_cart[i].productPrice * shopping_cart[i].quantity;
+            if ((discount_code.code == null) == false) {
+                shopping_cart[i].productTotal = (shopping_cart[i].productPrice * shopping_cart[i].quantity) * (1 - parseFloat(discount_code.amount));
+            } else {
+                shopping_cart[i].productTotal = shopping_cart[i].productPrice * shopping_cart[i].quantity;
+            }
             shopping_cart[i].productTotal = parseFloat(shopping_cart[i].productTotal).toFixed(2);
         }
+        if ((discount_code.code == null) == false) {
+            console.log(totalprice);
+            totalprice = totalprice * (1 - discount_code.amount);
+        }
+        console.log(totalprice);
         info = [{ totalprice: totalprice }]
+        var discountarray = []
+        discountarray.push(discount_code);
         res.render('payment/cart', {
             products: shopping_cart,
             info: info,
-            recommended: frequentlyBoughtTogether
+            recommended: frequentlyBoughtTogether,
+            discount: discountarray
         });
     });
     // let totalprice = 0.0;
@@ -169,6 +184,10 @@ router.get('/cart', async (req, res) => {
     //     info: info,
     //     recommended: frequentlyBoughtTogether
     // });
+});
+
+router.get('/testsearch', (req, res) => {
+    res.render('payment/testcart');
 });
 
 // Remove item
@@ -225,6 +244,21 @@ router.get('/cart/search', (req, res) => {
         products: matches,
         info: info
     });
+});
+
+// Discount code
+router.get('/cart/:id', (req, res) => {
+    console.log(req.params.id);
+    discountCode.findOne({where: {code: req.params.id} })
+        .then(discount => {
+            if (discount) {
+                discount_code['code'] = discount.code;
+                discount_code['amount'] = discount.amount;
+            } else {
+                discount_code = {};
+            }
+        });
+    res.end();
 });
 
 router.get('/processing', (req, res) => {
@@ -369,19 +403,23 @@ router.post('/pay', async (req, res) => {
     let item_list = [];
     let totalprice = 0.0;
     for (let i = 0; i < shopping_cart.length; i++) {
+        var productPrice = shopping_cart[i].productPrice
+        if ((discount_code.code == null) == false) {
+            productPrice = productPrice * (1 - discount_code.amount);
+        }
         item_list.push({
             name: shopping_cart[i].productName,
             description: shopping_cart[i].productDescription,
             sku: shopping_cart[i].productID,
             unit_amount : {
                 currency_code : "SGD",
-                value: shopping_cart[i].productPrice,
+                value: productPrice,
             },
             quantity: shopping_cart[i].quantity,
             category: 'PHYSICAL_GOODS'
         });
 
-        totalprice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
+        totalprice += productPrice * shopping_cart[i].quantity;
     }
     // PayPal
     // 3. Call PayPal to set up a transaction
