@@ -1,14 +1,5 @@
 /* Local DB */
 
-
-module.exports = {
-    host: 'localhost',
-    database: 'fsdp_ecommerce',
-    username: 'fsdp2020',
-    password: 'fsdp2020'
-}
-
-
 /* Shared DB */
 /*
 module.exports = {
@@ -18,3 +9,11 @@ module.exports = {
     password: 'c877a77e'
 }
 */
+
+
+module.exports = {
+    host: 'localhost',
+    database: 'fsdp_ecommerce',
+    username: 'fsdp2020',
+    password: 'fsdp2020'
+}
