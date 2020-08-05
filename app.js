@@ -219,7 +219,7 @@ app.use(function (req, res, next) {
  * Creates a unknown port 5000 for express server since we don't want our app to clash with well known
  * ports such as 80 or 8080.
  * */
-const port = 5000;
+const port = 80;
 
 // Starts the server and listen to port 5000
 app.listen(port, () => {
