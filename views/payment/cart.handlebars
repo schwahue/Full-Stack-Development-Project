@@ -120,6 +120,17 @@
             <div class="row">
                 <div class="col">
                     <div class="col-md-6 productname col-6" style="max-height: 100%;float: left">
+                        <h6 style="float: left;">Discount Code:</h6>
+                        <input type="text" id="discountcode">
+                    </div>
+                    <div class="col-md-6 productname col-6" style="max-height: 100%;float: left">
+                        <a onclick="sayHello()" class="btn btn-primary remove" style="float:right;">Apply</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="col-md-6 productname col-6" style="max-height: 100%;float: left">
                         <h6 style="float: left;">Subtotal</h6>
                     </div>
                     <div class="col-md-6 productname col-6" style="max-height: 100%;float: left">
@@ -158,5 +169,21 @@
         </div>
         {{/each}}
         {{/if}}
+        {{#if discount}}
+        {{#each discount}}     
+        <p>APPLIED: {{code}}</p>
+        {{/each}}
+        {{/if}}
+        
     </div>
+    <script>
+        function sayHello() {
+            var discountcode = document.getElementById('discountcode').value;
+            return fetch('/cart/' + discountcode, {
+                method: 'get',
+            }).then(function (res) {
+                window.location.assign('/cart');
+            })
+        }
+    </script>
 </section>
