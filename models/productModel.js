@@ -25,6 +25,12 @@ const Product = db.define('product', {
     },
     productImageURL: {
         type: Sequelize.STRING
+    },
+    productOwnerID:{
+        type: Sequelize.STRING
+    },
+    productRating:{
+        type: Sequelize.FLOAT
     }
 });
 
