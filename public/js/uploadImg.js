@@ -34,6 +34,7 @@ $("#imageUpload").on("change", function () {
   classifier.classify(
     document.getElementById("imageProduct"),
     (err, results) => {
+      let submitBut = document.getElementById("butAddProduct")
       console.log(results);
       let name = document.getElementById("productName").value;
       let nameReg = new RegExp(name, "gi")
@@ -42,14 +43,14 @@ $("#imageUpload").on("change", function () {
         results[1].label.match(nameReg) ||
         results[2].label.match(nameReg)
       ) {
-        console.log(name)
-        console.log(nameReg)
+        submitBut.disabled = false;
         console.log("Success");
       } else {
+        submitBut.disabled = true;
         console.log("Not Success");
       }
     }
-  );
+  ).catch(err => {console.log(err)});
   console.log("end upload. return json");
 });
 
@@ -71,12 +72,12 @@ function nameCheck() {
         results[1].label.match(nameReg) ||
         results[2].label.match(nameReg)
       ) {
-        submitBut.disabled = true
+        submitBut.disabled = false;
         console.log("Success");
       } else {
-        submitBut.disabled = false
+        submitBut.disabled = true;
         console.log("Not Success");
       }
     }
-  );
+  ).catch(err => console.log(err));
 }
