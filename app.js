@@ -219,9 +219,11 @@ app.use(function (req, res, next) {
  * Creates a unknown port 5000 for express server since we don't want our app to clash with well known
  * ports such as 80 or 8080.
  * */
-const port = 5000;
+const PORT = 5000;
+
+//const PORT = process.env.PORT || 3000 - for heroku
 
 // Starts the server and listen to port 5000
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });
