@@ -19,6 +19,7 @@ const setUpDB = (drop) => {
             */
             //user.hasMany(video);
             //merchant.hasMany(customer);
+            user.hasMany(product);
             user.hasMany(order);
             order.hasMany(order_item);
             order.belongsTo(user, { as: 'merchant'});
