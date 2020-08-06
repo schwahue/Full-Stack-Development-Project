@@ -597,7 +597,7 @@ router.get('/search', (req, res) => {
 
 // JH: <end>
 
-// Matt
+// Matt: about, faq, feedback
 
 router.get('/aboutus', (req, res) => {
     res.render('feedback_and_others/aboutus');
@@ -611,5 +611,14 @@ router.get('/feedback', (req, res) => {
     res.render('feedback_and_others/feedback');
 })
 
+// Matt: livechat
+router.get('/livechat', (req, res) => {
+    res.render('chat/chat.ejs');
+});
+
+// Matt: chatbot
+router.get('/chatbot', (req, res) => {
+    res.render('chat/chatbot.handlebars');
+});
 
 module.exports = router;
