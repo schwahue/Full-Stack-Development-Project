@@ -17,7 +17,7 @@ var discount_code = { code: null };
 router.get("/", (req, res) => {
     Product.findAll({
       limit: 3,
-      order: "productRating DESC"
+      order: [['productRating', 'DESC']]
     })
     .then((products) => {
       res.render("index", {
