@@ -18,8 +18,7 @@
                     <div class="form-group col-md-6">
                         <label for="productName">Product Name</label>
                         <input type="text" class="form-control" id="productName" name="productName"
-                            placeholder="Enter a product name" onchange="nameCheck()"required>
-
+                            placeholder="Enter a product name" onblur="nameCheck()" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -60,22 +59,25 @@
                     </div>
 
                 </div>
-                <div class="form-group">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Image Upload</span>
+                <div class="form-row">
+                    <div class="form-group col-md-10">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Image Upload</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="imageUpload" name="imageUpload"
+                                    required>
+                                <label class="custom-file-label" for="imageUpload">Choose file</label>
+                            </div>
                         </div>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="imageUpload" name="imageUpload" required>
-                            <label class="custom-file-label" for="imageUpload">Choose file</label>
-                        </div>
+
+                        <img id="imageProduct" src="/img/image-placeholder.jpg" alt=""
+                            class="border img-thumbnail img-fluid" style="height:450px;width:auto">
+
+                        <input id="productImageURL" name="productImageURL" type="hidden" value="" onchange="namecheck()">
+                        <div class="font-weight-bold text-danger-small" id="imageErr" style="display:none"></div>
                     </div>
-
-                    <img id="imageProduct" src="https://fsdf-images.s3.amazonaws.com/BobRoss01.jpg" alt=""
-                        class="border img-thumbnail img-fluid" style="height:95%;width:100%">
-
-                    <input id="productImageURL" name="productImageURL" type="hidden" value="">
-                    <div class="font-weight-bold text-danger-small" id="imageErr" style="display:none"></div>
                 </div>
                 <input id="butAddProduct" type="submit" class="btn btn-primary">
             </form>

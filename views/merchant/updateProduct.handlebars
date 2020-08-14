@@ -5,6 +5,7 @@
             <h1 class="display-4">Update Item</h1>
 
             <form method="POST" action="saveUpdate/{{product.productID}}?_method=PUT" id="formUpdateItem">
+            <form method="POST" action="saveUpdate/{{product.id}}?_method=PUT" id="formUpdateItem">
                 <input type='hidden' name='_method' value='PUT'>
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -22,8 +23,8 @@
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="productDescription">Product Description</label>
-                        <textarea class="form-control" id="productDescription" name="productDescription"
-                            row="5" required>{{product.productDescription}}</textarea>
+                        <textarea class="form-control" id="productDescription" name="productDescription" row="5"
+                            required>{{product.productDescription}}</textarea>
                     </div>
                 </div>
                 <div class="form-row">
@@ -45,34 +46,37 @@
                         <p>Product Category</p>
 
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="productCategory"
-                                id="Grocery" value="Grocery" checked>
+                            <input class="form-check-input" type="radio" name="productCategory" id="Grocery"
+                                value="Grocery" checked>
                             <label class="form-check-label" for="inlineRadio1">Grocery</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="productCategory"
-                                id="Electronic" value="Electronic" {{radioCheck product.productCategory 'Electronic'}}>
+                            <input class="form-check-input" type="radio" name="productCategory" id="Electronic"
+                                value="Electronic" {{radioCheck product.productCategory 'Electronic'}}>
                             <label class="form-check-label" for="inlineRadio2">Electronic</label>
                         </div>
                     </div>
 
                 </div>
-                <div class="form-group">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Image Upload</span>
+                <div class="form-row">
+                    <div class="form-group ">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Image Upload</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="imageUpload" name="imageUpload">
+                                <label class="custom-file-label" for="imageUpload">Choose file</label>
+                            </div>
                         </div>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="imageUpload" name="imageUpload">
-                            <label class="custom-file-label" for="imageUpload">Choose file</label>
-                        </div>
+
+                        <img id="imageProduct" src="{{product.productImageURL}}" alt=""
+                            class="border img-thumbnail img-fluid" style="height:450px;width:auto">
+
+                        <input id="productImageURL" name="productImageURL" type="hidden"
+                            value="{{product.productImageURL}}" required>
+                        <div class="font-weight-bold text-danger-small" id="imageErr" style="display:none"></div>
                     </div>
-
-                    <img id="imageProduct" src="{{product.productImageURL}}" alt=""
-                        class="border img-thumbnail img-fluid" style="height:95%;width:100%">
-
-                    <input id="productImageURL" name="productImageURL" type="hidden" value="{{product.productImageURL}}" required>
-                    <div class="font-weight-bold text-danger-small" id="imageErr" style="display:none"></div>
                 </div>
                 <input id="butAddProduct" type="submit" class="btn btn-primary">
             </form>
