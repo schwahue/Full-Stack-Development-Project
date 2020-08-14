@@ -5,14 +5,8 @@
             <h1 class="display-4">Update Item</h1>
 
             <form method="POST" action="saveUpdate/{{product.productID}}?_method=PUT" id="formUpdateItem">
-            <form method="POST" action="saveUpdate/{{product.id}}?_method=PUT" id="formUpdateItem">
                 <input type='hidden' name='_method' value='PUT'>
                 <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="productID">Product Code</label>
-                        <input type="text" class="form-control" id="productID" name="productID"
-                            placeholder="Enter a product Code" value="{{product.productID}}" readonly required>
-                    </div>
                     <div class="form-group col-md-6">
                         <label for="productName">Product Name</label>
                         <input type="text" class="form-control" id="productName" name="productName"
@@ -31,14 +25,14 @@
                     <div class="form-group col-md-6">
                         <label for="productPrice">Product Price</label>
                         <input type="number" class="form-control" id="productPrice" name="productPrice"
-                            placeholder="Enter a product price" step=".01" value="{{product.productPrice}}" required>
+                            placeholder="Enter a product price" step=".01" value="{{product.productPrice}}" min="0"required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="productStock">Product Stock</label>
                         <input type="number" class="form-control" id="productStock" name="productStock"
-                            placeholder="Enter a product price" value="{{product.productStock}}" required>
+                            placeholder="Enter a product price" value="{{product.productStock}}" min="0" required>
                     </div>
                 </div>
                 <div class="form-row">

@@ -2,8 +2,9 @@ const Sequelize = require('sequelize');
 const db = require('../config/DBConfig');
 
 const Product = db.define('product', {
-    productCode: {
-        type: Sequelize.STRING
+    productID: {
+        type: Sequelize.STRING,
+        primaryKey: true,
     },
     productName: {
         type: Sequelize.STRING
