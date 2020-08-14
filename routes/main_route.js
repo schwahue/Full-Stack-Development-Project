@@ -376,6 +376,42 @@ router.get('/debug/add/:id', (req, res) => {
     res.redirect('/debug');
 });
 
+
+// Note to Hieu, To use add href="/product/{id}"
+router.get('/product/:id', (req, res) => {
+    console.log(req.params.id);
+    Product.findOne({ where: { productID: req.params.id.toString() } })
+        .then(product => {
+            if (product) {
+                let exist = false;
+                for (let i = 0; i < shopping_cart.length; i++) {
+                    if (shopping_cart[i].productName == product.productName) {
+                        exist = true;
+                        shopping_cart[i].quantity += 1;
+                        shopping_cart[i].productTotal = shopping_cart[i].productPrice * shopping_cart[i].quantity;
+                    }
+                }
+                if (!exist) {
+                    shopping_cart.push({
+                        productName: product.productName,
+                        productPrice: product.productPrice.toFixed(2),
+                        productTotal: product.productPrice.toFixed(2),
+                        productID: product.productID,
+                        productDescription: product.productDescription,
+                        productCategory: product.productCategory,
+                        productImageURL: product.productImageURL,
+                        quantity: 1,
+                    });
+                    GetFrequent();
+                }
+                shopping_cart.forEach(element => console.log(element));
+            } else {
+                console.log('product does not exist');
+            }
+        });
+    res.redirect('/product');
+});
+
 router.get('/recommended/:id', (req, res) => {
     Product.findOne({ where: { productID: req.params.id.toString() } })
         .then(product => {
