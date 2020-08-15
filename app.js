@@ -79,6 +79,7 @@ const mainRoute = require("./routes/main_route");
 const userRoute = require("./routes/user_route");
 const adminRoute = require("./routes/admin_route");
 const merchantRoute = require("./routes/merchant_route");
+const apiRoute = require("./routes/api_route");
 const testRoute = require("./routes/test_route");
 // const smsRoute = require('./routes/sms_route');
 const authRoute = require("./routes/auth_route");
@@ -193,6 +194,7 @@ app.use("/merchant", merchantRoute);
 app.use("/test", testRoute);
 app.use("/auth", authRoute);
 app.use("/delivery", deliveryRoute);
+app.use("/api", apiRoute);
 // app.use('/sms', smsRoute);
 
 //error 404 and 500 handling
