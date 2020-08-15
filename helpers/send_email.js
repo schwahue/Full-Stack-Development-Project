@@ -120,24 +120,25 @@ const send_poster_email = (recipient_emails, poster) => {
 
 }
 
-const send_shipping_confirmation_email = (recipient_emails) => {
+const send_shipping_confirmation_email = (user, order_id, total_cost) => {
     // recepient email must be in array format
     const msg = {
-        //to: recipient_emails,
-        to: "user.cust.proj@gmail.com",
+        to: user.email,
+        //to: "user.cust.proj@gmail.com",
         from: 'user.ad.proj@gmail.com',
         subject: 'Shipping Confirmation',
         templateId: 'd-b4be4ef8965d48908476f2176cf951a4',
         dynamic_template_data: {
-            first_name: 'hieu',
-            last_name: 'jh',
-            street_address: 'woodlands yishun 16',
-            postal_code: 'S793784',
+            first_name: user.first_name,
+            last_name: user.last_name,
+            street_address: user.street_address,
+            postal_code: user.postal_code,
             Sender_Name: "LAZOPEE",
             Sender_Address: "Mysterious Hill 61",
             Sender_City: "Singapore",
             Sender_Zip: "S790483",
-            order_number: "12345",
+            order_number: order_id,
+            total_cost: total_cost
         },
     };
 

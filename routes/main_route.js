@@ -8,6 +8,12 @@ const algoliasearch = require("algoliasearch");
 const paypal = require("@paypal/checkout-server-sdk");
 const payPalClient = require("../config/payPalClient");
 const requestify = require("requestify");
+const Order = require('../models/Order_model');
+const OrderItem = require('../models/OrderItem_model');
+const User = require('../models/User_model');
+const {send_shipping_confirmation_email} = require("../helpers/send_email");
+const send_sms = require("../helpers/send_sms");
+const moment = require('moment');
 
 // User's cart
 var shopping_cart = [];
@@ -402,7 +408,7 @@ router.get("/debug/database/truncate", (req, res) => {
 
 
 // Note to Hieu, To use add href="/product/{id}"
-router.get('/product/:id', (req, res) => {
+router.get('/debug/add/:id', (req, res) => {
     console.log(req.params.id);
     Product.findOne({ where: { productID: req.params.id.toString() } })
         .then(product => {
@@ -424,6 +430,7 @@ router.get('/product/:id', (req, res) => {
                         productDescription: product.productDescription,
                         productCategory: product.productCategory,
                         productImageURL: product.productImageURL,
+                        productOwner: product.productOwnerID,
                         quantity: 1,
                     });
                     GetFrequent();
@@ -664,6 +671,60 @@ router.post("/success", async (req, res) => {
     "-" +
     dateObject.getDate();
   console.log("this is totalprice: " + totalPrice);
+
+  /****************************/
+  /* HF START YO*/
+  /****************************/
+
+  //user: req.user.id
+  console.log(itemsObject);
+  console.log("HOOOOOOOOOOO");
+  console.log(shopping_cart);
+  console.log(totalPrice);
+  console.log(req.user.id);
+  //let now = moment(new Date(date)).format('MM-DD-YYYY')
+  //let today = new Date();
+  var myStuff = shopping_cart;
+
+
+  Order.create({
+    date: moment(currentDate, "YYYY-MM-DD"),
+    status: 'paid',
+    userId: req.user.id,
+    merchantId: myStuff[0].productOwner,
+    total_cost: totalPrice
+
+  }).then((order) => {
+    User.findOne({ where: { id: req.user.id } }).then((user) =>{
+      //send_shipping_confirmation_email(user, order.id, order.total_cost);
+      //send_sms(`You Order#${order.id} has been confirmed and paid successfully`, user.contact_number);
+    })
+    
+    console.log("HEHEHEHEHEHE");
+    console.log("HEHEHEHEHEHE");
+    console.log("HEHEHEHEHEHE");
+    console.log("HEHEHEHEHEHE");
+    console.log(myStuff.length);
+    console.log(myStuff);
+    for (let p = 0; p < myStuff.length; p++) {
+
+      console.log("first item");
+      console.log(myStuff[p]);
+
+      OrderItem.create({
+        quantity: myStuff[p].quantity,
+        productProductID: myStuff[p].productID,
+        OrderId: order.id
+      }).catch((err) => console.log(err));
+
+    }
+
+  }).catch((err) => console.log(err)); 
+  console.log("BYEEEEEEEEEEEEE");
+  /****************************/
+  /* HF END YO*/
+  /****************************/
+
   simpleOrder.create({
     userId: req.user.id,
     items: JSON.stringify(itemsObject),
