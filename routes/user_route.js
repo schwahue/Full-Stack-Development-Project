@@ -181,49 +181,29 @@ router.post('/signup', [
     //res.json({ msg: "DONE" });
 });
 
-router.get('/orders', (req, res)=> {
+router.get('/orders', async (req, res)=> {
 
-    Order.findAll({
-        where: {
-            userId: req.user.id
-        },
-        attributes: ['id', 'date', 'status', 'userId'],
-        /*include: [{model: OrderItem, attributes: ['id', 'quantity', 'productId']}],*/
-        include: [{model: OrderItem, include: Product}]
+    // Order.findAll({
+    //     where: {
+    //         userId: req.user.id
+    //     },
+    //     attributes: ['id', 'date', 'status', 'userId'],
+    //     /*include: [{model: OrderItem, attributes: ['id', 'quantity', 'productId']}],*/
+    //     include: [{model: OrderItem, include: Product}]
 
-        /*
-        order: [
-            ['userId']
-        ]*/
-    })
-    .then((orders) => {
-        //console.log(orders.Order_Items);
-        res.render('user/orders', {title:"deliverys", style:"users", orders: orders});
-        //return res.json({ msg: orders});
+    //     /*
+    //     order: [
+    //         ['userId']
+    //     ]*/
+    // })
+    // .then((orders) => {
+    //     // my code -jh
+        
+    //     //console.log(orders.Order_Items);
+    //     res.render('user/orders', {title:"deliverys", style:"users", orders: user_orders, });
+    //     //return res.json({ msg: orders});
 
-    }).catch(err => console.log(err));
-
-});
-
-router.get('/userorder', (req, res) => {
-    res.render('user/_orders');
-});
-
-
-// Logout User
-router.get('/logout', (req, res) => {
-	req.logout();
-	res.redirect('/user/login');
-});
-
-function delay() {
-    return new Promise(resolve => setTimeout(resolve, 3000));
-}
-
-router.get('/account', ensureUserAuthenticated, async (req, res) => {
-    console.log("Account Type");
-    console.log(res.locals.user.type);
-    // my code -jh
+    // }).catch(err => console.log(err));
     let user_id = req.user.id
     let user_orders = []
     let count = 0
@@ -253,7 +233,29 @@ router.get('/account', ensureUserAuthenticated, async (req, res) => {
         }
     });
     await delay()
-	res.render('user/account', { style:"users", orders:user_orders});
+    res.render('user/orders', {title:"deliverys", style:"users", orders: user_orders, });
+});
+
+router.get('/userorder', (req, res) => {
+    res.render('user/_orders');
+});
+
+
+// Logout User
+router.get('/logout', (req, res) => {
+	req.logout();
+	res.redirect('/user/login');
+});
+
+function delay() {
+    return new Promise(resolve => setTimeout(resolve, 3000));
+}
+
+router.get('/account', ensureUserAuthenticated, async (req, res) => {
+    console.log("Account Type");
+    console.log(res.locals.user.type);
+    
+	res.render('user/account', { style:"users"});
 });
 
 router.post('/account', (req, res) => {

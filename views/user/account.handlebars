@@ -9,7 +9,6 @@
                 <li class="active nav-item side-link-li" style="cursor:pointer;" onclick="changeSideNav(this, 1)"><a class="side-link-a">Profile </a></li>
                 <li class="nav-item side-link-li" style="cursor:pointer;" onclick="changeSideNav(this, 2)"><a class="side-link-a">Change Password</a></li>
                 <li class="nav-item side-link-li" style="cursor:pointer;" onclick="changeSideNav(this, 3)"><a class="side-link-a">Address</a></li>
-                <li class="nav-item side-link-li" style="cursor:pointer;" onclick="changeSideNav(this, 4)"><a class="side-link-a">Orders</a></li>
 
             </ul>
 
@@ -200,44 +199,6 @@
                 </form>`;
             
             menu_choice = 3;
-        }
-        else if (num == 4 && menu_choice != 4){
-            $(document).ready(function () {
-                $("#myInput").on("keyup", function () {
-                    var value = $(this).val().toLowerCase();
-                    $("#myTable tr").filter(function () {
-                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                    });
-                });
-            });
-            var current = document.getElementsByClassName("active");
-            current[0].classList.remove("active");
-            el.classList.add("active");
-
-            document.getElementsByClassName("content")[0].innerHTML = `
-            <div class="container">
-                <h2>Filterable Table</h2>
-                <p>Search:</p>
-                <input class= "form-contr ol" id="myInput" type="text" placeholder="Search..">
-                <br>
-                <table class="table table-bordered">
-                    <tbody id="myTable">
-                        {{#if orders}}
-                        {{#each orders}}
-                        <tr>
-                            <td><a href="/{{ordernumber}}"><img class="img-fluid" href="/cart" src="{{productImageURL}}" style="max-width: auto; height: 35%;"></a></td>
-                            <td hidden='true'>{{productName}}</td>
-                            <td>Order Number: #{{ordernumber}}, QTY:{{quantity}}</td>
-                            <td>{{productTotal}}</td>
-                    </tr>
-                    {{/each}}
-                    {{/if}}
-                    </tbody>
-                </table>
-            </div>
-            `;
-            
-            menu_choice = 4;
         }
 
     }
