@@ -6,6 +6,7 @@ var bcrypt = require('bcryptjs');
 const User = require('../models/User_model');
 const Order = require('../models/Order_model');
 const OrderItem = require('../models/OrderItem_model');
+const simpleOrder = require("../models/simpleOrderModel.js");
 const Product = require('../models/productModel');
 const passport = require('passport');
 const Sequelize = require('sequelize');
@@ -204,6 +205,10 @@ router.get('/orders', (req, res)=> {
 
 });
 
+router.get('/userorder', (req, res) => {
+    res.render('user/_orders');
+});
+
 
 // Logout User
 router.get('/logout', (req, res) => {
@@ -211,10 +216,44 @@ router.get('/logout', (req, res) => {
 	res.redirect('/user/login');
 });
 
-router.get('/account', ensureUserAuthenticated, (req, res) => {
+function delay() {
+    return new Promise(resolve => setTimeout(resolve, 3000));
+}
+
+router.get('/account', ensureUserAuthenticated, async (req, res) => {
     console.log("Account Type");
     console.log(res.locals.user.type);
-	res.render('user/account', { style:"users"});
+    // my code -jh
+    let user_id = req.user.id
+    let user_orders = []
+    let count = 0
+    let counter = 1
+    let what = await simpleOrder.findAll({ where: { userId: user_id } }).then((orders) => {
+        if (orders) {
+            count = orders.length
+            // orders[0].dataValues.items[2] this is first item
+            // orders[0].dataValues.items[5] this is quantity
+            for (let i = 0; i < orders.length; i++) {
+                Product.findOne({ where: { productID: orders[i].dataValues.items[2] } }).then((product) => {
+                    if (product) {
+                        user_orders.push({
+                            ordernumber: orders[i].dataValues.id,
+                            productName: product.productName,
+                            productImageURL: product.productImageURL,
+                            quantity: orders[i].dataValues.items[5],
+                            productTotal: orders[i].dataValues.totalPrice
+                        });
+                    }
+                });
+                counter++;
+            }
+
+        } else {
+
+        }
+    });
+    await delay()
+	res.render('user/account', { style:"users", orders:user_orders});
 });
 
 router.post('/account', (req, res) => {
