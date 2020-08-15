@@ -180,7 +180,6 @@ router.post('/signup', [
     //res.json({ msg: "DONE" });
 });
 
-
 router.get('/orders', (req, res)=> {
 
     Order.findAll({
@@ -299,6 +298,9 @@ router.get('/redirect', (req, res) => {
         }
         else if(res.locals.user.type == "merchant"){
             res.redirect('/merchant/account');
+        }
+        else{
+            res.redirect('/user/login');
         }
     }
     else{

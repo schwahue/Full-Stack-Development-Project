@@ -1,0 +1,25 @@
+<div id="content">
+    <h1>Marketing</h1>
+    <hr>
+    <div class="container">
+        <form novalidate method="POST" action="">
+            <h3>Sending Promotional Emails</h3>
+            <p> This will send newletters that is prepared beforehand</p>
+            <input type="Submit" name="submit" value="send default newsletter" class="btn form-button"/>
+            <hr>
+        </form>
+
+        <form novalidate method="POST" enctype="multipart/form-data" action="/admin/uploadPoster">
+            <p> This will send newsletter that is uploaded</p>
+            <input style="display:block; margin-bottom:10px;" type="file" name="posterUpload">
+            <input style="display:block; margin-top:10px;" type="Submit" name="submit" value="upload newsletter" class="btn form-button"/>
+        </form>
+
+        <form novalidate method="POST" action="">
+            <hr>
+            <p> This will send newletters using template created beforehand</p>
+            <input type="Submit" name="submit" value="send template newsletter" class="btn form-button"/>
+        </form>
+    </div>
+    
+</div>

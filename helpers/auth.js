@@ -1,6 +1,10 @@
 const alertMessage = require('./messenger'); // Bring in alert messenger
 
 const ensureUserAuthenticated = (req, res, next) => {
+    if(req.user == undefined){
+        alertMessage(res, 'danger', 'Session expired', 'fas fa-exclamation-circle', true);
+        res.redirect('/user/redirect');
+    }
     if (req.isAuthenticated() && req.user.type == 'customer') { // If user is authenticated
         return next(); // Calling next() to proceed to the next statement
     }
@@ -10,6 +14,10 @@ const ensureUserAuthenticated = (req, res, next) => {
 };
 
 const ensureMerchantAuthenticated = (req, res, next) => {
+    if(req.user == undefined){
+        alertMessage(res, 'danger', 'Session expired', 'fas fa-exclamation-circle', true);
+        res.redirect('/user/redirect');
+    }
     if (req.isAuthenticated() && req.user.type == 'merchant') { // If user is authenticated
         return next(); // Calling next() to proceed to the next statement
     }
@@ -19,6 +27,10 @@ const ensureMerchantAuthenticated = (req, res, next) => {
 };
 
 const ensureAdminAuthenticated = (req, res, next) => {
+    if(req.user == undefined){
+        alertMessage(res, 'danger', 'Session expired', 'fas fa-exclamation-circle', true);
+        res.redirect('/user/redirect');
+    }
     if (req.isAuthenticated() && req.user.type == 'admin') { // If user is authenticated
         return next(); // Calling next() to proceed to the next statement
     }
