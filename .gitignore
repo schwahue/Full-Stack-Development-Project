@@ -105,3 +105,4 @@ dist
 views/.DS_Store
 config/API_Keys.js
 package-lock.json
+public/uploads/.DS_Store

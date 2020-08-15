@@ -13,6 +13,8 @@ const { ensureMerchantAuthenticated } = require("../helpers/auth");
 
 const QRCode = require("qrcode");
 
+const uuid = require('uuid');
+
 // Required for file upload
 const fs = require("fs");
 const upload = require("../helpers/imageUpload");
@@ -272,7 +274,7 @@ router.get("/addProduct", (req, res) => {
 }); //getAddProduct Interface
 
 router.post("/addProduct", (req, res) => {
-  let productID = req.body.productID;
+  let productID = uuid.v1();
   let productName = req.body.productName;
   let productDescription = req.body.productDescription;
   let productPrice = req.body.productPrice;
@@ -341,7 +343,7 @@ router.get("/updateProduct/:id", (req, res) => {
 }); //getUpdate Interface
 
 router.put("/updateProduct/saveUpdate/:id", (req, res) => {
-  let productID = req.body.productID;
+  let productID = req.params.id;
   let productName = req.body.productName;
   let productDescription = req.body.productDescription;
   let productPrice = req.body.productPrice;
