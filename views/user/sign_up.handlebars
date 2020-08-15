@@ -2,58 +2,90 @@
     <div class="container-2 vertical-center ">
         <div class="signup-container">
             <div class="heading">
-                
+
                 <span class="form-title">User Sign Up</span>
                 <div class="sign-up-link-container">
                     Create<a id="sign-up-link" href="/merchant/signup"> Merchant account</a>?
                 </div>
             </div>
-            <form novalidate method="POST" action="">
+            <form novalidate id="sign-up-form" method="POST" action="">
                 <div class="row">
                     <!-- Name -->
                     <div class="col">
                         <div class="form-group">
                             <label for="first_name">First Name</label>
-                            <input type="text" class="form-control" id="first_name" name="first_name" value="{{first_name}}">
+                            <input type="text" class="form-control" id="first_name" name="first_name"
+                                value="{{first_name}}">
+                            <div class="invalid-feedback">
+                                Please provide a valid first name!
+                            </div>
                         </div>
                     </div>
 
                     <div class="col">
                         <div class="form-group">
                             <label for="last_name">Last Name</label>
-                            <input type="text" class="form-control" id="last_name" name="last_name" value="{{last_name}}">
+                            <input type="text" class="form-control" id="last_name" name="last_name"
+                                value="{{last_name}}">
+                            <div class="invalid-feedback">
+                                Please provide a valid last name!
+                            </div>
                         </div>
                     </div>
                 </div> <!-- End of Name -->
 
-                <div class="form-group"> <!-- username -->
+                <div class="form-group">
+                    <!-- username -->
                     <label for="contact_number"> Contact Number</label>
-                    <input type="text" class="form-control" id="contact_number" name="contact_number" value="{{contact_number}}">
+                    <input type="text" class="form-control" id="contact_number" name="contact_number"
+                        value="{{contact_number}}">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Contact number in use!
+                    </div>
                 </div><!-- End of username -->
 
-                <div class="form-group"> <!-- Email -->
+                <div class="form-group">
+                    <!-- Email -->
                     <label for="username">Email Address</label>
                     <input type="email" class="form-control" id="email" name="email" value="{{email}}">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Email in use!
+                    </div>
                 </div> <!-- End of Email -->
 
-                <div class="row"> <!-- Password -->
+                <div class="row">
+                    <!-- Password -->
                     <div class="col">
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" value="{{password}}">
+                            <input type="password" class="form-control" id="password" name="password"
+                                value="{{password}}">
+                            <div class="invalid-feedback">
+                                Please provide a valid password!
+                            </div>
                         </div>
                     </div>
 
                     <div class="col">
                         <div class="form-group">
                             <label for="c_password">Confirm Password</label>
-                            <input type="password" class="form-control" id="c_password" name="c_password" value="{{cpassword}}">
+                            <input type="password" class="form-control" id="c_password" name="c_password"
+                                value="{{cpassword}}">
+                            <div class="invalid-feedback">
+                                Please provide a valid password!
+                            </div>
                         </div>
                     </div>
                 </div> <!-- End of Password -->
 
                 <div class="container-2 form-elements">
-                    <input type="Submit" name="submit" value="Sign Up" class="btn form-button"/>
+                    <input type="Submit" name="submit" value="Sign Up" class="btn form-button" />
                     <hr>
                     <p class="sign-up"> Already have an account? Click below </p>
                     <!--<input type="button" name="submit" value="Sign Up" onclick="location.href='/';" class="btn btn-outline-secondary"/>-->
@@ -66,5 +98,116 @@
 
 <script>
 
-    firebase.analytics().logEvent("sign_up" );
+    firebase.analytics().logEvent("sign_up");
+
+    const email = document.getElementById("email");
+    const contanct_number = document.getElementById("contact_number");
+    const form = document.getElementById("sign-up-form");
+
+    var typingTimer;                //timer identifier
+    var doneTypingInterval = 1000;  //time in ms, 3 second for example
+    var $myEmail = $('#email');
+
+    //on keyup, start the countdown
+    $myEmail.on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(doneTypingEmail, doneTypingInterval);
+    });
+
+    //on keydown, clear the countdown 
+    $myEmail.on('keydown', function () {
+        clearTimeout(typingTimer);
+    });
+
+    //user is "finished typing," do something
+    function doneTypingEmail() {
+        console.log($myEmail.val());
+        if ($('#email').hasClass('is-invalid')) {
+            $('#email').removeClass('is-invalid');
+        }
+
+        if ($('#email').hasClass('is-valid')) {
+            $('#email').removeClass('is-valid');
+        }
+
+        $.ajax({
+            url: '/query/check_email_availability',
+            type: "get", //send it through get method
+            data: {
+                email: $myEmail.val(),
+            },
+
+        }).done(function (data) {
+            //console.log(data);
+
+            if (data == true) {
+
+                $("#email").addClass("is-valid");
+            }
+            else {
+                $("#email").addClass("is-invalid");
+            }
+        });
+    }
+
+
+    var typingTimer2;                //timer identifier
+    var doneTypingInterval2 = 1000;  //time in ms, 3 second for example
+    var $myContact = $('#contact_number');
+
+    //on keyup, start the countdown
+    $myContact.on('keyup', function () {
+        clearTimeout(typingTimer2);
+        typingTimer2 = setTimeout(doneTypingContact, doneTypingInterval2);
+    });
+
+    //on keydown, clear the countdown 
+    $myContact.on('keydown', function () {
+        clearTimeout(typingTimer2);
+    });
+
+    function doneTypingContact() {
+        console.log($myContact.val());
+        if ($('#contact_number').hasClass('is-invalid')) {
+            $('#contact_number').removeClass('is-invalid');
+        }
+
+        if ($('#contact_number').hasClass('is-valid')) {
+            $('#contact_number').removeClass('is-valid');
+        }
+
+        $.ajax({
+            url: '/query/check_contact_availability',
+            type: "get", //send it through get method
+            data: {
+                contact_number: $myContact.val(),
+            },
+
+        }).done(function (data) {
+            //console.log(data);
+
+            if (data == true) {
+
+                $("#contact_number").addClass("is-valid");
+            }
+            else {
+                $("#contact_number").addClass("is-invalid");
+            }
+        });
+    }
+
+
+    /*
+    form.addEventListener('submit', function (event) {
+        // if the email field is valid, we let the form submit
+
+        if (!email.validity.valid) {
+            // If it isn't, we display an appropriate error message
+            showError();
+            // Then we prevent the form from being sent by canceling the event
+            event.preventDefault();
+        }
+    });*/
+
+
 </script>
