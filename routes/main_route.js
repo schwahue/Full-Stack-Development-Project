@@ -14,6 +14,7 @@ const User = require('../models/User_model');
 const {send_shipping_confirmation_email} = require("../helpers/send_email");
 const send_sms = require("../helpers/send_sms");
 const moment = require('moment');
+const { ensureUserAuthenticated } = require('../helpers/auth');
 
 // User's cart
 var shopping_cart = [];
