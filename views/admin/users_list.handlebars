@@ -6,15 +6,18 @@
             <label class="font-italic">Filter</label>
             <br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="language" id="chinese" value="Chinese" checked>
+                <input class="form-check-input checkbox" onchange='get_user(this);' type="checkbox" name="user"
+                    id="admin" value="admin" checked>
                 <label class="form-check-label" for="chinese">Admin</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="language" id="english" value="English" checked>
+                <input class="form-check-input checkbox" onchange='get_user(this);' type="checkbox" name="user"
+                    id="merchant" value="merchant" checked>
                 <label class="form-check-label" for="englishLang">Merchant</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="language" id="malay" value="Malay" checked>
+                <input class="form-check-input checkbox" onchange='get_user(this);' type="checkbox" name="user"
+                    id="user" value="user" checked>
                 <label class="form-check-label" for="malay">User</label>
             </div>
         </div>
@@ -23,7 +26,6 @@
             <table class="table_list">
                 <thead>
                     <tr>
-                        <th>Username</th>
                         <th>Email</th>
                         <th>Type</th>
                         <th>First Name</th>
@@ -31,10 +33,10 @@
                     </tr>
                 </thead>
                 <tbody>
+                    
                     {{#if user_list}}
                     {{#each user_list}}
                     <tr>
-                        <td>{{replaceEmptyString username}}</td>
                         <td>{{replaceEmptyString email}}</td>
                         <td>{{replaceEmptyString type}}</td>
                         <td>{{replaceEmptyString first_name}}</td>
@@ -50,3 +52,39 @@
         </div>
     </div>
 </div>
+
+<script>
+    var checkboxes = document.getElementsByClassName("checkbox");
+
+    function get_user() {
+
+        var checkboxes = document.getElementsByClassName("checkbox");
+
+        var type = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].type == "checkbox") {
+                //console.log("checkboxes[i].checked");
+                //console.log(checkboxes[i].checked);
+                if (checkboxes[i].checked) {
+                    console.log(checkboxes[i].value);
+                    type.push(checkboxes[i].value);
+                }
+            }
+        }
+        console.log(type);
+
+
+
+        $.ajax({
+            url: '/query/get_user_list',
+            type: "get", //send it through get method
+            data: {
+                type: type,
+            },
+
+        }).done(function (data) {
+            console.log(data);
+        });
+    }
+
+</script>

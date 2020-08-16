@@ -711,8 +711,8 @@ router.post("/success", async (req, res) => {
 
   }).then((order) => {
     User.findOne({ where: { id: req.user.id } }).then((user) =>{
-      //send_shipping_confirmation_email(user, order.id, order.total_cost);
-      //send_sms(`You Order#${order.id} has been confirmed and paid successfully`, user.contact_number);
+      send_shipping_confirmation_email(user, order.id, order.total_cost);
+      send_sms(`You Order#${order.id} has been confirmed and paid successfully`, user.contact_number);
     })
     
     console.log("HEHEHEHEHEHE");
