@@ -5,6 +5,7 @@ const send_sms = require('../helpers/send_sms');
 
 const User = require('../models/User_model');
 const Order = require('../models/Order_model');
+const Tracking = require('../models/TrackingModel');
 
 const ensureAuthenticated = require('../helpers/auth');
 
@@ -78,6 +79,78 @@ router.get('/check_shopname_availability', (req, res) => {
 
 });
 
+router.get('/check_shopname_availability', (req, res) => {
+
+    console.log("HOHOHOHO")
+    console.log(req.body);
+    console.log(req.query);
+
+    User.findOne({ 
+        where: { shop_name: req.query.shop_name } 
+    }).then((user) => {
+        if(user){
+            res.send(false);
+
+        }   
+        else{
+
+            res.send(true);
+        }
+
+    }).catch(err => console.log(err));
+
+});
+
+router.get('/get_long_lat', (req, res) => {
+
+    console.log("HOHOHOHO")
+    console.log(req.body);
+    console.log(req.query);
+
+    Tracking.findOne({ 
+        where: { orderid: req.query.orderid } 
+    }).then((tracking) => {
+        if(tracking){
+            res.send(tracking);
+
+        }  
+
+    }).catch(err => console.log(err));
+
+});
+
+router.get('/set_long_lat', (req, res) => {
+
+    console.log("HOHOHOHO")
+    console.log(req.body);
+    console.log(req.query);
+    
+    Tracking.findOne({ 
+        where: { orderid: req.query.orderid } 
+    }).then((tracking) => {
+        if(tracking){
+
+            tracking.update({
+                longitude: req.query.longitude,
+                latitude: req.query.latitude 
+            }).then(()=>{
+                console.log("UPDATED TRACKING")
+            });
+        }   
+        else{
+
+            Tracking.create({ 
+                orderid: req.query.orderid, 
+                longitude: req.query.longitude, 
+                latitude: req.query.latitude 
+            }).then(() => {
+                console.log("new tracking created")
+            })
+        }
+
+    }).catch(err => console.log(err));
+
+});
 
 
 module.exports = router;

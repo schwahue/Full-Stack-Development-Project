@@ -11,7 +11,7 @@ const { ensureAuthenticated } = require('../helpers/auth');
 const Op = Sequelize.Op;
 
 router.get('/:id', ensureAuthenticated, (req, res) => {
-    
+
     Order.findOne({
         where: {
             id: req.params.id,
@@ -23,15 +23,22 @@ router.get('/:id', ensureAuthenticated, (req, res) => {
 
     })
         .then((order) => {
-            if (order.userId == req.user.id || req.user.type == "admin"){
-                res.render('delivery/overview', { title: "Delivery", navbar: "none", style: "delivery", order, type: req.user.type });
+            if (order) {
+
+
+                if (order.userId == req.user.id || req.user.type == "admin") {
+                    res.render('delivery/overview', { title: "Delivery", navbar: "none", style: "delivery", order, type: req.user.type });
+                }
+                else {
+                    alertMessage(res, 'danger', 'Access Denied', 'fas fa-exclamation-circle', true);
+                    return res.redirect('/user/logout')
+                }
+                //return res.json({msg: order});
             }
             else{
-                alertMessage(res, 'danger', 'Access Denied', 'fas fa-exclamation-circle', true);
-                return res.redirect('/user/logout')
+                alertMessage(res, 'danger', 'No Order Found', 'fas fa-exclamation-circle', true);
+                    return res.redirect('/user/logout')
             }
-            //return res.json({msg: order});
-            
 
 
         })
@@ -46,10 +53,10 @@ router.post('/:id', ensureAuthenticated, (req, res) => {
     console.log(req.body);
     id = req.body.orderid;
     status = req.body.submit;
-    if (status = "Confirm Delivery"){
+    if (status = "Confirm Delivery") {
         status = "Delivered";
     }
-    
+
     Order.update(
         {
             status

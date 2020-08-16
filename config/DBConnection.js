@@ -3,7 +3,8 @@ const user = require('../models/User_model');
 const order = require('../models/Order_model');
 const order_item = require('../models/OrderItem_model');
 const product = require('../models/productModel');
-const discountCode = require('../models/discountModel')
+const discountCode = require('../models/discountModel');
+const tracking = require('../models/TrackingModel');
 
 // If drop is true, all existing tables are dropped and recreated
 
