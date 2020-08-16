@@ -70,10 +70,25 @@
                         <img id="imageProduct" src="/img/image-placeholder.jpg" alt=""
                             class="border img-thumbnail img-fluid" style="height:450px;width:auto">
 
-                        <input id="productImageURL" name="productImageURL" type="hidden" value="" onchange="namecheck()">
+                        <input id="productImageURL" name="productImageURL" type="hidden" value=""
+                            onchange="namecheck()">
                         <div class="font-weight-bold text-danger-small" id="imageErr" style="display:none"></div>
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group col-md-10">
+                        <input type="checkbox" class="form-check-input" id="t&cCheckBox" name="t&cCheckBox"
+                            onclick="nameCheck()">
+                        <label for="t&cCheckBox">Term & Condition: Your Image will be analysed and help us to prevent
+                            fraudulent listing.</label>
+                    </div>
+                </div>
+                <div class="form-row mx-auto" hidden id="ErrorMsg">
+                    <div class="form-group col-md-10"></div>
+                    <h2 style="color:red">Image does not match provided Name!</h2>
+                    
+                </div>
+
                 <input id="butAddProduct" type="submit" class="btn btn-primary">
             </form>
         </div>

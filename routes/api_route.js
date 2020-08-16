@@ -19,8 +19,13 @@ router.get("/getProduct", (req, res) => {
     .catch((err) => console.log(err));
 });*/
 
-router.get("/product/all", (req, res) => {
-  Product.findAll({}, (raw = "true"))
+router.get("/product/:id", (req, res) => {
+  let merchantID = req.params.id;
+  console.log(`merchant ID == ${merchantID}`);
+
+  Product.findAll({
+    where: {productOwnerID:merchantID},
+  }, (raw = "true"))
     .then((products) => res.json(products))
     .catch((err) => console.log(err));
 });

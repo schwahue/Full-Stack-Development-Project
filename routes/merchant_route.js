@@ -290,6 +290,7 @@ router.post(
       .toInt()
       .withMessage("Stock is invalid!"),
   ],
+  ensureMerchantAuthenticated,
   (req, res) => {
     //Check for Errors
     const errors = validationResult(req);
@@ -305,6 +306,7 @@ router.post(
         navbar: "merchant",
         errors: errors_msg,
       });
+    } else {
     }
 
     //valid inputs
@@ -316,6 +318,8 @@ router.post(
     let productCategory = req.body.productCategory;
     let productImageURL = req.body.productImageURL;
     let productOwnerID = req.user.id;
+
+    console.log(productOwnerID);
 
     const products = [
       {
@@ -349,6 +353,7 @@ router.post(
       productStock: productStock,
       productCategory: productCategory,
       productImageURL: productImageURL,
+      productOwnerID: productOwnerID,
     }).then((product) => {
       alertMessage(
         res,
@@ -406,6 +411,7 @@ router.put(
       .toInt()
       .withMessage("Stock is invalid!"),
   ],
+  ensureMerchantAuthenticated,
   (req, res) => {
     let productID = req.params.id;
     let productName = req.body.productName;
@@ -430,68 +436,73 @@ router.put(
         navbar: "merchant",
         errors: errors_msg,
       });
-    }
-
-    //Valid Input
-    const products = [
-      {
-        objectID: productID,
-        productName: productName,
-        productDescription: productDescription,
-        productPrice: productPrice,
-        productStock: productStock,
-        productCategory: productCategory,
-        productImageURL: productImageURL,
-        productOwnerID: productOwnerID,
-      },
-    ];
-
-    //updateObject
-    index.saveObjects(products).then(({ productID }) => {
-      console.log(productID);
-    });
-
-    Product.update(
-      {
-        productID,
-        productName,
-        productDescription,
-        productPrice,
-        productStock,
-        productCategory,
-        productImageURL,
-        productOwnerID: productOwnerID,
-      },
-      {
-        where: {
-          productID: req.params.id,
+    } else {
+      //Valid Input
+      const products = [
+        {
+          objectID: productID,
+          productName: productName,
+          productDescription: productDescription,
+          productPrice: productPrice,
+          productStock: productStock,
+          productCategory: productCategory,
+          productImageURL: productImageURL,
+          productOwnerID: productOwnerID,
         },
-      }
-    )
-      .then((product) => {
-        alertMessage(
-          res,
-          "success",
-          productName + " has been updated",
-          "fas fa-sign-in-alt",
-          true
-        );
-        res.redirect("/merchant/displayProduct");
-      })
-      .catch((err) => {
-        console.log(err);
+      ];
+
+      //updateObject
+      index.saveObjects(products).then(({ productID }) => {
+        console.log(productID);
       });
+
+      Product.update(
+        {
+          productID,
+          productName,
+          productDescription,
+          productPrice,
+          productStock,
+          productCategory,
+          productImageURL,
+          productOwnerID: productOwnerID,
+        },
+        {
+          where: {
+            productID: req.params.id,
+          },
+        }
+      )
+        .then((product) => {
+          alertMessage(
+            res,
+            "success",
+            productName + " has been updated",
+            "fas fa-sign-in-alt",
+            true
+          );
+          res.redirect("/merchant/displayProduct");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 ); //updateExisting Products
 
 router.get("/displayProduct", ensureMerchantAuthenticated, (req, res) => {
-  Product.findAll({})
+  let productOwnerID = req.user.id;
+
+  Product.findAll({
+    where: {productOwnerID:productOwnerID}
+  })
     .then((products) => {
       res.render("merchant/displayProduct", {
         products: products,
         title: "Merchant - AddProduct",
         style: "merchant",
         navbar: "merchant",
+        productOwnerID,
       });
     })
     .catch((err) => console.log(err));
@@ -508,7 +519,7 @@ router.get("/deleteProduct/:id", ensureMerchantAuthenticated, (req, res) => {
     where: { productID: productID },
   })
     .then((product) => {
-      let productName = product.productName
+      let productName = product.productName;
       if (productID == null) {
         res.redirect("/");
       } else {

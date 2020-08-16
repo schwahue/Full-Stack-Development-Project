@@ -1,5 +1,5 @@
 // Initialize the Image Classifier method with MobileNet
-const classifier = ml5.imageClassifier("Mobilenet", modelLoaded);
+const classifier = ml5.imageClassifier("/data/imageModel.json", modelLoaded);
 
 let submitBut = document.getElementById("butAddProduct");
 submitBut.disabled = true;
@@ -47,16 +47,17 @@ function nameCheck() {
     (err, results) => {
       let submitBut = document.getElementById("butAddProduct");
       let name = document.getElementById("productName").value;
+      let errorMsg = document.getElementById("ErrorMsg")
       if (name != "") {
         console.log(results);
         if (
-          results[0].label.match(name) ||
-          results[1].label.match(name) ||
-          results[2].label.match(name)
+          results[0].label.match(name)
         ) {
+          errorMsg.hidden = true;
           submitBut.disabled = false;
           console.log("Success");
         } else {
+          errorMsg.hidden = false;
           submitBut.disabled = true;
           console.log("Not Success");
         }

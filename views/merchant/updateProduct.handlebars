@@ -11,7 +11,6 @@
                         <label for="productName">Product Name</label>
                         <input type="text" class="form-control" id="productName" name="productName"
                             placeholder="Enter a product name" value="{{product.productName}}" required>
-
                     </div>
                 </div>
                 <div class="form-row">
@@ -25,7 +24,8 @@
                     <div class="form-group col-md-6">
                         <label for="productPrice">Product Price</label>
                         <input type="number" class="form-control" id="productPrice" name="productPrice"
-                            placeholder="Enter a product price" step=".01" value="{{product.productPrice}}" min="0"required>
+                            placeholder="Enter a product price" step=".01" value="{{product.productPrice}}" min="0"
+                            required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -72,6 +72,21 @@
                         <div class="font-weight-bold text-danger-small" id="imageErr" style="display:none"></div>
                     </div>
                 </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-10">
+                        <input type="checkbox" class="form-check-input" id="t&cCheckBox" name="t&cCheckBox"
+                            onclick="nameCheck()">
+                        <label for="t&cCheckBox">Term & Condition: Your Image will be analysed and help us to prevent
+                            fraudulent listing.</label>
+                    </div>
+                </div>
+                <div class="form-row mx-auto" hidden id="ErrorMsg">
+                    <div class="form-group col-md-10"></div>
+                    <h2 style="color:red">Image does not match provided Name!</h2>
+
+                </div>
+
                 <input id="butAddProduct" type="submit" class="btn btn-primary">
             </form>
         </div>
