@@ -110,7 +110,7 @@ router.post('/marketing', ensureAdminAuthenticated, (req, res) => {
 
     if (req.body.submit == "send default newsletter") {
         console.log("send default clicked");
-        /*
+        
         User.findAll({ 
             attributes: ['email', 'first_name', 'last_name'],
             raw: true
@@ -121,12 +121,12 @@ router.post('/marketing', ensureAdminAuthenticated, (req, res) => {
                 alertMessage(res, 'success','Sent Default Poster', 'fas fa-sign-in-alt', true);
                 send_promotions_email(user);
             }
-        })*/
+        })
 
     }
     else if (req.body.submit == "upload newsletter") {
         console.log("hoho")
-        console.log(req.body)/*
+        console.log(req.body)
         User.findAll({ 
             attributes: ['email', 'first_name', 'last_name'],
             raw: true
@@ -136,10 +136,7 @@ router.post('/marketing', ensureAdminAuthenticated, (req, res) => {
                 console.log(user);
                 send_poster_email(user, req.body.file);
             }
-        })*/
-    }
-    else if (req.body.submit == "send template newsletter") {
-        console.log("send template clicked");
+        })
     }
     else {
         console.log("EH?")
