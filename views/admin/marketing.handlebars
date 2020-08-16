@@ -20,6 +20,26 @@
             <p> This will send newletters using template created beforehand</p>
             <input type="Submit" name="submit" value="send template newsletter" class="btn form-button"/>
         </form>
+
+        <hr>
+        <div>
+            <h6 style="">Add Discount Code:</h6>
+            <input placeholder="CODE" type="text" id="discountcode"><input placeholder="Amount in decimals" type="text" id="discountvalue">
+            <input onclick="addCode()" type="submit" style="display:block; margin-top:10px;" name="submit" value="Add Discount Code" class="btn form-button"/>
+        </div>
     </div>
+
+    <script>
+        function addCode() {
+            var discountcode = document.getElementById('discountcode').value;
+            var discountvalue = document.getElementById('discountvalue').value;
+            return fetch('/discount/' + discountcode + '/' + discountvalue, {
+                method: 'get',
+            }).then(function (res) {
+                alert("Successfully added!")
+            })
+            
+        }
+    </script>
     
 </div>

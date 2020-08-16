@@ -13,7 +13,6 @@
             </ul>
             <hr>
         </div>
-
         <div class="content col-md-7">
 
             <h4 class="sub-content-title">My Purchases</h4>
@@ -34,8 +33,28 @@
                 <h3> --Filter here--</h3>
             </div>
 
+            <p>Search:</p>
+            <input class="form-contr ol" id="myInput" type="text" placeholder="Search..">
+            <div id="jh_order" class="container">
+                <br>
+                <table class="table table-bordered">
+                    <tbody id="myTable">
+                        {{#if uorders}}
+                        {{#each uorders}}
+                        <tr>
+                            <td><a href="/{{ordernumber}}"><img class="img-fluid" href="/cart" src="{{productImageURL}}"
+                                        style="max-width: auto; height: 35%;"></a></td>
+                            <td hidden='true'>{{productName}}</td>
+                            <td>Order Number: #{{ordernumber}}, QTY:{{quantity}}</td>
+                            <td>{{productTotal}}</td>
+                        </tr>
+                        {{/each}}
+                        {{/if}}
+                    </tbody>
+                </table>
+            </div>
             <!-- items -->
-
+            <div id="hf_order">
             {{#if orders}}
             <!-- ORDER 2-->
             {{#each orders}}
@@ -51,7 +70,7 @@
 
 
                     <!-- Start of order_purchases container -->
-                    <div class="row order-container">
+                    <div class="row order-container" >
                         <div class="col-md-9">
                             <!-- Start of each order -->
                             {{#each Order_Items}}
@@ -89,7 +108,6 @@
                                     <div class="col-sm-3">
                                         test 2
                                     </div>
-
                                 </div>-->
                             <!-- End of all orders -->
                         </div>
@@ -117,6 +135,7 @@
             </h3>
 
             {{/if}}
+            </div>
             <!--
                 <div class="row test1">
                     <p> ORDER ID</p>
@@ -128,7 +147,6 @@
                             <p> test 2</p>
                         </div>
                     </div>
-
                     <div class="row order-item">
                         <div class="col-md-3 item-photo">
                             <img src="/img/image-placeholder.jpg" alt="..." class="img-thumbnail">
@@ -144,5 +162,21 @@
 
 
     <script>
-
+        document.getElementById("jh_order").style.display = "none"; // hide it first
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                if (value.length <= 0) {
+                    document.getElementById("hf_order").style.display = "";
+                    document.getElementById("jh_order").style.display = "none";
+                } else {
+                    document.getElementById("hf_order").style.display = "none";
+                    document.getElementById("jh_order").style.display = "";
+                }
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        
     </script>
