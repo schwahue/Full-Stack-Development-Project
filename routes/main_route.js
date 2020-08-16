@@ -806,4 +806,5 @@ router.get("/chatbot", (req, res) => {
   res.render("chat/chatbot.handlebars");
 });
 
+
 module.exports = router;
