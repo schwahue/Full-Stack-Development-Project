@@ -11,6 +11,7 @@
         <div style="margin-top: 40px;">
             <h4> Status Update:</h4>
             <form method="post" action="">
+                {{#if (if_Equal type 'admin')}}
                 <div class="status-choice">
                     <input type="Submit" name="submit" value="Picked Up" class="btn acpt-btn btn2" />
                 </div>
@@ -22,6 +23,17 @@
                 <div class="status-choice">
                     <input type="Submit" name="submit" value="Delivered" class="btn acpt-btn btn2" />
                 </div>
+
+                {{else}}
+
+                <div class="status-choice">
+                    <input type="Submit" name="submit" value="Confirm Delivery" class="btn acpt-btn btn2" />
+                </div>
+
+                {{/if}}
+
+
+
                 <input type="hidden" style="display:hidden" name="orderid" value="{{order.id}}">
             </form>
         </div>
