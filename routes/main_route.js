@@ -407,8 +407,8 @@ router.get("/debug/database/truncate", (req, res) => {
 });
 
 
-// Note to Hieu, To use add href="/product/{id}"
-router.get('/debug/add/:id', (req, res) => {
+
+router.get('/cart/add/:id', (req, res) => {
     console.log(req.params.id);
     Product.findOne({ where: { productID: req.params.id.toString() } })
         .then(product => {

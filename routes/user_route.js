@@ -64,13 +64,13 @@ router.post('/signup', [
     // password must be at least 4 chars long
     body('first_name')
     .notEmpty().withMessage('Invalid First Name').bail()
-    .isLength({ min: 3 }).withMessage('First Name must be at least 3 characters long').bail()
+    .isLength({ min: 2 }).withMessage('First Name must be at least 2 characters long').bail()
     .matches('^[a-zA-Z0-9]*$').withMessage('Enter valid First Name').bail(),
 
     // password must be at least 4 chars long
     body('last_name')
     .notEmpty().withMessage('Invalid Last Name').bail()
-    .isLength({ min: 3 }).withMessage('Last Name must be at least 3 characters long').bail()
+    .isLength({ min: 2 }).withMessage('Last Name must be at least 2 characters long').bail()
     .matches('^[a-zA-Z0-9]*$').withMessage('Enter valid Last Name').bail(),
 
 
