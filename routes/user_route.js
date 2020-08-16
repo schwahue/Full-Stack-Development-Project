@@ -219,7 +219,8 @@ router.get('/orders', ensureUserAuthenticated, async (req, res) => {
                                     productName: product.productName,
                                     productImageURL: product.productImageURL,
                                     quantity: orders[i].dataValues.items[5],
-                                    productTotal: orders[i].dataValues.totalPrice
+                                    productTotal: orders[i].dataValues.totalPrice,
+                                    date: orders[i].dataValues.date
                                 });
                             }
                         });

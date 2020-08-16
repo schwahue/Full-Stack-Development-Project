@@ -236,12 +236,13 @@ router.get("/testsearch", async (req, res) => {
       for (let i = 0; i < orders.length; i++) {
         Product.findOne({ where: { productID: orders[i].dataValues.items[2] } }).then((product) => {
           if (product) {
+            console.log(orders[i].dataValues)
             user_orders.push({
               ordernumber: orders[i].dataValues.id,
               productName: product.productName,
               productImageURL: product.productImageURL,
               quantity: orders[i].dataValues.items[5],
-              productTotal: orders[i].dataValues.totalPrice
+              productTotal: orders[i].dataValues.totalPrice,
             });
           }
         });
