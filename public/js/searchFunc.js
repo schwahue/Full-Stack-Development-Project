@@ -29,7 +29,7 @@ search.addWidgets([
               {{#helpers.highlight}}{ "attribute": "productDescription" }{{/helpers.highlight}}
             </div>
             <div class="hit-price">\${{productPrice}}</div>
-            <a role="button" class="btn btn-success active" href="/cart/add/{{objectID}}" aria-pressed="true">Buy</a>
+            <a role="button" class="btn btn-success active" onclick='alert("Item added!")' href="/cart/add/{{objectID}}" aria-pressed="true">Buy</a>
           </div>
         `,
       empty: `<div>
