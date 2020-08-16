@@ -56,5 +56,28 @@ router.get('/check_contact_availability', (req, res) => {
 
 });
 
+router.get('/check_shopname_availability', (req, res) => {
+
+    console.log("HOHOHOHO")
+    console.log(req.body);
+    console.log(req.query);
+
+    User.findOne({ 
+        where: { shop_name: req.query.shop_name } 
+    }).then((user) => {
+        if(user){
+            res.send(false);
+
+        }   
+        else{
+
+            res.send(true);
+        }
+
+    }).catch(err => console.log(err));
+
+});
+
+
 
 module.exports = router;

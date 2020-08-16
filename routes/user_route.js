@@ -181,12 +181,12 @@ router.post('/signup', [
     //res.json({ msg: "DONE" });
 });
 
-router.get('/uorders', async (req, res)=> {
+router.get('/uorders', ensureUserAuthenticated, async (req, res)=> {
     
     res.render('user/uorders', {title:"deliverys", style:"users", orders: user_orders, });
 });
 
-router.get('/orders', async (req, res) => {
+router.get('/orders', ensureUserAuthenticated, async (req, res) => {
 
     Order.findAll({
         where: {
@@ -257,7 +257,7 @@ router.get('/account', ensureUserAuthenticated, async (req, res) => {
 	res.render('user/account', { style:"users"});
 });
 
-router.post('/account', (req, res) => {
+router.post('/account', ensureUserAuthenticated, (req, res) => {
     console.log("\nButton Type");
 
     if(req.body.submit == "Update Profile"){
@@ -330,21 +330,26 @@ router.post('/account', (req, res) => {
 
 router.get('/redirect', (req, res) => {
     if (res.locals.user){
-        if (res.locals.user.type == "customer"){
-            res.redirect('/user/account');
+        if(req.session.returnTo){
+            myroute = req.session.returnTo;
+            req.session.returnTo = null;
+            return res.redirect(myroute);
+        }
+        else if (res.locals.user.type == "customer"){
+            return res.redirect('/user/account');
         }
         else if(res.locals.user.type == "admin"){
-            res.redirect('/admin/account');
+            return res.redirect('/admin/account');
         }
         else if(res.locals.user.type == "merchant"){
-            res.redirect('/merchant/account');
+            return res.redirect('/merchant/account');
         }
         else{
-            res.redirect('/user/login');
+            return res.redirect('/user/login');
         }
     }
     else{
-        res.redirect('/user/login');
+        return res.redirect('/user/login');
     }
 
 });

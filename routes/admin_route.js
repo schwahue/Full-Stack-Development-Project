@@ -98,7 +98,7 @@ router.post("/uploadPoster", ensureAdminAuthenticated, function (req, res, next)
                     send_poster_email(user, req.file);
                 }
             })
-
+            alertMessage(res, 'success','Uploaded & Sent Poster', 'fas fa-sign-in-alt', true);
             res.redirect('/admin/marketing');
         }
     })
@@ -118,6 +118,7 @@ router.post('/marketing', ensureAdminAuthenticated, (req, res) => {
         .then((user)=> {
             if(user != undefined){
                 console.log(user);
+                alertMessage(res, 'success','Sent Default Poster', 'fas fa-sign-in-alt', true);
                 send_promotions_email(user);
             }
         })*/

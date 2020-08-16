@@ -6,20 +6,12 @@ const send_sms = require('../helpers/send_sms');
 const User = require('../models/User_model');
 const Order = require('../models/Order_model');
 
-const ensureAuthenticated = require('../helpers/auth');
-
 const Sequelize = require('sequelize');
-const { ensureAdminAuthenticated } = require('../helpers/auth');
+const { ensureAuthenticated } = require('../helpers/auth');
 const Op = Sequelize.Op;
 
-router.get('/overview', (req, res) => {
-    res.render('delivery/overview', { title: "Delivery", navbar: "none", style: "delivery" });
-
-
-
-});
-
-router.get('/:id', (req, res) => {
+router.get('/:id', ensureAuthenticated, (req, res) => {
+    
     Order.findOne({
         where: {
             id: req.params.id,
@@ -31,21 +23,32 @@ router.get('/:id', (req, res) => {
 
     })
         .then((order) => {
+            if (order.userId == req.user.id || req.user.type == "admin"){
+                res.render('delivery/overview', { title: "Delivery", navbar: "none", style: "delivery", order, type: req.user.type });
+            }
+            else{
+                alertMessage(res, 'danger', 'Access Denied', 'fas fa-exclamation-circle', true);
+                return res.redirect('/user/logout')
+            }
             //return res.json({msg: order});
-            res.render('delivery/overview', { title: "Delivery", navbar: "none", style: "delivery", order });
+            
 
 
         })
         .catch((err) => { console.log(err); });
 
 
+
 });
 
-router.post('/:id', (req, res) => {
+router.post('/:id', ensureAuthenticated, (req, res) => {
 
     console.log(req.body);
     id = req.body.orderid;
     status = req.body.submit;
+    if (status = "Confirm Delivery"){
+        status = "Delivered";
+    }
     
     Order.update(
         {

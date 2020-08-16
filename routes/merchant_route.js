@@ -63,7 +63,7 @@ router.post(
       .withMessage("Invalid Password")
       .bail()
       .isLength({ min: 4 })
-      .withMessage("must be at least 4 characters long")
+      .withMessage("Password must be at least 4 characters long")
       .bail(),
 
     body("c_password")
@@ -78,10 +78,10 @@ router.post(
       .withMessage("Invalid Contact Number")
       .bail()
       .isLength({ min: 8, max: 8 })
-      .withMessage("must be at least 8 characters long")
+      .withMessage("Phone must be at  8 characters long")
       .bail()
       .matches("(8|9)[0-9]{7}")
-      .withMessage("Enter numbers only")
+      .withMessage("Enter numbers only for contact")
       .bail()
       .trim()
       .custom((value, { req }) => {
@@ -103,7 +103,7 @@ router.post(
       .withMessage("Enter valid Shop Name")
       .bail()
       .isLength({ min: 8 })
-      .withMessage("must be at least 8 characters long")
+      .withMessage("Shop Name must be at least 8 characters long")
       .bail()
       .trim()
       .custom((value, { req }) => {
@@ -182,7 +182,7 @@ router.post(
   }
 );
 
-router.get("/orders", (req, res) => {
+router.get("/orders", ensureMerchantAuthenticated, (req, res) => {
   Order.findAll({
     where: {
       merchantId: req.user.id,
@@ -193,6 +193,8 @@ router.get("/orders", (req, res) => {
     order: [["date", "DESC"]],
   })
     .then((orders) => {
+      console.log("ORDERSSSSSSSSSSSSS");
+      console.log(orders);
       //console.log(orders.Order_Items);
       res.render("merchant/orders", {
         title: "Merchant - Orders",
@@ -205,7 +207,7 @@ router.get("/orders", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-router.get("/order/:id", (req, res) => {
+router.get("/order/:id", ensureMerchantAuthenticated, (req, res) => {
   Order.findOne({
     where: {
       id: req.params.id,
@@ -260,7 +262,7 @@ router.get("/account", ensureMerchantAuthenticated, (req, res) => {
   });
 });
 
-router.get("/addProduct", (req, res) => {
+router.get("/addProduct", ensureMerchantAuthenticated, (req, res) => {
   res.render("merchant/addProduct", {
     title: "Merchant - AddProduct",
     style: "merchant",
@@ -364,7 +366,7 @@ router.post(
   }
 ); //addProduct to db
 
-router.get("/updateProduct/:id", (req, res) => {
+router.get("/updateProduct/:id", ensureMerchantAuthenticated, (req, res) => {
   Product.findOne({
     where: {
       productID: req.params.id,
@@ -482,7 +484,7 @@ router.put(
   }
 ); //updateExisting Products
 
-router.get("/displayProduct", (req, res) => {
+router.get("/displayProduct", ensureMerchantAuthenticated, (req, res) => {
   Product.findAll({})
     .then((products) => {
       res.render("merchant/displayProduct", {
@@ -495,7 +497,7 @@ router.get("/displayProduct", (req, res) => {
     .catch((err) => console.log(err));
 }); //getExsiting Products
 
-router.get("/deleteProduct/:id", (req, res) => {
+router.get("/deleteProduct/:id", ensureMerchantAuthenticated, (req, res) => {
   let productID = req.params.id;
 
   index.deleteObject(productID).catch((err) => {
@@ -531,7 +533,7 @@ router.get("/deleteProduct/:id", (req, res) => {
     });
 }); //deleteExisting Products
 
-router.post("/upload", (req, res) => {
+router.post("/upload", ensureMerchantAuthenticated, (req, res) => {
   // Creates user id directory for upload if not exist
   if (!fs.existsSync("./public/uploads/testing")) {
     fs.mkdirSync("./public/uploads/testing");
