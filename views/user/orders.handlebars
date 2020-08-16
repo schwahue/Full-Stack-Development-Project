@@ -44,9 +44,9 @@
                         <tr>
                             <td><a href="/{{ordernumber}}"><img class="img-fluid" href="/cart" src="{{productImageURL}}"
                                         style="max-width: auto; height: 35%;"></a></td>
-                            <td hidden='true'>{{productName}}</td>
+                            <td hidden='true'>{{productName}} {{date}}</td>
                             <td>Order Number: #{{ordernumber}}, QTY:{{quantity}}</td>
-                            <td>{{productTotal}}</td>
+                            <td>S${{productTotal}}: Date:{{date}}</td>
                         </tr>
                         {{/each}}
                         {{/if}}
