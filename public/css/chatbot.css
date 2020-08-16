@@ -1,14 +1,14 @@
-body { 
+/* body { 
     color: #421; 
     font-weight: bold; 
     font-size: 18px; 
     font-family: "Courier New"; 
     background: rgb(200, 232, 241); 
-}
+} */
 
 body::after {
     content: "";
-    background-image: url("../img/ljh.jpg");
+    background-image: url("../img/bot.png");
     background-repeat: repeat-y; 
     opacity: 0.5;
     top: 0;
