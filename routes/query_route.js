@@ -137,8 +137,7 @@ router.get('/set_long_lat', (req, res) => {
                 console.log("UPDATED TRACKING")
             });
         }   
-        else{
-
+        else {
             Tracking.create({ 
                 orderid: req.query.orderid, 
                 longitude: req.query.longitude, 
@@ -149,6 +148,19 @@ router.get('/set_long_lat', (req, res) => {
         }
 
     }).catch(err => console.log(err));
+
+});
+
+router.get('/get_user_list', (req, res) => {
+    console.log(req.query)
+    
+    User.findAll({ 
+        where: { type: req.query.type } 
+    })
+    .then((user_list) => {
+        res.send(user_list);
+    })
+    .catch(err => console.log(err));
 
 });
 

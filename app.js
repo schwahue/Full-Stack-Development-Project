@@ -2,6 +2,8 @@
  * 'require' is similar to import used in Java and Python. It brings in the libraries required to be used
  * in this JS file.
  * */
+const nodemailer = require('nodemailer');
+const mailGun = require('nodemailer-mailgun-transport');
 const express = require("express");
 const session = require("express-session");
 const path = require("path");

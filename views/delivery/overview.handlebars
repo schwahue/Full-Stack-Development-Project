@@ -128,6 +128,7 @@
         navigator.geolocation.getCurrentPosition(position => {
             console.log(position.coords.longitude, position.coords.latitude);
             updateDB_Location(position.coords.longitude, position.coords.latitude);
+            //updateDB_Location(103.84493, 1.381726);
         });
     }
     }, 10000);
@@ -137,10 +138,9 @@
 
     console.log("WOI CUSTOMER")
     var marker = new mapboxgl.Marker()
-    .setLngLat([103.83, 1.376])
+    .setLngLat([103.84493, 1.381726])
     .addTo(map);
 
-         //user is "finished typing," do something
     function getDB_Location() {
         var $orderid = $('#orderidplaceholder');
         $.ajax({
@@ -157,6 +157,7 @@
             marker.remove();
             marker = new mapboxgl.Marker()
             .setLngLat([data.longitude, data.latitude])
+            //.setLngLat([103.84493, 1.381726])
             .addTo(map);
         });
     }
@@ -166,14 +167,8 @@
     }, 10000);
 
     {{/if}}
+</script>
 
-    
-
-    
-
-
-
-
-
-
+<script>
+	firebase.analytics().logEvent("view_item_status");
 </script>
