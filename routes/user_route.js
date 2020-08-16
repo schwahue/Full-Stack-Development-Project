@@ -181,29 +181,7 @@ router.post('/signup', [
     //res.json({ msg: "DONE" });
 });
 
-router.get('/orders', async (req, res)=> {
-
-    // Order.findAll({
-    //     where: {
-    //         userId: req.user.id
-    //     },
-    //     attributes: ['id', 'date', 'status', 'userId'],
-    //     /*include: [{model: OrderItem, attributes: ['id', 'quantity', 'productId']}],*/
-    //     include: [{model: OrderItem, include: Product}]
-
-    //     /*
-    //     order: [
-    //         ['userId']
-    //     ]*/
-    // })
-    // .then((orders) => {
-    //     // my code -jh
-        
-    //     //console.log(orders.Order_Items);
-    //     res.render('user/orders', {title:"deliverys", style:"users", orders: user_orders, });
-    //     //return res.json({ msg: orders});
-
-    // }).catch(err => console.log(err));
+router.get('/uorders', async (req, res)=> {
     let user_id = req.user.id
     let user_orders = []
     let count = 0
@@ -233,13 +211,33 @@ router.get('/orders', async (req, res)=> {
         }
     });
     await delay()
-    res.render('user/orders', {title:"deliverys", style:"users", orders: user_orders, });
+    res.render('user/uorders', {title:"deliverys", style:"users", orders: user_orders, });
 });
 
-router.get('/userorder', (req, res) => {
-    res.render('user/_orders');
-});
+router.get('/orders', async (req, res)=> {
 
+    Order.findAll({
+        where: {
+            userId: req.user.id
+        },
+        attributes: ['id', 'date', 'status', 'userId'],
+        /*include: [{model: OrderItem, attributes: ['id', 'quantity', 'productId']}],*/
+        include: [{model: OrderItem, include: Product}]
+
+        /*
+        order: [
+            ['userId']
+        ]*/
+    })
+    .then((orders) => {
+        // my code -jh
+        
+        //console.log(orders.Order_Items);
+        res.render('user/orders', {title:"deliverys", style:"users", orders: orders, });
+        //return res.json({ msg: orders});
+
+    }).catch(err => console.log(err));
+});
 
 // Logout User
 router.get('/logout', (req, res) => {

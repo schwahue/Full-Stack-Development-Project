@@ -36,27 +36,86 @@
 
             <!-- items -->
 
-            <div class="container">
-                <h2>Filterable Table</h2>
-                <p>Search:</p>
-                <input class="form-contr ol" id="myInput" type="text" placeholder="Search..">
-                <br>
-                <table class="table table-bordered">
-                    <tbody id="myTable">
-                        {{#if orders}}
-                        {{#each orders}}
-                        <tr>
-                            <td><a href="/{{ordernumber}}"><img class="img-fluid" href="/cart" src="{{productImageURL}}"
-                                        style="max-width: auto; height: 35%;"></a></td>
-                            <td hidden='true'>{{productName}}</td>
-                            <td>Order Number: #{{ordernumber}}, QTY:{{quantity}}</td>
-                            <td>{{productTotal}}</td>
-                        </tr>
-                        {{/each}}
-                        {{/if}}
-                    </tbody>
-                </table>
+            {{#if orders}}
+            <!-- ORDER 2-->
+            {{#each orders}}
+            <div class="row order">
+
+                <!-- Start of all orders -->
+                <div class="order-header-containter">
+                    <div class="order-header">
+                        <p class="order-header-info">#{{id}}</p>
+                        <p class="order-header-info">{{date}}</p>
+                        <hr>
+                    </div>
+
+
+                    <!-- Start of order_purchases container -->
+                    <div class="row order-container">
+                        <div class="col-md-9">
+                            <!-- Start of each order -->
+                            {{#each Order_Items}}
+                            <div class="row order-item">
+                                <div class="col-sm-4 item-photo">
+                                    <!--<img src="/img/image-placeholder.jpg" alt="..."
+                                        class="img-thumbnail order-item-photo">-->
+                                    <img width="200px" height="300px" src="{{product.productImageURL}}" alt="..."
+                                        class="img-thumbnail order-item-photo">
+                                </div>
+                                <div class="col-sm-4">
+                                    <p> {{product.productName}} </p>
+                                    <p> {{product.productDescription}}</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p> Qty: {{quantity}} </p>
+                                </div>
+                                <!--
+                                    <div class="col-sm-3">
+                                        {{customer_name}}
+                                    </div>-->
+                            </div>
+                            {{/each}}
+                            <!--
+                                <div class="row order-item">
+                                    <div class="col-sm-3 item-photo">
+                                        <img src="/img/image-placeholder.jpg" alt="..." class="img-thumbnail order-item-photo">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p> test 2</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p> test 2</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        test 2
+                                    </div>
+                                </div>-->
+                            <!-- End of all orders -->
+                        </div>
+
+                        <div class="col-md-3 btn-col">
+                            <!-- 
+                                <a href="" data-toggle="modal" data-target="#confirmModal"
+                                    class="acpt-btn btn btn2 btn-outline-secondary">Arrange Delivery </a>
+                                <a href="" data-toggle="modal" data-target="#deleteModal" 
+                                    class="rej-btn btn btn2 btn-outline-secondary"> Reject Order </a> -->
+                            <a href="" class=" acpt-btn btn btn2 btn-normal btn-outline-secondary">View Details</a>
+                        </div>
+                    </div>
+                    <!-- End of order_purchases containter -->
+                </div>
+                <!-- End of all orders -->
+
+
             </div>
+            {{/each}}
+
+            {{else}}
+
+            <h3 style="text-align:center; margin-top:40px; color:#818181; margin-bottom:60px;">-- No Orders Available --
+            </h3>
+
+            {{/if}}
             <!--
                 <div class="row test1">
                     <p> ORDER ID</p>
@@ -68,7 +127,6 @@
                             <p> test 2</p>
                         </div>
                     </div>
-
                     <div class="row order-item">
                         <div class="col-md-3 item-photo">
                             <img src="/img/image-placeholder.jpg" alt="..." class="img-thumbnail">
@@ -84,12 +142,4 @@
 
 
     <script>
-        $(document).ready(function () {
-            $("#myInput").on("keyup", function () {
-                var value = $(this).val().toLowerCase();
-                $("#myTable tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-        });
     </script>

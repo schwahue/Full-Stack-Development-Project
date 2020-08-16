@@ -327,6 +327,15 @@ router.get("/cart/:id", (req, res) => {
   res.end();
 });
 
+router.get("/discount/:code/:amount", (req, res) => {
+  discountCode.create({
+    code: req.params.code,
+    active: true,
+    amount: req.params.amount
+  });
+  res.end();
+});
+
 router.get("/processing", (req, res) => {
   res.render("payment/processing");
 });
@@ -660,8 +669,12 @@ router.post("/success", async (req, res) => {
   let itemsObject = {};
   let totalPrice = 0.0;
   for (let i = 0; i < shopping_cart.length; i++) {
+    var productPrice = shopping_cart[i].productPrice;
+    if ((discount_code.code == null) == false) {
+      productPrice = productPrice * (1- discount_code.amount)
+    }
     itemsObject[shopping_cart[i].productID] = shopping_cart[i].quantity;
-    totalPrice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
+    totalPrice += productPrice * shopping_cart[i].quantity;
   }
   let dateObject = new Date();
   let currentDate =
