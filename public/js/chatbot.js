@@ -24,7 +24,11 @@ const trigger = [
     ["what", "why", "how", "where", "when"], //16
     ["tristan"], //17
     ["who made this website", "developer", "creator of this website"], //18
-    ["what is the price of nmd?", "nmd"], //19
+    ["live chat timing", "live chat", "what are the live chat hours"], //19
+    ["airpods", "how much are the airpods"], //20
+    ["iphone"], //21
+    ["apple watch"], //22
+    ["macbook"], //23
   ];
   
   const reply = [
@@ -48,7 +52,7 @@ const trigger = [
     ["Have you ever felt bad?", "Glad to hear it"], //8
     ["Why?", "Why? You shouldn't!", "Try watching TV"], //9
     ["What about?", "Once upon a time..."], //10
-    ["Tell me a story", "Tell me a joke", "Tell me about yourself"], //1
+    ["Tell me a story", "Tell me a joke", "Tell me about yourself"], //11
     ["You're welcome"], //12
     ["Bye", "Goodbye", "See you later"], //13
     ["Sushi", "Pizza"], //14
@@ -56,7 +60,12 @@ const trigger = [
     ["Yes?"], //16
     ["Tech lead"], //17
     ["Students of NYP"], //18
-    ["The NMD costs $239. View more information about it here: <a href='https://www.google.com'> google </a>"] //19
+    ["Our customer support runs from 10am to 6pm daily!"], //19
+    ["The airpods cost $99. View more information here: <a href='http://localhost:5000/product'> Airpods </a>"], //20
+    ["We have many different versions of iPhones. View more about it here: <a href='http://localhost:5000/product'> iPhone </a>"], //21
+    ["The apple watch costs $599. View more information here: <a href='http://localhost:5000/product'> Apple watch </a>"], //22
+    ["The MacBook costs $1599. View more information here: <a href='http://localhost:5000/product'> MacBook </a>"], //23
+
   ];
   
   const alternative = [
@@ -68,7 +77,7 @@ const trigger = [
   ]; //anything not in trigger
   
   const coronavirus = ["Please stay home"]; // as long as "coronavirus" is inside, respond
-  
+
   document.addEventListener("DOMContentLoaded", () => {
       const inputField = document.getElementById("input")
       inputField.addEventListener("keydown", function(e) { // when "Enter" is hit, register input
