@@ -182,39 +182,11 @@ router.post('/signup', [
 });
 
 router.get('/uorders', async (req, res)=> {
-    let user_id = req.user.id
-    let user_orders = []
-    let count = 0
-    let counter = 1
-    let what = await simpleOrder.findAll({ where: { userId: user_id } }).then((orders) => {
-        if (orders) {
-            count = orders.length
-            // orders[0].dataValues.items[2] this is first item
-            // orders[0].dataValues.items[5] this is quantity
-            for (let i = 0; i < orders.length; i++) {
-                Product.findOne({ where: { productID: orders[i].dataValues.items[2] } }).then((product) => {
-                    if (product) {
-                        user_orders.push({
-                            ordernumber: orders[i].dataValues.id,
-                            productName: product.productName,
-                            productImageURL: product.productImageURL,
-                            quantity: orders[i].dataValues.items[5],
-                            productTotal: orders[i].dataValues.totalPrice
-                        });
-                    }
-                });
-                counter++;
-            }
-
-        } else {
-
-        }
-    });
-    await delay()
+    
     res.render('user/uorders', {title:"deliverys", style:"users", orders: user_orders, });
 });
 
-router.get('/orders', async (req, res)=> {
+router.get('/orders', async (req, res) => {
 
     Order.findAll({
         where: {
@@ -222,21 +194,50 @@ router.get('/orders', async (req, res)=> {
         },
         attributes: ['id', 'date', 'status', 'userId'],
         /*include: [{model: OrderItem, attributes: ['id', 'quantity', 'productId']}],*/
-        include: [{model: OrderItem, include: Product}]
+        include: [{ model: OrderItem, include: Product }]
 
         /*
         order: [
             ['userId']
         ]*/
     })
-    .then((orders) => {
-        // my code -jh
-        
-        //console.log(orders.Order_Items);
-        res.render('user/orders', {title:"deliverys", style:"users", orders: orders, });
-        //return res.json({ msg: orders});
+        .then(async (orders) => {
+            let user_id = req.user.id
+            let user_orders = []
+            let count = 0
+            let counter = 1
+            let what = await simpleOrder.findAll({ where: { userId: user_id } }).then((orders) => {
+                if (orders) {
+                    count = orders.length
+                    // orders[0].dataValues.items[2] this is first item
+                    // orders[0].dataValues.items[5] this is quantity
+                    for (let i = 0; i < orders.length; i++) {
+                        Product.findOne({ where: { productID: orders[i].dataValues.items[2] } }).then((product) => {
+                            if (product) {
+                                user_orders.push({
+                                    ordernumber: orders[i].dataValues.id,
+                                    productName: product.productName,
+                                    productImageURL: product.productImageURL,
+                                    quantity: orders[i].dataValues.items[5],
+                                    productTotal: orders[i].dataValues.totalPrice
+                                });
+                            }
+                        });
+                        counter++;
+                    }
 
-    }).catch(err => console.log(err));
+                } else {
+
+                }
+            });
+            await delay()
+            // my code -jh
+
+            //console.log(orders.Order_Items);
+            res.render('user/orders', { title: "deliverys", style: "users", orders: orders, uorders: user_orders});
+            //return res.json({ msg: orders});
+
+        }).catch(err => console.log(err));
 });
 
 // Logout User
@@ -246,7 +247,7 @@ router.get('/logout', (req, res) => {
 });
 
 function delay() {
-    return new Promise(resolve => setTimeout(resolve, 3000));
+    return new Promise(resolve => setTimeout(resolve, 1000));
 }
 
 router.get('/account', ensureUserAuthenticated, async (req, res) => {
