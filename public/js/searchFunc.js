@@ -21,7 +21,7 @@ search.addWidgets([
     templates: {
       item: `
           <div class="text-center">
-            <img src="{{productImageURL}}" class="img-fluid img-thumbnail" align="left" alt="{{name}}" />
+            <img src="{{productImageURL}}" class="img-fluid img-thumbnail" align="left" alt="{{productName}}" />
             <div class="hit-name">
               {{#helpers.highlight}}{ "attribute": "productName" }{{/helpers.highlight}}
             </div>
@@ -29,7 +29,7 @@ search.addWidgets([
               {{#helpers.highlight}}{ "attribute": "productDescription" }{{/helpers.highlight}}
             </div>
             <div class="hit-price">\${{productPrice}}</div>
-            <button type="button" class="btn btn-success" href="/">Buy</button>
+            <a role="button" class="btn btn-success active" href="/cart/add/{{objectID}}" aria-pressed="true">Buy</a>
           </div>
         `,
       empty: `<div>

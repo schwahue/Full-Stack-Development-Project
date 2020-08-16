@@ -7,7 +7,10 @@ const Order = db.define('Order', {
     },
     status: {
         type: Sequelize.STRING
-    }
+    },
+    total_cost: {
+        type:Sequelize.FLOAT
+    },
 
 });
 

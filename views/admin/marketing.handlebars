@@ -1,0 +1,45 @@
+<div id="content">
+    <h1>Marketing</h1>
+    <hr>
+    <div class="container">
+        <form novalidate method="POST" action="">
+            <h3>Sending Promotional Emails</h3>
+            <p> This will send newletters that is prepared beforehand</p>
+            <input type="Submit" name="submit" value="send default newsletter" class="btn form-button"/>
+            <hr>
+        </form>
+
+        <form novalidate method="POST" enctype="multipart/form-data" action="/admin/uploadPoster">
+            <p> This will send newsletter that is uploaded</p>
+            <input style="display:block; margin-bottom:10px;" type="file" name="posterUpload">
+            <input style="display:block; margin-top:10px;" type="Submit" name="submit" value="upload newsletter" class="btn form-button"/>
+        </form>
+        <!--
+        <form novalidate method="POST" action="">
+            <hr>
+            <p> This will send newletters using template created beforehand</p>
+            <input type="Submit" name="submit" value="send template newsletter" class="btn form-button"/>
+        </form>-->
+
+        <hr>
+        <div>
+            <h6 style="">Add Discount Code:</h6>
+            <input placeholder="CODE" type="text" id="discountcode"><input placeholder="Amount in decimals" type="text" id="discountvalue">
+            <input onclick="addCode()" type="submit" style="display:block; margin-top:10px;" name="submit" value="Add Discount Code" class="btn form-button"/>
+        </div>
+    </div>
+
+    <script>
+        function addCode() {
+            var discountcode = document.getElementById('discountcode').value;
+            var discountvalue = document.getElementById('discountvalue').value;
+            return fetch('/discount/' + discountcode + '/' + discountvalue, {
+                method: 'get',
+            }).then(function (res) {
+                alert("Successfully added!")
+            })
+            
+        }
+    </script>
+    
+</div>

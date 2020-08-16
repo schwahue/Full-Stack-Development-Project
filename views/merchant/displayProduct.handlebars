@@ -1,23 +1,41 @@
 <div class="container">
     <div class="jumbotron my-4" style="background-color:white">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-12 col-lg-12" align="center">
+            <div class="row mx-auto">
+                <div class="col-sm-12 col-lg-12" align="center" style="margin-bottom:20px">
                     <h1>Products Catalog</h1>
                 </div>
             </div>
+            <div class="row mx-auto">
+                <div class="col-md-6 mx-auto">
+                    <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+                        <div class="input-group">
+                            <input type="text" placeholder="Enter Product Name" id="searchBar"
+                                aria-describedby="button-addon1" class="form-control form-control-lg border-0 bg-light">
+                            <div class="input-group-append">
+                                <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i
+                                        class="fa fa-search"></i></button>
+                            </div>
+                            <input value="{{productOwnerID}}" id="merchantID" hidden disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            <div class="row">
+            <div class="row mx-auto" id="matchList">
+            </div>
+            <div class="row mx-auto" id="originalDisplay">
                 {{#each products}}
-                <div class="col-sm-12 col-lg-4">
-                    <div class="card" style="width: 18rem; margin: 10px;">
-                        <img class="card-img-top img-thumbnails img-fluid" style="height:300px; width:300px"src="{{productImageURL}}" alt="Card image cap">
+                <div class="col-sm-12 col-lg-4 mx-auto" style="margin-top:20px">
+                    <div class="card">
+                        <img class="card-img-top img-thumbnails img-fluid" style="height:300px; width:300px"
+                            src="{{productImageURL}}" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">{{productName}}</h5>
                             <p class="card-text"><b>ID:</b> {{productID}}</p>
                             <p class="card-text"><b>Description:</b> {{productDescription}}</p>
-                            <p class="card-text"><b>Price:</b> {{productPrice}}</p>
-                            <p class="card-text"><b>Stock:</b> ${{productStock}}</p>
+                            <p class="card-text"><b>Price:</b> ${{productPrice}}</p>
+                            <p class="card-text"><b>Stock:</b> {{productStock}}</p>
                             <p class="card-text"><b>Category:</b> {{productCategory}}</p>
                             <div class="row text-center">
                                 <div class="col"><a href="updateProduct/{{productID}}" class="btn btn-success">Update
@@ -33,3 +51,5 @@
         </div>
     </div>
 </div>
+
+<script src="/js/serverSearchFunc.js"></script>

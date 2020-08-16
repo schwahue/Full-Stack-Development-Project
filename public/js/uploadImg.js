@@ -1,5 +1,8 @@
 // Initialize the Image Classifier method with MobileNet
-const classifier = ml5.imageClassifier("Mobilenet", modelLoaded);
+const classifier = ml5.imageClassifier("/data/imageModel.json", modelLoaded);
+
+let submitBut = document.getElementById("butAddProduct");
+submitBut.disabled = true;
 
 function toUpperCase() {
   let str = document.getElementById("title");
@@ -29,54 +32,35 @@ $("#imageUpload").on("change", function () {
         $("#imageErr").hide();
       }
     },
-  });
-  // Make a prediction with a selected image
-  classifier.classify(
-    document.getElementById("imageProduct"),
-    (err, results) => {
-      let submitBut = document.getElementById("butAddProduct")
-      console.log(results);
-      let name = document.getElementById("productName").value;
-      let nameReg = new RegExp(name, "gi")
-      if (
-        results[0].label.match(nameReg) ||
-        results[1].label.match(nameReg) ||
-        results[2].label.match(nameReg)
-      ) {
-        submitBut.disabled = false;
-        console.log("Success");
-      } else {
-        submitBut.disabled = true;
-        console.log("Not Success");
-      }
-    }
-  ).catch(err => {console.log(err)});
+  })
   console.log("end upload. return json");
 });
 
 // When the model is loaded
 function modelLoaded() {
-  console.log("Model Loaded!");
+  console.log("ml5 version:", ml5.version);
 }
 
 function nameCheck() {
   classifier.classify(
     document.getElementById("imageProduct"),
     (err, results) => {
-      console.log(results);
-      let submitBut = document.getElementById("butAddProduct")
+      let submitBut = document.getElementById("butAddProduct");
       let name = document.getElementById("productName").value;
-      let nameReg = new RegExp(name, "gi")
-      if (
-        results[0].label.match(nameReg) ||
-        results[1].label.match(nameReg) ||
-        results[2].label.match(nameReg)
-      ) {
-        submitBut.disabled = false;
-        console.log("Success");
-      } else {
-        submitBut.disabled = true;
-        console.log("Not Success");
+      let errorMsg = document.getElementById("ErrorMsg")
+      if (name != "") {
+        console.log(results);
+        if (
+          results[0].label.match(name)
+        ) {
+          errorMsg.hidden = true;
+          submitBut.disabled = false;
+          console.log("Success");
+        } else {
+          errorMsg.hidden = false;
+          submitBut.disabled = true;
+          console.log("Not Success");
+        }
       }
     }
   ).catch(err => console.log(err));

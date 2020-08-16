@@ -6,6 +6,7 @@ var bcrypt = require('bcryptjs');
 const User = require('../models/User_model');
 const Order = require('../models/Order_model');
 const OrderItem = require('../models/OrderItem_model');
+const simpleOrder = require("../models/simpleOrderModel.js");
 const Product = require('../models/productModel');
 const passport = require('passport');
 const Sequelize = require('sequelize');
@@ -63,13 +64,13 @@ router.post('/signup', [
     // password must be at least 4 chars long
     body('first_name')
     .notEmpty().withMessage('Invalid First Name').bail()
-    .isLength({ min: 3 }).withMessage('First Name must be at least 3 characters long').bail()
+    .isLength({ min: 2 }).withMessage('First Name must be at least 2 characters long').bail()
     .matches('^[a-zA-Z0-9]*$').withMessage('Enter valid First Name').bail(),
 
     // password must be at least 4 chars long
     body('last_name')
     .notEmpty().withMessage('Invalid Last Name').bail()
-    .isLength({ min: 3 }).withMessage('Last Name must be at least 3 characters long').bail()
+    .isLength({ min: 2 }).withMessage('Last Name must be at least 2 characters long').bail()
     .matches('^[a-zA-Z0-9]*$').withMessage('Enter valid Last Name').bail(),
 
 
@@ -180,8 +181,12 @@ router.post('/signup', [
     //res.json({ msg: "DONE" });
 });
 
+router.get('/uorders', ensureUserAuthenticated, async (req, res)=> {
+    
+    res.render('user/uorders', {title:"deliverys", style:"users", orders: user_orders, });
+});
 
-router.get('/orders', (req, res)=> {
+router.get('/orders', ensureUserAuthenticated, async (req, res) => {
 
     Order.findAll({
         where: {
@@ -189,22 +194,52 @@ router.get('/orders', (req, res)=> {
         },
         attributes: ['id', 'date', 'status', 'userId'],
         /*include: [{model: OrderItem, attributes: ['id', 'quantity', 'productId']}],*/
-        include: [{model: OrderItem, include: Product}]
+        include: [{ model: OrderItem, include: Product }]
 
         /*
         order: [
             ['userId']
         ]*/
     })
-    .then((orders) => {
-        //console.log(orders.Order_Items);
-        res.render('user/orders', {title:"deliverys", style:"users", orders: orders});
-        //return res.json({ msg: orders});
+        .then(async (orders) => {
+            let user_id = req.user.id
+            let user_orders = []
+            let count = 0
+            let counter = 1
+            let what = await simpleOrder.findAll({ where: { userId: user_id } }).then((orders) => {
+                if (orders) {
+                    count = orders.length
+                    // orders[0].dataValues.items[2] this is first item
+                    // orders[0].dataValues.items[5] this is quantity
+                    for (let i = 0; i < orders.length; i++) {
+                        Product.findOne({ where: { productID: orders[i].dataValues.items[2] } }).then((product) => {
+                            if (product) {
+                                user_orders.push({
+                                    ordernumber: orders[i].dataValues.id,
+                                    productName: product.productName,
+                                    productImageURL: product.productImageURL,
+                                    quantity: orders[i].dataValues.items[5],
+                                    productTotal: orders[i].dataValues.totalPrice,
+                                    date: orders[i].dataValues.date
+                                });
+                            }
+                        });
+                        counter++;
+                    }
 
-    }).catch(err => console.log(err));
+                } else {
 
+                }
+            });
+            await delay()
+            // my code -jh
+
+            //console.log(orders.Order_Items);
+            res.render('user/orders', { title: "deliverys", style: "users", orders: orders, uorders: user_orders});
+            //return res.json({ msg: orders});
+
+        }).catch(err => console.log(err));
 });
-
 
 // Logout User
 router.get('/logout', (req, res) => {
@@ -212,13 +247,18 @@ router.get('/logout', (req, res) => {
 	res.redirect('/user/login');
 });
 
-router.get('/account', ensureUserAuthenticated, (req, res) => {
+function delay() {
+    return new Promise(resolve => setTimeout(resolve, 1000));
+}
+
+router.get('/account', ensureUserAuthenticated, async (req, res) => {
     console.log("Account Type");
     console.log(res.locals.user.type);
+    
 	res.render('user/account', { style:"users"});
 });
 
-router.post('/account', (req, res) => {
+router.post('/account', ensureUserAuthenticated, (req, res) => {
     console.log("\nButton Type");
 
     if(req.body.submit == "Update Profile"){
@@ -291,18 +331,26 @@ router.post('/account', (req, res) => {
 
 router.get('/redirect', (req, res) => {
     if (res.locals.user){
-        if (res.locals.user.type == "customer"){
-            res.redirect('/user/account');
+        if(req.session.returnTo){
+            myroute = req.session.returnTo;
+            req.session.returnTo = null;
+            return res.redirect(myroute);
+        }
+        else if (res.locals.user.type == "customer"){
+            return res.redirect('/user/account');
         }
         else if(res.locals.user.type == "admin"){
-            res.redirect('/admin/account');
+            return res.redirect('/admin/account');
         }
         else if(res.locals.user.type == "merchant"){
-            res.redirect('/merchant/account');
+            return res.redirect('/merchant/account');
+        }
+        else{
+            return res.redirect('/user/login');
         }
     }
     else{
-        res.redirect('/user/login');
+        return res.redirect('/user/login');
     }
 
 });

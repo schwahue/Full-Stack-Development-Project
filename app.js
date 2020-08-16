@@ -2,6 +2,8 @@
  * 'require' is similar to import used in Java and Python. It brings in the libraries required to be used
  * in this JS file.
  * */
+const nodemailer = require('nodemailer');
+const mailGun = require('nodemailer-mailgun-transport');
 const express = require("express");
 const session = require("express-session");
 const path = require("path");
@@ -79,10 +81,13 @@ const mainRoute = require("./routes/main_route");
 const userRoute = require("./routes/user_route");
 const adminRoute = require("./routes/admin_route");
 const merchantRoute = require("./routes/merchant_route");
+const apiRoute = require("./routes/api_route");
 const testRoute = require("./routes/test_route");
 // const smsRoute = require('./routes/sms_route');
 const authRoute = require("./routes/auth_route");
 const deliveryRoute = require("./routes/delivery_route");
+const masterRoute = require("./routes/mastercontrol_route");
+const queryRoute = require("./routes/query_route");
 
 // Bring in Handlebars Helpers here
 // Copy and paste this statement only!!
@@ -193,6 +198,10 @@ app.use("/merchant", merchantRoute);
 app.use("/test", testRoute);
 app.use("/auth", authRoute);
 app.use("/delivery", deliveryRoute);
+app.use("/api", apiRoute);
+app.use("/mastercontrol", masterRoute);
+app.use("/query", queryRoute)
+
 // app.use('/sms', smsRoute);
 
 //error 404 and 500 handling

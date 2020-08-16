@@ -1,3 +1,6 @@
+<script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+
 <div class="container">
     <div class="content">
         <h1>Order #{{order.id}}</h1>
@@ -7,10 +10,19 @@
             <span>{{order.user.unit_number}},</span>
             <p>S{{order.user.postal_code}}</p>
         </div>
+        <div style="text-align: center;">
+            <div id="map">
+
+            </div>
+        </div>
+
+
+
         <h3 style="margin-top: 20px;"> Delivery Status: <span style="color:#458B00;">{{order.status}}</span> </h3>
         <div style="margin-top: 40px;">
             <h4> Status Update:</h4>
             <form method="post" action="">
+                {{#if (if_Equal type 'admin')}}
                 <div class="status-choice">
                     <input type="Submit" name="submit" value="Picked Up" class="btn acpt-btn btn2" />
                 </div>
@@ -22,10 +34,141 @@
                 <div class="status-choice">
                     <input type="Submit" name="submit" value="Delivered" class="btn acpt-btn btn2" />
                 </div>
-                <input type="hidden" style="display:hidden" name="orderid" value="{{order.id}}">
+
+                {{else}}
+
+                <div class="status-choice">
+                    <input type="Submit" name="submit" value="Confirm Delivery" class="btn acpt-btn btn2" />
+                </div>
+
+                {{/if}}
+
+
+
+                <input type="hidden" style="display:hidden" id='orderidplaceholder' name="orderid" value="{{order.id}}">
             </form>
         </div>
 
     </div>
 
 </div>
+
+<script>
+    var x = document.getElementById("demo");
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function showPosition(position) {
+        x.innerHTML = "Latitude: " + position.coords.latitude +
+            "<br>Longitude: " + position.coords.longitude;
+    }
+</script>
+
+<script>
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYWRwcm9qZWN0IiwiYSI6ImNrZHd6aXc5dTI4ZngycXBiaGlxdWFxdXIifQ._ul0lzFVsO1XAlNget0kWA';
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+        center: [103.83, 1.376], // starting position [lng, lat]
+        zoom: 9 // starting zoom
+    });
+
+    
+
+    
+    {{#if (if_Equal type 'admin')}}
+    // Initialize the geolocate control.
+    var geolocate = new mapboxgl.GeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true
+        },
+        trackUserLocation: true
+    });
+    // Add the control to the map.
+    map.addControl(geolocate);
+    // Set an event listener that fires
+    // when a trackuserlocationstart event occurs.
+    geolocate.on('trackuserlocationstart', function () {
+        console.log('A trackuserlocationstart event has occurred.');
+    });
+
+    //user is "finished typing," do something
+    function updateDB_Location(long, lat) {
+        var $orderid = $('#orderidplaceholder');
+
+        $.ajax({
+            url: '/query/set_long_lat',
+            type: "get", //send it through get method
+            data: {
+                orderid: $orderid.val(),
+                longitude: long,
+                latitude: lat,
+            },
+
+        }).done(function (data) {
+            //console.log(data);
+            console.log("updated");
+        });
+
+
+    }
+    
+
+    // get geolocation & update 
+    const interval = setInterval(function() {
+        if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(position => {
+            console.log(position.coords.longitude, position.coords.latitude);
+            updateDB_Location(position.coords.longitude, position.coords.latitude);
+            //updateDB_Location(103.84493, 1.381726);
+        });
+    }
+    }, 10000);
+
+
+    {{else}}
+
+    console.log("WOI CUSTOMER")
+    var marker = new mapboxgl.Marker()
+    .setLngLat([103.84493, 1.381726])
+    .addTo(map);
+
+    function getDB_Location() {
+        var $orderid = $('#orderidplaceholder');
+        $.ajax({
+            url: '/query/get_long_lat',
+            type: "get", //send it through get method
+            data: {
+                orderid: $orderid.val(),
+            },
+
+        }).done(function (data) {
+            //console.log(data);
+            console.log("receive data");
+            console.log(data);
+            marker.remove();
+            marker = new mapboxgl.Marker()
+            .setLngLat([data.longitude, data.latitude])
+            //.setLngLat([103.84493, 1.381726])
+            .addTo(map);
+        });
+    }
+
+    const interval = setInterval(function() {
+        getDB_Location();
+    }, 10000);
+
+    {{/if}}
+</script>
+
+<script>
+	firebase.analytics().logEvent("view_item_status");
+</script>

@@ -5,13 +5,17 @@
     <br>
     <table class="table table-bordered">
         <tbody id="myTable">
+            {{#if orders}}
+            {{#each orders}}
             <tr>
-                <td><img class="img-fluid" src="/img/iphone-se-red-select-2020.jpg" style="max-width: auto; height: 35%;"></td>
-                <td hidden='true'>iphone se red 64gb</td>
-                <td>Order Number: #823HAD723, QTY:1</td>
-                <td>Tue 09 Jun, 11am</td>
+                <td><a href="/{{ordernumber}}"><img class="img-fluid" href="/cart" src="{{productImageURL}}" style="max-width: auto; height: 35%;"></a></td>
+                <td hidden='true'>{{productName}}</td>
+                <td>Order Number: #{{ordernumber}}, QTY:{{quantity}}</td>
+                <td>{{productTotal}}</td>
             </tr>
-            <tr>
+            {{/each}}
+            {{/if}}
+            {{!-- <tr>
                 <td><img class="img-fluid" src="/img/iphone11-yellow-select-2019.jpg" style="max-width: auto; height: 35%;"></td>
                 <td hidden='true'>iphone yellow</td>
                 <td>Order Number: #KDUIC723PO, QTY:2</td>
@@ -22,7 +26,7 @@
                 <td hidden='true'>earphone airpods</td>
                 <td>Order Number: #MMVYWE83FG, QTY:5</td>
                 <td>Fri 23 Mar, 9am</td>
-            </tr>
+            </tr> --}}
         </tbody>
     </table>
 </div>

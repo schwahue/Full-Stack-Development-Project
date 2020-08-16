@@ -15,6 +15,13 @@
                     <!-- Shop Name -->
                     <label for="shop_name"> Shop Name </label>
                     <input type="text" class="form-control" id="shop_name" name="shop_name" value="{{shop_name}}">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Shop name in use!
+                    </div>
+
                 </div><!-- End of Shop Name -->
 
 
@@ -23,12 +30,24 @@
                     <label for="contact_number"> Contact Number</label>
                     <input type="text" class="form-control" id="contact_number" name="contact_number"
                         value="{{contact_number}}">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Contact number in use!
+                    </div>
                 </div><!-- End of username -->
 
                 <div class="form-group">
                     <!-- Email -->
                     <label for="username">Email Address</label>
                     <input type="email" class="form-control" id="email" name="email" value="{{email}}">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Email in use!
+                    </div>
                 </div> <!-- End of Email -->
 
                 <div class="row">
@@ -65,4 +84,146 @@
 <script>
 
     firebase.analytics().logEvent("sign_up" );
+
+    const email = document.getElementById("email");
+    const contanct_number = document.getElementById("contact_number");
+    const form = document.getElementById("sign-up-form");
+
+    var typingTimer;                //timer identifier
+    var doneTypingInterval = 1000;  //time in ms, 3 second for example
+    var $myEmail = $('#email');
+
+    //on keyup, start the countdown
+    $myEmail.on('keyup', function () {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(doneTypingEmail, doneTypingInterval);
+    });
+
+    //on keydown, clear the countdown 
+    $myEmail.on('keydown', function () {
+        clearTimeout(typingTimer);
+    });
+
+    //user is "finished typing," do something
+    function doneTypingEmail() {
+        console.log($myEmail.val());
+        if ($('#email').hasClass('is-invalid')) {
+            $('#email').removeClass('is-invalid');
+        }
+
+        if ($('#email').hasClass('is-valid')) {
+            $('#email').removeClass('is-valid');
+        }
+
+        $.ajax({
+            url: '/query/check_email_availability',
+            type: "get", //send it through get method
+            data: {
+                email: $myEmail.val(),
+            },
+
+        }).done(function (data) {
+            //console.log(data);
+
+            if (data == true) {
+
+                $("#email").addClass("is-valid");
+            }
+            else {
+                $("#email").addClass("is-invalid");
+            }
+        });
+    }
+
+
+    var typingTimer2;                //timer identifier
+    var doneTypingInterval2 = 1000;  //time in ms, 3 second for example
+    var $myContact = $('#contact_number');
+
+    //on keyup, start the countdown
+    $myContact.on('keyup', function () {
+        clearTimeout(typingTimer2);
+        typingTimer2 = setTimeout(doneTypingContact, doneTypingInterval2);
+    });
+
+    //on keydown, clear the countdown 
+    $myContact.on('keydown', function () {
+        clearTimeout(typingTimer2);
+    });
+
+    function doneTypingContact() {
+        console.log($myContact.val());
+        if ($('#contact_number').hasClass('is-invalid')) {
+            $('#contact_number').removeClass('is-invalid');
+        }
+
+        if ($('#contact_number').hasClass('is-valid')) {
+            $('#contact_number').removeClass('is-valid');
+        }
+
+        $.ajax({
+            url: '/query/check_contact_availability',
+            type: "get", //send it through get method
+            data: {
+                contact_number: $myContact.val(),
+            },
+
+        }).done(function (data) {
+            //console.log(data);
+
+            if (data == true) {
+
+                $("#contact_number").addClass("is-valid");
+            }
+            else {
+                $("#contact_number").addClass("is-invalid");
+            }
+        });
+    }
+
+    var typingTimer3;                //timer identifier
+    var doneTypingInterval3 = 1000;  //time in ms, 3 second for example
+    var $shopName = $('#shop_name');
+
+    //on keyup, start the countdown
+    $shopName.on('keyup', function () {
+        clearTimeout(typingTimer3);
+        typingTimer3 = setTimeout(doneTypingSName, doneTypingInterval3);
+    });
+
+    //on keydown, clear the countdown 
+    $shopName.on('keydown', function () {
+        clearTimeout(typingTimer3);
+    });
+
+    function doneTypingSName() {
+        console.log($myContact.val());
+        if ($('#shop_name').hasClass('is-invalid')) {
+            $('#shop_name').removeClass('is-invalid');
+        }
+
+        if ($('#shop_name').hasClass('is-valid')) {
+            $('#shop_name').removeClass('is-valid');
+        }
+
+        $.ajax({
+            url: '/query/check_shopname_availability',
+            type: "get", //send it through get method
+            data: {
+                shop_name: $shopName.val(),
+            },
+
+        }).done(function (data) {
+            //console.log(data);
+
+            if (data == true) {
+
+                $("#shop_name").addClass("is-valid");
+            }
+            else {
+                $("#shop_name").addClass("is-invalid");
+            }
+        });
+    }
+
 </script>
