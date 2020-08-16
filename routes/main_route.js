@@ -218,8 +218,43 @@ router.get("/cart", async (req, res) => {
   // });
 });
 
-router.get("/testsearch", (req, res) => {
-  res.render("payment/testcart");
+function delay() {
+  return new Promise(resolve => setTimeout(resolve, 3000));
+}
+
+router.get("/testsearch", async (req, res) => {
+  let user_id = req.user.id
+  let user_orders = []
+  let count = 0
+  let counter = 1
+  let what = await simpleOrder.findAll({ where: { userId: user_id } }).then((orders) => {
+    if (orders) {
+      count = orders.length
+      // orders[0].dataValues.items[2] this is first item
+      // orders[0].dataValues.items[5] this is quantity
+      for (let i = 0; i < orders.length; i++) {
+        Product.findOne({ where: { productID: orders[i].dataValues.items[2] } }).then((product) => {
+          if (product) {
+            user_orders.push({
+              ordernumber: orders[i].dataValues.id,
+              productName: product.productName,
+              productImageURL: product.productImageURL,
+              quantity: orders[i].dataValues.items[5],
+              productTotal: orders[i].dataValues.totalPrice
+            });
+          }
+        });
+        counter++;
+      }
+      
+    } else {
+
+    }
+  });
+  await delay()
+  res.render("payment/testcart", {
+    orders: user_orders
+  });
 });
 
 // Remove item
@@ -288,6 +323,15 @@ router.get("/cart/:id", (req, res) => {
     } else {
       discount_code = {};
     }
+  });
+  res.end();
+});
+
+router.get("/discount/:code/:amount", (req, res) => {
+  discountCode.create({
+    code: req.params.code,
+    active: true,
+    amount: req.params.amount
   });
   res.end();
 });
@@ -625,8 +669,12 @@ router.post("/success", async (req, res) => {
   let itemsObject = {};
   let totalPrice = 0.0;
   for (let i = 0; i < shopping_cart.length; i++) {
+    var productPrice = shopping_cart[i].productPrice;
+    if ((discount_code.code == null) == false) {
+      productPrice = productPrice * (1- discount_code.amount)
+    }
     itemsObject[shopping_cart[i].productID] = shopping_cart[i].quantity;
-    totalPrice += shopping_cart[i].productPrice * shopping_cart[i].quantity;
+    totalPrice += productPrice * shopping_cart[i].quantity;
   }
   let dateObject = new Date();
   let currentDate =
