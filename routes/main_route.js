@@ -791,6 +791,11 @@ router.get("/feedback", (req, res) => {
   res.render("feedback_and_others/feedback");
 });
 
+// Matt: form
+router.get("/feedback2", (req, res) => {
+  res.render("feedback_and_others/feedback2.handlebars");
+});
+
 // Matt: livechat
 router.get("/livechat", (req, res) => {
   res.render("chat/chat.ejs");
@@ -800,5 +805,6 @@ router.get("/livechat", (req, res) => {
 router.get("/chatbot", (req, res) => {
   res.render("chat/chatbot.handlebars");
 });
+
 
 module.exports = router;
