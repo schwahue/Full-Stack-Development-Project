@@ -1,11 +1,11 @@
 const search = document.getElementById("searchBar");
 const matchList = document.getElementById("matchList");
 const originalDisplay = document.getElementById("originalDisplay");
-const userID = document.getElementById("merchantID");
+const userID = document.getElementById("merchantID").value;
 
 //Search from SequelizeAPI and filter it
 const searchStates = async (searchText) => {
-  const res = await fetch(`/api/product/${user.id.value}`); //get product from mySQL
+  const res = await fetch(`/api/product/${userID}`); //get product from mySQL
   const products = await res.json();
 
   //Get matches to current text input
@@ -54,7 +54,6 @@ const outputHTML = (matches) => {
       .join("");
     matchList.innerHTML = html;
     originalDisplay.hidden = true;
-    console.log('reached')
   }
 };
 
