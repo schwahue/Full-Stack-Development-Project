@@ -66,7 +66,7 @@ const db = require("./config/db"); // db.js config file
 const mySqlDatabase = require("./config/DBConnection");
 
 // Connects to MySQL database
-mySqlDatabase.setUpDB(false); // To set up database with new tables set (true)
+mySqlDatabase.setUpDB(true); // To set up database with new tables set (true)
 
 // Passport Config
 const authenticate = require("./config/passport");
@@ -214,9 +214,10 @@ app.use(function (req, res, next) {
     return;
   }
 });
-app.use(function (req, res, next) {
-	res.status(500);
-  
+
+app.use(function (err,req, res, next) {
+  res.status(500);
+  console.log(err)
 	// respond with html page
 	if (req.accepts("html")) {
 	  res.render("500", { url: req.url });
