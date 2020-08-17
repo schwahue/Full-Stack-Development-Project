@@ -69,11 +69,8 @@ const trigger = [
   ];
   
   const alternative = [
-    "Same",
-    "Go on...",
-    "Bro...",
-    "Try again",
-    "I'm listening..."
+    "I'm sorry, I didn't quite understand that.",
+    "Sorry, could you rephrase your question?"
   ]; //anything not in trigger
   
   const coronavirus = ["Please stay home"]; // as long as "coronavirus" is inside, respond
