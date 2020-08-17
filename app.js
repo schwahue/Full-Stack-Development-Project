@@ -66,7 +66,7 @@ const db = require("./config/db"); // db.js config file
 const mySqlDatabase = require("./config/DBConnection");
 
 // Connects to MySQL database
-mySqlDatabase.setUpDB(true); // To set up database with new tables set (true)
+mySqlDatabase.setUpDB(false); // To set up database with new tables set (true)
 
 // Passport Config
 const authenticate = require("./config/passport");
