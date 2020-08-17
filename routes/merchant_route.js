@@ -2,28 +2,23 @@ const express = require("express");
 const router = express.Router();
 const alertMessage = require("../helpers/messenger.js");
 var bcrypt = require("bcryptjs");
-
 const User = require("../models/User_model");
 const Order = require("../models/Order_model");
 const OrderItem = require("../models/OrderItem_model");
 const Product = require("../models/productModel");
-
+const { error } = require("console");
 const ensureAuthenticated = require("../helpers/auth");
 const { ensureMerchantAuthenticated } = require("../helpers/auth");
-
+const { body, validationResult } = require("express-validator");
 const QRCode = require("qrcode");
-
-const uuid = require('uuid');
+const uuid = require("uuid");
 
 // Required for file upload
 const fs = require("fs");
 const upload = require("../helpers/imageUpload");
-
-const { body, validationResult } = require("express-validator");
-
 //Algolia
 const algoliasearch = require("algoliasearch");
-const { error } = require("console");
+
 const {
   UserBindingContext,
 } = require("twilio/lib/rest/ipMessaging/v2/service/user/userBinding");
@@ -275,56 +270,106 @@ router.get("/addProduct", ensureMerchantAuthenticated, (req, res) => {
   });
 }); //getAddProduct Interface
 
-router.post("/addProduct", ensureMerchantAuthenticated, (req, res) => {
-  let productID = uuid.v1();
-  let productName = req.body.productName;
-  let productDescription = req.body.productDescription;
-  let productPrice = req.body.productPrice;
-  let productStock = req.body.productStock;
-  let productCategory = req.body.productCategory;
-  let productImageURL = req.body.productImageURL;
+router.post(
+  "/addProduct",
+  [
+    //Validations
+    body("productName").notEmpty().trim().withMessage("Name is invalid!"),
+    body("productDescription")
+      .notEmpty()
+      .trim()
+      .withMessage("Description is invalid!"),
+    body("productPrice")
+      .notEmpty()
+      .trim()
+      .toFloat()
+      .withMessage("Price is invalid!"),
+    body("productStock")
+      .notEmpty()
+      .trim()
+      .toInt()
+      .withMessage("Stock is invalid!"),
+  ],
+  ensureMerchantAuthenticated,
+  (req, res) => {
+    //Check for Errors
+    const errors = validationResult(req);
+    let error_holder = errors.array();
+    let errors_msg = [];
+    for (i = 0; i < error_holder.length; i++) {
+      errors_msg.push(error_holder[i].msg);
+    }
+    if (!errors.isEmpty()) {
+      return res.render("merchant/addProduct", {
+        title: "Merchant - AddProduct",
+        style: "merchant",
+        navbar: "merchant",
+        errors: errors_msg,
+      });
+    } else {
+    }
 
-  const products = [
-    {
-      objectID: productID,
+    //valid inputs
+    let productID = uuid.v1();
+    let productName = req.body.productName;
+    let productDescription = req.body.productDescription;
+    let productPrice = req.body.productPrice;
+    let productStock = req.body.productStock;
+    let productCategory = req.body.productCategory;
+    let productImageURL = req.body.productImageURL;
+    let productOwnerID = req.user.id;
+
+    console.log(productOwnerID);
+
+    const products = [
+      {
+        objectID: productID,
+        productName: productName,
+        productDescription: productDescription,
+        productPrice: productPrice,
+        productStock: productStock,
+        productCategory: productCategory,
+        productImageURL: productImageURL,
+        productOwnerID: productOwnerID,
+      },
+    ];
+
+    //create Product in remote Algolia index
+    index
+      .saveObjects(products)
+      .then(({ objectIDs }) => {
+        console.log(objectIDs);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    //create Product in local mySQL
+    Product.create({
+      productID: productID,
       productName: productName,
       productDescription: productDescription,
       productPrice: productPrice,
       productStock: productStock,
       productCategory: productCategory,
       productImageURL: productImageURL,
-    },
-  ];
-
-  //create Product in remote Algolia index
-  index
-    .saveObjects(products)
-    .then(({ objectIDs }) => {
-      console.log(objectIDs);
-    })
-    .catch((err) => {
-      console.log(err);
+      productOwnerID: productOwnerID,
+    }).then((product) => {
+      alertMessage(
+        res,
+        "success",
+        productName + " has been added",
+        "fas fa-sign-in-alt",
+        true
+      );
+      res.render("merchant/addProduct", {
+        title: "Merchant - AddProduct",
+        style: "merchant",
+        navbar: "merchant",
+      });
     });
-
-  //create Product in local mySQL
-  Product.create({
-    productID: productID,
-    productName: productName,
-    productDescription: productDescription,
-    productPrice: productPrice,
-    productStock: productStock,
-    productCategory: productCategory,
-    productImageURL: productImageURL,
-    productOwnerID: req.user.id
-    
-  }).then((product) => {
-    res.render("merchant/addProduct", {
-      title: "Merchant - AddProduct",
-      style: "merchant",
-      navbar: "merchant",
-    });
-  });
-}); //addProduct to db
+  }
+); //addProduct to db
 
 router.get("/updateProduct/:id", ensureMerchantAuthenticated, (req, res) => {
   Product.findOne({
@@ -346,64 +391,118 @@ router.get("/updateProduct/:id", ensureMerchantAuthenticated, (req, res) => {
     });
 }); //getUpdate Interface
 
-router.put("/updateProduct/saveUpdate/:id", ensureMerchantAuthenticated, (req, res) => {
-  let productID = req.params.id;
-  let productName = req.body.productName;
-  let productDescription = req.body.productDescription;
-  let productPrice = req.body.productPrice;
-  let productStock = req.body.productStock;
-  let productCategory = req.body.productCategory;
-  let productImageURL = req.body.productImageURL;
+router.put(
+  "/updateProduct/saveUpdate/:id",
+  [
+    //Validations
+    body("productName").notEmpty().trim().withMessage("Name is invalid!"),
+    body("productDescription")
+      .notEmpty()
+      .trim()
+      .withMessage("Description is invalid!"),
+    body("productPrice")
+      .notEmpty()
+      .trim()
+      .toFloat()
+      .withMessage("Price is invalid!"),
+    body("productStock")
+      .notEmpty()
+      .trim()
+      .toInt()
+      .withMessage("Stock is invalid!"),
+  ],
+  ensureMerchantAuthenticated,
+  (req, res) => {
+    let productID = req.params.id;
+    let productName = req.body.productName;
+    let productDescription = req.body.productDescription;
+    let productPrice = req.body.productPrice;
+    let productStock = req.body.productStock;
+    let productCategory = req.body.productCategory;
+    let productImageURL = req.body.productImageURL;
+    let productOwnerID = req.user.id;
 
-  const products = [
-    {
-      objectID: productID,
-      productName: productName,
-      productDescription: productDescription,
-      productPrice: productPrice,
-      productStock: productStock,
-      productCategory: productCategory,
-      productImageURL: productImageURL,
-    },
-  ];
-
-  //updateObject
-  index.saveObjects(products).then(({ productID }) => {
-    console.log(productID);
-  });
-
-  Product.update(
-    {
-      productID,
-      productName,
-      productDescription,
-      productPrice,
-      productStock,
-      productCategory,
-      productImageURL,
-    },
-    {
-      where: {
-        productID: req.params.id,
-      },
+    //Check for Errors
+    const errors = validationResult(req);
+    let error_holder = errors.array();
+    let errors_msg = [];
+    for (i = 0; i < error_holder.length; i++) {
+      errors_msg.push(error_holder[i].msg);
     }
-  )
-    .then((product) => {
-      res.redirect("/merchant/displayProduct");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}); //updateExisting Products
+    if (!errors.isEmpty()) {
+      return res.render("merchant/addProduct", {
+        title: "Merchant - AddProduct",
+        style: "merchant",
+        navbar: "merchant",
+        errors: errors_msg,
+      });
+    } else {
+      //Valid Input
+      const products = [
+        {
+          objectID: productID,
+          productName: productName,
+          productDescription: productDescription,
+          productPrice: productPrice,
+          productStock: productStock,
+          productCategory: productCategory,
+          productImageURL: productImageURL,
+          productOwnerID: productOwnerID,
+        },
+      ];
+
+      //updateObject
+      index.saveObjects(products).then(({ productID }) => {
+        console.log(productID);
+      });
+
+      Product.update(
+        {
+          productID,
+          productName,
+          productDescription,
+          productPrice,
+          productStock,
+          productCategory,
+          productImageURL,
+          productOwnerID: productOwnerID,
+        },
+        {
+          where: {
+            productID: req.params.id,
+          },
+        }
+      )
+        .then((product) => {
+          alertMessage(
+            res,
+            "success",
+            productName + " has been updated",
+            "fas fa-sign-in-alt",
+            true
+          );
+          res.redirect("/merchant/displayProduct");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+); //updateExisting Products
 
 router.get("/displayProduct", ensureMerchantAuthenticated, (req, res) => {
-  Product.findAll({})
+  let productOwnerID = req.user.id;
+
+  Product.findAll({
+    where: {productOwnerID:productOwnerID}
+  })
     .then((products) => {
       res.render("merchant/displayProduct", {
         products: products,
         title: "Merchant - AddProduct",
         style: "merchant",
         navbar: "merchant",
+        productOwnerID,
       });
     })
     .catch((err) => console.log(err));
@@ -420,6 +519,7 @@ router.get("/deleteProduct/:id", ensureMerchantAuthenticated, (req, res) => {
     where: { productID: productID },
   })
     .then((product) => {
+      let productName = product.productName;
       if (productID == null) {
         res.redirect("/");
       } else {
@@ -428,6 +528,13 @@ router.get("/deleteProduct/:id", ensureMerchantAuthenticated, (req, res) => {
             productID: productID,
           },
         }).then((product) => {
+          alertMessage(
+            res,
+            "danger",
+            productName + " has been deleted",
+            "fas fa-sign-in-alt",
+            true
+          );
           res.redirect("/merchant/displayProduct");
         });
       }

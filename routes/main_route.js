@@ -27,9 +27,14 @@ router.get("/", (req, res) => {
       order: [['productRating', 'DESC']]
     })
     .then((products) => {
-      res.render("index", {
-        products: products,
-        title: "Home",
+      Product.findAll({
+        limit:6,
+      }).then((productsAll) =>{
+        res.render("index", {
+          products: products,
+          productsAll: productsAll,
+          title: "Home",
+        });
       });
     })
     .catch((err) => console.log(err));
